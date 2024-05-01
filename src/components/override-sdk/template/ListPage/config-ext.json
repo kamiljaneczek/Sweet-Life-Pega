@@ -1,0 +1,8 @@
+{
+    "componentKey": "ListPage",
+    "name": "ListPage",
+    "type": "Template",
+    "subtype": "PAGE",
+    "label": "List page",
+    "properties": []
+}

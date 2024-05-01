@@ -1,0 +1,9 @@
+{
+    "componentKey": "NarrowWideDetails",
+    "name": "NarrowWideDetails",
+    "label": "Details (Narrow-wide)",
+    "description": "Details (Narrow-wide) template",
+    "type": "Template",
+    "subtype": "DETAILS",
+    "properties": []
+}

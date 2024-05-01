@@ -1,0 +1,9 @@
+{
+    "componentKey": "OneColumnPage",
+    "name": "OneColumnPage",
+    "label": "One column",
+    "description": "OneColumn Page Template",
+    "type": "Template",
+    "subtype": "PAGE",
+    "properties": []
+}

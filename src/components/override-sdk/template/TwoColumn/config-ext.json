@@ -1,0 +1,9 @@
+{
+    "componentKey": "TwoColumn",
+    "name": "TwoColumn",
+    "label": "Two column",
+    "description": "TwoColumn Template",
+    "type": "Template",
+    "subtype": "FORM",
+    "properties": []
+}
