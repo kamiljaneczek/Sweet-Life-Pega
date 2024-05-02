@@ -1,7 +1,6 @@
-import React from 'react';
-import { Button } from './ui/button';
+import { Button } from '../../design-system/ui/button';
 
-export const Header = () => {
+const Header = () => {
   return (
     <header className='bg-white py-6'>
       <div className='container mx-auto px-4 flex justify-between items-center'>
@@ -13,7 +12,7 @@ export const Header = () => {
           <a className='text-base font-medium hover:text-gray-600' href='/about'>
             About
           </a>
-          <a className='text-base font-medium hover:text-gray-600' href='/rroducts'>
+          <a className='text-base font-medium hover:text-gray-600' href='/products'>
             Products
           </a>
           <a className='text-base font-medium hover:text-gray-600' href='/incidents'>
@@ -28,3 +27,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

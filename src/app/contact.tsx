@@ -1,9 +1,10 @@
-import React from 'react';
-import { Header } from '../design-system/header';
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import Header from './components/header';
 import { Button } from '../design-system/ui/button';
 import { Input } from '../design-system/ui/input';
 import { Label } from '../design-system/ui/label';
 import { Textarea } from '../design-system/ui/textarea';
+import Footer from './components/footer';
 
 const Contact = () => {
   return (
@@ -102,6 +103,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

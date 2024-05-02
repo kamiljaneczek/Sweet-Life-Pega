@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-restricted-properties */
 
 import * as React from 'react';

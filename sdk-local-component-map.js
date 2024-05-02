@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 // Statically load all "local" components that aren't yet in the npm package
 
 import AutoComplete from './src/components/override-sdk/field/AutoComplete/';

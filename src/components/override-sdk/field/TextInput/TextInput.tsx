@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
 import { Input } from '../../../../design-system/ui/input';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';

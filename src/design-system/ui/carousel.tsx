@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-restricted-properties */
+
 'use client';
 
 import * as React from 'react';

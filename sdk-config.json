@@ -8,20 +8,20 @@
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
-    "mashupClientId": "25795373220702300272",
+    "mashupClientId": "13472497343171375122",
     "mashupUserIdentifier": "sdk@pega.com",
     "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding   //pass Rules123!3111 as base64 encoded",
     "mashupPassword": "UnVsZXMxMjMhNA==",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "25795373220702300272"
+    "portalClientId": "13472497343171375122"
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://lab0245.lab.pega.com/prweb",
+    "infinityRestServerUrl": "https://lab0339.lab.pega.com/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "MediaCo",
+    "appAlias": "TellUsMoreRef",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

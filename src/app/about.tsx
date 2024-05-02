@@ -1,5 +1,6 @@
-import React from 'react';
-import { Header } from '../design-system/header';
+/* eslint-disable react/no-unescaped-entities */
+import Header from './components/header';
+import Footer from './components/footer';
 
 const About = () => {
   return (
@@ -69,6 +70,38 @@ const About = () => {
           </div>
         </div>
       </section>
+      <section>
+        <h1>About Sweet Life</h1>
+        <p>
+          Welcome to Sweet Life, where dreams are made of sugar and the sweetest moments are created. Founded by sisters Jane and Kate, Sweet Life is
+          a culmination of our passion for crafting delightful sweets that bring joy to people's lives.
+        </p>
+        <p>
+          Driven by our love for confectionery and dedication to quality, Sweet Life is on a mission to spread happiness and create delicious memories
+          through our delectable treats.
+        </p>
+        <h2>Meet the Founders</h2>
+        <div className='founders'>
+          <div className='founder'>
+            <img src='jane.jpg' alt='Jane - Co-founder' />
+            <h3>Jane Doe</h3>
+            <p>Co-founder, Chief Baker</p>
+          </div>
+          <div className='founder'>
+            <p>Co-founder & Creative Director</p>
+          </div>
+        </div>
+        <h2>Our Values and Mission:</h2>
+        <p>
+          At Sweet Life, we believe in creating confectionery masterpieces with the highest quality ingredients and a dash of love in every recipe.
+          Our mission is to sweeten your life with indulgent treats that not only satisfy your taste buds but also warm your heart.
+        </p>
+        <p>
+          With a commitment to innovation, excellence, and customer satisfaction, Sweet Life is dedicated to crafting a world filled with sweetness
+          and happiness, one candy at a time.
+        </p>
+      </section>
+      <Footer />
     </>
   );
 };

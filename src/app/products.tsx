@@ -1,6 +1,5 @@
 import { SelectTrigger } from '@radix-ui/react-select';
-import React from 'react';
-import { Header } from '../design-system/header';
+import Header from './components/header';
 import { Button } from '../design-system/ui/button';
 import { Label } from '../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select';
