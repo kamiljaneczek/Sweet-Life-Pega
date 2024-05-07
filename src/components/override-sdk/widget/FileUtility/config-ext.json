@@ -1,9 +1,9 @@
 {
-    "componentKey": "FileUtility",
-    "name": "FileUtility",
-    "label": "Attachments",
-    "description": "Attachments",
-    "type": "Widget",
-    "subtype": "CASE",
-    "properties": []
+  "componentKey": "FileUtility",
+  "name": "FileUtility",
+  "label": "Attachments",
+  "description": "Attachments",
+  "type": "Widget",
+  "subtype": "CASE",
+  "properties": []
 }

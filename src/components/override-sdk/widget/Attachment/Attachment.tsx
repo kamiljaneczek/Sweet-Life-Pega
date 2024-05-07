@@ -6,7 +6,11 @@ import { CircularProgress, IconButton, Menu, MenuItem, Button } from '@material-
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import download from 'downloadjs';
 
-import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import {
+  buildFilePropsFromResponse,
+  getIconFromFileType,
+  validateMaxSize
+} from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';

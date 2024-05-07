@@ -1,90 +1,4 @@
-import React from 'react';
 import { Button } from '../../design-system/ui/button';
-
-const Footer = () => {
-  return (
-    <footer className='bg-gray-900 text-gray-300 py-12 md:py-16'>
-      <div className='container px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
-        <div className='space-y-4'>
-          <h4 className='text-lg font-semibold'>Get in Touch</h4>
-          <ul className='space-y-2 text-sm'>
-            <li>
-              <a href='/contact'>Contact Us</a>
-            </li>
-            <li>
-              <a href='/about'>About</a>
-            </li>
-            <li>
-              <a href='/products'>Products</a>
-            </li>
-          </ul>
-        </div>
-        <div className='space-y-4'>
-          <h4 className='text-lg font-semibold'>Don't miss new products!</h4>
-          <p className='text-sm'>Subscribe to our newsletter to stay up-to-date on the latest releases.</p>
-          <form className='flex items-center space-x-2'>
-            <input
-              className='bg-gray-800 border-gray-700 text-gray-300 placeholder:text-gray-500 focus:border-primary focus:ring-primary'
-              placeholder='Enter your email'
-              type='email'
-            />
-            <Button size='sm' variant='default'>
-              Subscribe
-            </Button>
-          </form>
-        </div>
-        <div className='space-y-4'>
-          <h4 className='text-lg font-semibold'>Our Guidelines</h4>
-          <ul className='space-y-2 text-sm'>
-            <li>
-              <a href='#'>Shipping & Returns</a>
-            </li>
-            <li>
-              <a href='#'>Refund Policy</a>
-            </li>
-            <li>
-              <a href='#'>FAQs</a>
-            </li>
-          </ul>
-        </div>
-        <div className='space-y-4'>
-          <h4 className='text-lg font-semibold'>Legal</h4>
-          <ul className='space-y-2 text-sm'>
-            <li>
-              <a href='#'>Terms of Service</a>
-            </li>
-            <li>
-              <a href='#'>Privacy Policy</a>
-            </li>
-            <li>
-              <a href='#'>Cookie Policy</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className='container px-4 md:px-6 mt-8 md:mt-12 flex flex-col md:flex-row items-center md:justify-between space-y-4 md:space-y-0'>
-        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
-          <MailboxIcon className='w-5 h-5 mr-2' />
-          <a className='text-sm' href='#'>
-            contact@sweetlife.com
-          </a>
-        </div>
-        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
-          <PhoneIcon className='w-5 h-5 mr-2' />
-          <a className='text-sm' href='#'>
-            903-179-8309
-          </a>
-        </div>
-        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
-          <LocateIcon className='w-5 h-5 mr-2' />
-          <span className='text-sm'>511 Schiller brucke, Boston</span>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
 
 function LocateIcon(props) {
   return (
@@ -149,3 +63,88 @@ function PhoneIcon(props) {
     </svg>
   );
 }
+
+const Footer = () => {
+  return (
+    <footer className='bg-gray-900 text-gray-300 py-12 md:py-16'>
+      <div className='container px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+        <div className='space-y-4'>
+          <h4 className='text-lg font-semibold'>Get in Touch</h4>
+          <ul className='space-y-2 text-sm'>
+            <li>
+              <a href='/contact'>Contact Us</a>
+            </li>
+            <li>
+              <a href='/about'>About</a>
+            </li>
+            <li>
+              <a href='/products'>Products</a>
+            </li>
+          </ul>
+        </div>
+        <div className='space-y-4'>
+          <h4 className='text-lg font-semibold'>Don&apos;t miss new products!</h4>
+          <p className='text-sm'>Subscribe to our newsletter to stay up-to-date on the latest releases.</p>
+          <form className='flex items-center space-x-2'>
+            <input
+              className='bg-gray-800 border-gray-700 text-gray-300 placeholder:text-gray-500 focus:border-primary focus:ring-primary'
+              placeholder='Enter your email'
+              type='email'
+            />
+            <Button size='sm' variant='default'>
+              Subscribe
+            </Button>
+          </form>
+        </div>
+        <div className='space-y-4'>
+          <h4 className='text-lg font-semibold'>Our Guidelines</h4>
+          <ul className='space-y-2 text-sm'>
+            <li>
+              <a href='#'>Shipping & Returns</a>
+            </li>
+            <li>
+              <a href='#'>Refund Policy</a>
+            </li>
+            <li>
+              <a href='#'>FAQs</a>
+            </li>
+          </ul>
+        </div>
+        <div className='space-y-4'>
+          <h4 className='text-lg font-semibold'>Legal</h4>
+          <ul className='space-y-2 text-sm'>
+            <li>
+              <a href='#'>Terms of Service</a>
+            </li>
+            <li>
+              <a href='#'>Privacy Policy</a>
+            </li>
+            <li>
+              <a href='#'>Cookie Policy</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className='container px-4 md:px-6 mt-8 md:mt-12 flex flex-col md:flex-row items-center md:justify-between space-y-4 md:space-y-0'>
+        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
+          <MailboxIcon className='w-5 h-5 mr-2' />
+          <a className='text-sm' href='#'>
+            contact@sweetlife.com
+          </a>
+        </div>
+        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
+          <PhoneIcon className='w-5 h-5 mr-2' />
+          <a className='text-sm' href='#'>
+            903-179-8309
+          </a>
+        </div>
+        <div className='flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4'>
+          <LocateIcon className='w-5 h-5 mr-2' />
+          <span className='text-sm'>511 Schiller brucke, Boston</span>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

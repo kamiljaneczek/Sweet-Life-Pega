@@ -1,9 +1,9 @@
 {
-    "componentKey": "DetailsSubTabs",
-    "name": "DetailsSubTabs",
-    "label": "Details (Sub tabs)",
-    "description": "Details (Sub tabs)",
-    "type": "Template",
-    "subtype": "DETAILS",
-    "properties": []
+  "componentKey": "DetailsSubTabs",
+  "name": "DetailsSubTabs",
+  "label": "Details (Sub tabs)",
+  "description": "Details (Sub tabs)",
+  "type": "Template",
+  "subtype": "DETAILS",
+  "properties": []
 }

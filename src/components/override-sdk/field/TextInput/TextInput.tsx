@@ -1,10 +1,8 @@
-/* eslint-disable no-console */
 import { useState, useEffect } from 'react';
-import { Input } from '../../../../design-system/ui/input';
+import { TextField } from '@material-ui/core';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { Label } from '../../../../design-system/ui/label';
 
 interface TextInputProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextInput here
@@ -36,19 +34,6 @@ export default function TextInput(props: TextInputProps) {
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = (pConn.getStateProps() as any).value;
-
-  const target = pConn.getTarget();
-  console.log('target', target);
-  // @ts-ignorets-ignore
-  const { containerName = 'primary' } = pConn.getContainerName();
-  console.log('containerName', containerName);
-  const context = pConn.getContextName();
-  console.log('context', context);
-
-  const containerManager = pConn.getContainerManager();
-  containerManager.initializeContainers({
-    type: 'multiple'
-  });
 
   const helperTextToDisplay = validatemessage || helperText;
 
@@ -89,20 +74,20 @@ export default function TextInput(props: TextInputProps) {
   }
 
   return (
-    <>
-      <Label htmlFor='email' className={required ? 'font-extrabold' : 'font-normal'}>
-        {label}
-      </Label>
-      <Input
-        placeholder={placeholder ?? ''}
-        size={2}
-        required={required}
-        disabled={disabled}
-        onChange={handleChange}
-        onBlur={!readOnly ? handleBlur : undefined}
-        value={inputValue}
-      />
-      <p className='text-xs font-extralight text-neutral-600 -mt-2'>{helperText}</p>
-    </>
+    <TextField
+      fullWidth
+      variant={readOnly ? 'standard' : 'outlined'}
+      helperText={helperTextToDisplay}
+      placeholder={placeholder ?? ''}
+      size='small'
+      required={required}
+      disabled={disabled}
+      onChange={handleChange}
+      onBlur={!readOnly ? handleBlur : undefined}
+      error={status === 'error'}
+      label={label}
+      value={inputValue}
+      InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
+    />
   );
 }

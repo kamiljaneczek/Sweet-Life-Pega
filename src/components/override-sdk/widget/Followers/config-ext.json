@@ -1,9 +1,9 @@
 {
-    "componentKey": "Followers",
-    "name": "Followers",
-    "label": "Followers",
-    "description": "Followers",
-    "type": "Widget",
-    "subtype": "CASE",
-    "properties": []
+  "componentKey": "Followers",
+  "name": "Followers",
+  "label": "Followers",
+  "description": "Followers",
+  "type": "Widget",
+  "subtype": "CASE",
+  "properties": []
 }

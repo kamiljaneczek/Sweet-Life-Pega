@@ -1,9 +1,9 @@
 {
-    "componentKey": "NarrowWideForm",
-    "name": "NarrowWideForm",
-    "label": "Narrow-wide",
-    "description": "NarrowWide Template",
-    "type": "Template",
-    "subtype": "FORM",
-    "properties": []
+  "componentKey": "NarrowWideForm",
+  "name": "NarrowWideForm",
+  "label": "Narrow-wide",
+  "description": "NarrowWide Template",
+  "type": "Template",
+  "subtype": "FORM",
+  "properties": []
 }

@@ -1,9 +1,9 @@
 {
-    "componentKey": "WideNarrowForm",
-    "name": "WideNarrowForm",
-    "label": "Wide-narrow",
-    "description": "WideNarrow Template",
-    "type": "Template",
-    "subtype": "FORM",
-    "properties": []
+  "componentKey": "WideNarrowForm",
+  "name": "WideNarrowForm",
+  "label": "Wide-narrow",
+  "description": "WideNarrow Template",
+  "type": "Template",
+  "subtype": "FORM",
+  "properties": []
 }

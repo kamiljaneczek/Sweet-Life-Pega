@@ -1,9 +1,9 @@
 {
-    "componentKey": "DetailsThreeColumn",
-    "name": "DetailsThreeColumn",
-    "label": "Details (Three column)",
-    "description": "Details (Three column)",
-    "type": "Template",
-    "subtype": "DETAILS",
-    "properties": []
+  "componentKey": "DetailsThreeColumn",
+  "name": "DetailsThreeColumn",
+  "label": "Details (Three column)",
+  "description": "Details (Three column)",
+  "type": "Template",
+  "subtype": "DETAILS",
+  "properties": []
 }

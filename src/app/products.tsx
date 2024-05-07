@@ -8,9 +8,9 @@ import { Select, SelectContent, SelectItem, SelectValue } from '../design-system
 import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
 import { IProduct } from '../types';
-import { Cookie, CandyCane, Lollipop, Dessert, Donut, Croissant } from 'lucide-react';
+import { Cookie } from 'lucide-react';
 
-interface IconComponentProps {
+/* interface IconComponentProps {
   iconName: keyof typeof productIcon;
 }
 
@@ -28,7 +28,7 @@ function IconComponent({ iconName }: IconComponentProps) {
 
   return <Icon />;
 }
-
+ */
 const Products = () => {
   const isPegaReady = useConstellation();
   const [products, setProducts] = useState<IProduct[]>([]);

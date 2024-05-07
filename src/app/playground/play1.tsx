@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 import { Button } from '../../design-system/ui/button';
 
-import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useConstellation from '../../hooks/useConstellation';
 
 export default function Main() {

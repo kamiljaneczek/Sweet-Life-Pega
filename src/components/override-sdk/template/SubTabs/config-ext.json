@@ -1,9 +1,9 @@
 {
-    "componentKey": "SubTabs",
-    "name": "SubTabs",
-    "label": "Sub tabs",
-    "description": "Sub tabs view",
-    "type": "Template",
-    "subtype": "TAB",
-    "properties": []
+  "componentKey": "SubTabs",
+  "name": "SubTabs",
+  "label": "Sub tabs",
+  "description": "Sub tabs view",
+  "type": "Template",
+  "subtype": "TAB",
+  "properties": []
 }

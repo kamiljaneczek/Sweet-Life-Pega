@@ -1,9 +1,9 @@
 {
-    "componentKey": "WideNarrowDetails",
-    "name": "WideNarrowDetails",
-    "label": "Details (Wide-narrow)",
-    "description": "Details (Wide-narrow) template",
-    "type": "Template",
-    "subtype": "DETAILS",
-    "properties": []
+  "componentKey": "WideNarrowDetails",
+  "name": "WideNarrowDetails",
+  "label": "Details (Wide-narrow)",
+  "description": "Details (Wide-narrow) template",
+  "type": "Template",
+  "subtype": "DETAILS",
+  "properties": []
 }
