@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useEffect } from 'react';
 import { Input } from '../../../../design-system/ui/input';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
@@ -35,6 +36,19 @@ export default function TextInput(props: TextInputProps) {
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = (pConn.getStateProps() as any).value;
+
+  const target = pConn.getTarget();
+  console.log('target', target);
+  // @ts-ignorets-ignore
+  const { containerName = 'primary' } = pConn.getContainerName();
+  console.log('containerName', containerName);
+  const context = pConn.getContextName();
+  console.log('context', context);
+
+  const containerManager = pConn.getContainerManager();
+  containerManager.initializeContainers({
+    type: 'multiple'
+  });
 
   const helperTextToDisplay = validatemessage || helperText;
 

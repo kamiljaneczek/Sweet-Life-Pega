@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
 import { render } from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,7 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../sdk-local-component-map';
 import { theme } from '../theme';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
+import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
 
 declare const myLoadMashup: any;
 
@@ -54,15 +56,11 @@ function initialRender(inRenderObj) {
   // // modified from react_root.js render
   const { props, domContainerID = null, componentName, portalTarget, styleSheetTarget } = inRenderObj;
 
-  const thePConn = props.getPConnect();
+  const thePConn = props.getPConnect() as C11nEnv;
   // setPConn(thePConn);
-  // eslint-disable-next-line no-console
+
   console.log(`EmbeddedTopLevel: initialRender got a PConnect with ${thePConn.getComponentName()}`);
-  console.log(
-    `EmbeddedTopLevel: initialRender with domContainerID: ${domContainerID}, document.getElementById(domContainerID): ${document.getElementById(
-      domContainerID
-    )}`
-  );
+
   let target: any = null;
 
   if (domContainerID !== null) {
@@ -70,9 +68,9 @@ function initialRender(inRenderObj) {
   } else if (portalTarget !== null) {
     target = portalTarget;
   }
-  // eslint-disable-next-line no-console
+
   console.log(
-    `EmbeddedTopLevel: initialRender with domContainerID: ${domContainerID}, componentName: ${componentName}, portalTarget: ${portalTarget}, styleSheetTarget: ${styleSheetTarget}`
+    `InitialRender with domContainerID: ${domContainerID}, target: ${target} componentName: ${componentName}, portalTarget: ${portalTarget}, styleSheetTarget: ${styleSheetTarget}`
   );
 
   // Note: RootComponent is just a function (declared below)
@@ -99,7 +97,6 @@ function initialRender(inRenderObj) {
 export function startMashup() {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
-    // eslint-disable-next-line no-console
     console.log(`PCore ready!`);
     // Check that we're seeing the PCore version we expect
     compareSdkPCoreVersions();
@@ -107,7 +104,6 @@ export function startMashup() {
     // Initialize the SdkComponentMap (local and pega-provided)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
-      // eslint-disable-next-line no-console
       console.log(`SdkComponentMap initialized`);
 
       // Don't call initialRender until SdkComponentMap is fully initialized

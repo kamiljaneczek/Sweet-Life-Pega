@@ -1,12 +1,83 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { SelectTrigger } from '@radix-ui/react-select';
 import Header from './components/header';
 import { Button } from '../design-system/ui/button';
 import { Label } from '../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select';
+import useConstellation from '../hooks/useConstellation';
+import { useEffect, useState } from 'react';
+import { IProduct } from '../types';
+import { Cookie, CandyCane, Lollipop, Dessert, Donut, Croissant } from 'lucide-react';
+
+interface IconComponentProps {
+  iconName: keyof typeof productIcon;
+}
+
+const productIcon = {
+  Cookie,
+  CandyCane,
+  Lollipop,
+  Dessert,
+  Donut,
+  Croissant
+};
+
+function IconComponent({ iconName }: IconComponentProps) {
+  const Icon = productIcon[iconName];
+
+  return <Icon />;
+}
 
 const Products = () => {
+  const isPegaReady = useConstellation();
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  console.log('bIsPegaReady', isPegaReady);
+
+  useEffect(() => {
+    if (isPegaReady) {
+      const dataViewName = 'D_ProductList';
+      const parameters = {};
+      const paging = {
+        pageNumber: 1,
+        pageSize: 30
+      };
+      const query = {
+        distinctResultsOnly: true,
+        select: [
+          {
+            field: 'Name'
+          },
+          {
+            field: 'Category'
+          },
+          {
+            field: 'SKU'
+          },
+          {
+            field: 'Cost'
+          },
+          {
+            field: 'CategoryName'
+          }
+        ]
+      };
+
+      (PCore.getDataPageUtils().getDataAsync(dataViewName, 'root', parameters, paging, query) as Promise<any>)
+        .then(response => {
+          console.log('DataPageUtils.getDataAsync response', response);
+          setProducts(response.data);
+        })
+        .catch(error => {
+          throw new Error('Error', error);
+        });
+    }
+  }, [isPegaReady]);
+
   return (
     <div className='w-full'>
+      <div id='pega-root' />
       <Header />
       <header className='bg-[#f8f8f8] py-4 px-6 dark:bg-gray-900'>
         <div className='container mx-auto flex items-center justify-between'>
@@ -71,98 +142,22 @@ const Products = () => {
             </div>
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
-            <div className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
-              <img
-                alt='Chocolate Bar'
-                className='w-full h-48 object-cover'
-                height={200}
-                src='/placeholder.svg'
-                style={{
-                  aspectRatio: '300/200',
-                  objectFit: 'cover'
-                }}
-                width={300}
-              />
-              <div className='p-4'>
-                <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>Chocolate Bar</h3>
-                <p className='text-[#666] dark:text-gray-400 mb-4'>Rich, creamy milk chocolate with a smooth texture.</p>
-                <div className='flex items-center justify-between'>
-                  <span className='text-[#333] font-bold dark:text-white'>$4.99</span>
-                  <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
-                    View Details
-                  </Button>
+            {products.map(product => (
+              <div key={product.Name} className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
+                {/*  <IconComponent iconName={product.Icon} /> */}
+                <Cookie />
+                <div className='p-4'>
+                  <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>{product.Name}</h3>
+                  <p className='text-[#666] dark:text-gray-400 mb-4'>{product.ShortDesc}</p>
+                  <div className='flex items-center justify-between'>
+                    <span className='text-[#333] font-bold dark:text-white'>${product.Cost}</span>
+                    <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
+                      View Details
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
-              <img
-                alt='Bonbon Assortment'
-                className='w-full h-48 object-cover'
-                height={200}
-                src='/placeholder.svg'
-                style={{
-                  aspectRatio: '300/200',
-                  objectFit: 'cover'
-                }}
-                width={300}
-              />
-              <div className='p-4'>
-                <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>Bonbon Assortment</h3>
-                <p className='text-[#666] dark:text-gray-400 mb-4'>A delightful assortment of handcrafted bonbons.</p>
-                <div className='flex items-center justify-between'>
-                  <span className='text-[#333] font-bold dark:text-white'>$12.99</span>
-                  <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
-              <img
-                alt='Caramel Candies'
-                className='w-full h-48 object-cover'
-                height={200}
-                src='/placeholder.svg'
-                style={{
-                  aspectRatio: '300/200',
-                  objectFit: 'cover'
-                }}
-                width={300}
-              />
-              <div className='p-4'>
-                <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>Caramel Candies</h3>
-                <p className='text-[#666] dark:text-gray-400 mb-4'>Soft, chewy caramel candies with a touch of sea salt.</p>
-                <div className='flex items-center justify-between'>
-                  <span className='text-[#333] font-bold dark:text-white'>$6.99</span>
-                  <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
-              <img
-                alt='Chocolate Truffles'
-                className='w-full h-48 object-cover'
-                height={200}
-                src='/placeholder.svg'
-                style={{
-                  aspectRatio: '300/200',
-                  objectFit: 'cover'
-                }}
-                width={300}
-              />
-              <div className='p-4'>
-                <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>Chocolate Truffles</h3>
-                <p className='text-[#666] dark:text-gray-400 mb-4'>Decadent chocolate truffles with a silky smooth center.</p>
-                <div className='flex items-center justify-between'>
-                  <span className='text-[#333] font-bold dark:text-white'>$9.99</span>
-                  <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </main>

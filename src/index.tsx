@@ -4,11 +4,12 @@ import {} from 'react-router-dom';
 import './common.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import Main from './app/main';
+import Main from '../main';
 import About from './app/About';
 import Products from './app/Products';
 import Contact from './app/contact';
 import Incidents from './app/Incidents';
+import Playground1 from './app/playground/play1';
 
 const baseURL = '/';
 
@@ -28,6 +29,8 @@ if (outletElement) {
         <Route path={`${baseURL}incidents.html`} component={Incidents} />
         <Route path={`${baseURL}contact`} component={Contact} />
         <Route path={`${baseURL}contact.html`} component={Contact} />
+        <Route path={`${baseURL}play1`} component={Playground1} />
+        <Route path={`${baseURL}play1.html`} component={Playground1} />
         <Route path='*' component={Main} />
       </Switch>
     </BrowserRouter>,
