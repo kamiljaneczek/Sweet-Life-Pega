@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreact_sdk=self.webpackChunkreact_sdk||[]).push([[93905],{93905:function(n,t,e){e.r(t),e.d(t,{Component:function(){return o},name:function(){return c},set:function(){return u},viewBox:function(){return s}});var r=e(85893);const u="budicon",c="arrow-micro-left",o=()=>(0,r.jsx)("path",{d:"m9.5 12.598 6-4.597V17z"}),s="0 0 25 25"}}]);

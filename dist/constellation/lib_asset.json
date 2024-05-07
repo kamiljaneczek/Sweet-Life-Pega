@@ -1,0 +1,7 @@
+{
+  "isSdk": true,
+  "isDevServerMode": false,
+  "externals": [],
+  "entry": [],
+  "prerequisite": [{ "constellation-core.fa319df4.js": "" }]
+}
