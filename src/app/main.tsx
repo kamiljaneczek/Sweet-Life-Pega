@@ -1,7 +1,7 @@
-import { Button } from './src/design-system/ui/button';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './src/design-system/ui/carousel';
-import Header from './src/app/components/header';
-import Footer from './src/app/components/footer';
+import { Button } from '../design-system/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../design-system/ui/carousel';
+import Header from './components/header';
+import Footer from './components/footer';
 
 export default function Main() {
   /**

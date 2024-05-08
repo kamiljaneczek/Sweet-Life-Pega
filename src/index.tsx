@@ -4,11 +4,11 @@ import {} from 'react-router-dom';
 import './common.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import Main from '../main';
-import About from './app/About';
-import Products from './app/Products';
+import Main from './app/main';
+import About from './app/about';
+import Products from './app/products';
 import Contact from './app/contact';
-import Incidents from './app/Incidents';
+import Incidents from './app/incidents';
 import Playground1 from './app/playground/play1';
 
 const baseURL = '/';
