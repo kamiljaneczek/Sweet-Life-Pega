@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { SelectTrigger } from '@radix-ui/react-select';
@@ -8,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectValue } from '../design-system
 import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
 import { IProduct } from '../types';
-import { Cookie } from 'lucide-react';
 
 /* interface IconComponentProps {
   iconName: keyof typeof productIcon;
@@ -143,18 +143,30 @@ const Products = () => {
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
             {products.map(product => (
-              <div key={product.Name} className='bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800'>
-                {/*  <IconComponent iconName={product.Icon} /> */}
-                <Cookie />
-                <div className='p-4'>
-                  <h3 className='text-xl font-bold text-[#333] dark:text-white mb-2'>{product.Name}</h3>
-                  <p className='text-[#666] dark:text-gray-400 mb-4'>{product.ShortDesc}</p>
-                  <div className='flex items-center justify-between'>
-                    <span className='text-[#333] font-bold dark:text-white'>${product.Cost}</span>
-                    <Button className='text-white bg-[#333] hover:bg-[#444] dark:bg-gray-700 dark:hover:bg-gray-600' variant='default'>
-                      View Details
-                    </Button>
-                  </div>
+              <div key={product.Name} className='block rounded-xl bg-white shadow-lg dark:bg-neutral-700 text-center'>
+                <a href='#'>
+                  <img className='rounded-t-xl' src={`https://picsum.photos/seed/${product.Name}/500/300`} alt='' />
+                </a>
+
+                <div className='p-6'>
+                  <h5 className='mb-2 text-xl font-bold tracking-wide text-neutral-800 dark:text-neutral-50'>{product.Name}</h5>
+
+                  <p className='mb-2 text-base text-neutral-500 dark:text-neutral-300'>{product.ShortDesc}</p>
+
+                  <a
+                    href='#'
+                    className='mt-3 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-blue-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-blue-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-blue-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]'
+                  >
+                    Show details
+                  </a>
+                </div>
+
+                <div className='border-t-2 border-neutral-100 px-6 py-4 dark:border-neutral-500'>
+                  <h5 className='flex items-center justify-center text-neutral-500 dark:text-neutral-300'>
+                    <span className='inline-block whitespace-nowrap rounded-[0.27rem] bg-gray-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-gray-700'>
+                      ${product.Cost}
+                    </span>
+                  </h5>
                 </div>
               </div>
             ))}
