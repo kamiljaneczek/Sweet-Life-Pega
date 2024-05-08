@@ -1,5 +1,4 @@
-const { fontFamily } = require('tailwindcss/defaultTheme');
-
+/* eslint-disable global-require */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -54,7 +53,40 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)'
       },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans]
+        body: [
+          'Noto Sans',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'system-ui',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'Noto Sans',
+          'sans-serif',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji'
+        ],
+        sans: [
+          'Noto Sans',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'system-ui',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'Noto Sans',
+          'sans-serif',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji'
+        ]
       },
       keyframes: {
         'accordion-down': {
