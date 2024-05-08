@@ -2,7 +2,7 @@
 node_modules
 /distAuthoring
 /__DO_NOT_COMMIT
-
+/dist
 # local env files
 .env.local
 .env.*.local
