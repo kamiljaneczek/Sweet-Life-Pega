@@ -17,6 +17,30 @@ module.exports = (env, argv) => {
     })
   );
   pluginsToAdd.push(
+    new HtmlWebpackPlugin({
+      template: './src/about.html',
+      filename: 'about.html'
+    })
+  );
+  pluginsToAdd.push(
+    new HtmlWebpackPlugin({
+      template: './src/incidents.html',
+      filename: 'incidents.html'
+    })
+  );
+  pluginsToAdd.push(
+    new HtmlWebpackPlugin({
+      template: './src/products.html',
+      filename: 'products.html'
+    })
+  );
+  pluginsToAdd.push(
+    new HtmlWebpackPlugin({
+      template: './src/contact.html',
+      filename: 'contact.html'
+    })
+  );
+  pluginsToAdd.push(
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -162,6 +186,7 @@ module.exports = (env, argv) => {
           test: /\.css$/,
           include: [
             path.resolve(__dirname, 'src'),
+            path.resolve(__dirname, 'src/app'),
             path.resolve(__dirname, 'node_modules/react-datepicker'),
             path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/lib') /* needed to resolve CSS files in new SDK packaging */
           ],
