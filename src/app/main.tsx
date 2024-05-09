@@ -382,7 +382,7 @@ export default function Main() {
                 With a focus on quality and innovation, Sweet Life Inc. has carved a niche in the premium sweets market, delighting customers with an
                 exquisite range of chocolate bon bons. Our dedication to excellence is reflected in our three state-of-the-art factories across the
                 globe where our signature treats are meticulously crafted. Employing a diverse team of 600 talented individuals, we take pride in our
-                presence in 25 countries, bringing the taste of Sweet Life to connoisseurs worldwide.
+                presence in 25 countries, bringing the taste of Sweet Life to connoisseurs worldwide!
               </p>
               <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                 At Sweet Life Inc., we are committed to creating unforgettable experiences through our delectable confections. Our passion for
