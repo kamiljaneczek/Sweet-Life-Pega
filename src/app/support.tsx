@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useConstellation from '../hooks/useConstellation';
 
-export default function Main() {
+export default function Support() {
   const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
   const isPegaReady = useConstellation();
   console.log('isPegaReady', isPegaReady);

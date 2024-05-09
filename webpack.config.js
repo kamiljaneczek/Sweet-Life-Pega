@@ -24,8 +24,8 @@ module.exports = (env, argv) => {
   );
   pluginsToAdd.push(
     new HtmlWebpackPlugin({
-      template: './src/incidents.html',
-      filename: 'incidents.html'
+      template: './src/support.html',
+      filename: 'support.html'
     })
   );
   pluginsToAdd.push(
