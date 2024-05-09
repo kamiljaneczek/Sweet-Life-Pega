@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/no-unescaped-entities */
 
-import { Button } from '../design-system/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../design-system/ui/carousel';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -58,6 +57,98 @@ export default function Home() {
                 Watch video
               </a>
             </div>
+          </div>
+        </section>
+        <section className='w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800'>
+          <div className='container px-4 md:px-6'>
+            <div className='space-y-4 text-center'>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 sm:text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
+              <h2 className='lg:leading-tighter mb-8 text-2xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
+                Our offer includes various types of chocolates, candy bars, cookies, jellies.
+              </h2>
+            </div>
+            <div className='grid gap-10 sm:px-10 md:gap-16 md:grid-cols-3'>
+              <div className='space-y-4'>
+                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
+                  <img src='assets/img/cookie.svg' className='w-16 h-16' />
+                </div>
+                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
+                  Delicious Homemade Cookies
+                </h2>
+                <p className='text-gray-500 dark:text-gray-400'>
+                  Our cookies are baked fresh daily using the finest ingredients. Enjoy the perfect balance of sweetness and crunch in every bite.
+                </p>
+                <a
+                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
+                  href='#'
+                >
+                  Read more
+                </a>
+              </div>
+              <div className='space-y-4'>
+                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
+                  <img src='assets/img/icecream.svg' className='w-16 h-16' />
+                </div>
+                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
+                  Handcrafted Ice Creams
+                </h2>
+                <p className='text-gray-500 dark:text-gray-400'>
+                  Our ice creams are made with the freshest ingredients and churned to perfection. Indulge in a variety of classic and unique flavors.
+                </p>
+                <a
+                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
+                  href='#'
+                >
+                  Read more
+                </a>
+              </div>
+              <div className='space-y-4'>
+                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
+                  {' '}
+                  <img src='assets/img/lollipop.svg' className='w-16 h-16' />
+                </div>
+                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
+                  Artisanal Lollipops
+                </h2>
+                <p className='text-gray-500 dark:text-gray-400'>
+                  Our lollipops are handcrafted with care, using only the finest ingredients. Enjoy a variety of unique and delightful flavors.
+                </p>
+                <a
+                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
+                  href='#'
+                >
+                  Read more
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className='bg-white dark:bg-gray-900'>
+          <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6'>
+            <div className='mx-auto max-w-screen-sm'>
+              <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Sweet Life in numbers</h2>
+              <p className='mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400'>
+                Sweet words, sweet life: hear what our customers have to say.
+              </p>
+            </div>
+            <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
+              <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>100+</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>products</dd>
+              </div>
+              <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>3</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>factories</dd>
+              </div>
+              <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>25</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>countries</dd>
+              </div>
+              <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>100%</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>happy customer</dd>
+              </div>
+            </dl>
           </div>
         </section>
         <section className='bg-white dark:bg-gray-900'>
@@ -186,110 +277,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className='text-center py-24'>
-          <div className='container mx-auto px-4'>
-            <h2 className='text-2xl font-bold'>We will make your life sweet!</h2>
-            <p className='text-lg text-gray-700 mt-4 mb-8'>Sweet Life company is committed to bring joy and happiness into your life.</p>
-            <p>
-              Welcome to Sweet Life Inc., home to the finest chocolate bon bons in the world. Established in 1937 in the United States by John Mayers,
-              Sweet Life Inc. has been a pioneer in the confectionery industry for over eight decades. Today, the company is proudly owned and managed
-              by sisters Jane and Gabbie Mayers, who continue to uphold the legacy of their founding father.
-            </p>
-            <div className='flex justify-center space-x-4'>
-              <Button className='bg-[#bd1e59] text-white px-6 py-2 rounded-md hover:bg-[#a1194f]'>Get started</Button>
-              <Button className='bg-transparent text-[#bd1e59] px-6 py-2 rounded-md border border-[#bd1e59] hover:bg-[#bd1e59] hover:text-white'>
-                Learn more
-              </Button>
-            </div>
-            <img src='assets/img/cupcake.svg' className='w-32 h-32' />
-          </div>
-        </section>
-        <section className='w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800'>
-          <div className='container px-4 md:px-6'>
-            <div className='space-y-4 text-center'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 sm:text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
-              <h2 className='lg:leading-tighter mb-8 text-2xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
-                Our offer includes various types of chocolates, candy bars, cookies, jellies.
-              </h2>
-            </div>
-            <div className='grid gap-10 sm:px-10 md:gap-16 md:grid-cols-3'>
-              <div className='space-y-4'>
-                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
-                  <img src='assets/img/cookie.svg' className='w-16 h-16' />
-                </div>
-                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
-                  Delicious Homemade Cookies
-                </h2>
-                <p className='text-gray-500 dark:text-gray-400'>
-                  Our cookies are baked fresh daily using the finest ingredients. Enjoy the perfect balance of sweetness and crunch in every bite.
-                </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
-                  Read more
-                </a>
-              </div>
-              <div className='space-y-4'>
-                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
-                  <img src='assets/img/icecream.svg' className='w-16 h-16' />
-                </div>
-                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
-                  Handcrafted Ice Creams
-                </h2>
-                <p className='text-gray-500 dark:text-gray-400'>
-                  Our ice creams are made with the freshest ingredients and churned to perfection. Indulge in a variety of classic and unique flavors.
-                </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
-                  Read more
-                </a>
-              </div>
-              <div className='space-y-4'>
-                <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
-                  {' '}
-                  <img src='assets/img/lollipop.svg' className='w-16 h-16' />
-                </div>
-                <h2 className='lg:leading-tighter text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl xl:text-[3.4rem] 2xl:text-[3.75rem]'>
-                  Artisanal Lollipops
-                </h2>
-                <p className='text-gray-500 dark:text-gray-400'>
-                  Our lollipops are handcrafted with care, using only the finest ingredients. Enjoy a variety of unique and delightful flavors.
-                </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
-                  Read more
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className='w-full py-12 md:py-24 lg:py-32'>
-          <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
-            <div className='space-y-3'>
-              <h2 className='text-3xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>More about us</h2>
-              <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
-                With a focus on quality and innovation, Sweet Life Inc. has carved a niche in the premium sweets market, delighting customers with an
-                exquisite range of chocolate bon bons. Our dedication to excellence is reflected in our three state-of-the-art factories across the
-                globe where our signature treats are meticulously crafted. Employing a diverse team of 600 talented individuals, we take pride in our
-                presence in 25 countries, bringing the taste of Sweet Life to connoisseurs worldwide!
-              </p>
-              <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
-                At Sweet Life Inc., we are committed to creating unforgettable experiences through our delectable confections. Our passion for
-                crafting the perfect chocolate bon bons drives us to constantly innovate and push the boundaries of flavor and quality. Each bite of
-                our sweets is a testament to our dedication to perfection and our unwavering commitment to customer satisfaction. As a company deeply
-                rooted in tradition yet constantly evolving, we strive to maintain the highest standards of quality and ethical practices. From
-                sourcing the finest ingredients to implementing sustainable production methods, we prioritize both the planet and the people we serve.
-                With a rich history and a global presence, Sweet Life Inc. invites you to indulge in the sweet moments that define our brand and
-                experience the timeless delight of our handcrafted chocolates.
-              </p>
-            </div>
-          </div>
-        </section>
+
         <section className='bg-white dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6'>
             <div className='max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400'>
@@ -321,24 +309,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className='bg-white dark:bg-gray-900'>
-          <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6'>
-            <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
-              <div className='flex flex-col items-center justify-center'>
-                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>73M+</dt>
-                <dd className='font-light text-gray-500 dark:text-gray-400'>developers</dd>
-              </div>
-              <div className='flex flex-col items-center justify-center'>
-                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>1B+</dt>
-                <dd className='font-light text-gray-500 dark:text-gray-400'>contributors</dd>
-              </div>
-              <div className='flex flex-col items-center justify-center'>
-                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>4M+</dt>
-                <dd className='font-light text-gray-500 dark:text-gray-400'>organizations</dd>
-              </div>
-            </dl>
-          </div>
-        </section>
+
         <section className='bg-white dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
             <div className='max-w-screen-md'>

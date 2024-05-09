@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import Header from './components/header';
 import Footer from './components/footer';
+import { Button } from '../design-system/ui/button';
 
 const Company = () => {
   return (
@@ -100,6 +101,48 @@ const Company = () => {
           With a commitment to innovation, excellence, and customer satisfaction, Sweet Life is dedicated to crafting a world filled with sweetness
           and happiness, one candy at a time.
         </p>
+      </section>
+
+      <section className='w-full py-12 md:py-24 lg:py-32'>
+        <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
+          <h2 className='text-2xl font-bold'>We will make your life sweet!</h2>
+          <p className='text-lg text-gray-700 mt-4 mb-8'>Sweet Life company is committed to bring joy and happiness into your life.</p>
+          <p>
+            Welcome to Sweet Life Inc., home to the finest chocolate bon bons in the world. Established in 1937 in the United States by John Mayers,
+            Sweet Life Inc. has been a pioneer in the confectionery industry for over eight decades. Today, the company is proudly owned and managed
+            by sisters Jane and Gabbie Mayers, who continue to uphold the legacy of their founding father.
+          </p>
+          <div className='flex justify-center space-x-4'>
+            <Button className='bg-[#bd1e59] text-white px-6 py-2 rounded-md hover:bg-[#a1194f]'>Get started</Button>
+            <Button className='bg-transparent text-[#bd1e59] px-6 py-2 rounded-md border border-[#bd1e59] hover:bg-[#bd1e59] hover:text-white'>
+              Learn more
+            </Button>
+          </div>
+          <img src='assets/img/cupcake.svg' className='w-32 h-32' />
+        </div>
+      </section>
+
+      <section className='w-full py-12 md:py-24 lg:py-32'>
+        <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
+          <div className='space-y-3'>
+            <h2 className='text-3xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>More about us</h2>
+            <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
+              With a focus on quality and innovation, Sweet Life Inc. has carved a niche in the premium sweets market, delighting customers with an
+              exquisite range of chocolate bon bons. Our dedication to excellence is reflected in our three state-of-the-art factories across the
+              globe where our signature treats are meticulously crafted. Employing a diverse team of 600 talented individuals, we take pride in our
+              presence in 25 countries, bringing the taste of Sweet Life to connoisseurs worldwide!
+            </p>
+            <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
+              At Sweet Life Inc., we are committed to creating unforgettable experiences through our delectable confections. Our passion for crafting
+              the perfect chocolate bon bons drives us to constantly innovate and push the boundaries of flavor and quality. Each bite of our sweets
+              is a testament to our dedication to perfection and our unwavering commitment to customer satisfaction. As a company deeply rooted in
+              tradition yet constantly evolving, we strive to maintain the highest standards of quality and ethical practices. From sourcing the
+              finest ingredients to implementing sustainable production methods, we prioritize both the planet and the people we serve. With a rich
+              history and a global presence, Sweet Life Inc. invites you to indulge in the sweet moments that define our brand and experience the
+              timeless delight of our handcrafted chocolates.
+            </p>
+          </div>
+        </div>
       </section>
       <Footer />
     </>
