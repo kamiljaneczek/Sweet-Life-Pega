@@ -18,8 +18,8 @@ module.exports = (env, argv) => {
   );
   pluginsToAdd.push(
     new HtmlWebpackPlugin({
-      template: './src/about.html',
-      filename: 'about.html'
+      template: './src/company.html',
+      filename: 'company.html'
     })
   );
   pluginsToAdd.push(

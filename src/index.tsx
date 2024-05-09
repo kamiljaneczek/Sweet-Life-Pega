@@ -5,7 +5,7 @@ import './common.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import Main from './app/main';
-import About from './app/about';
+import Company from './app/Company';
 import Products from './app/products';
 import Contact from './app/contact';
 import Incidents from './app/incidents';
@@ -21,8 +21,8 @@ if (outletElement) {
       <Switch>
         <Route exact path={`${baseURL}`} component={Main} />
         <Route path={`${baseURL}index.html`} component={Main} />
-        <Route path={`${baseURL}about`} component={About} />
-        <Route path={`${baseURL}about.html`} component={About} />
+        <Route path={`${baseURL}company`} component={Company} />
+        <Route path={`${baseURL}company.html`} component={Company} />
         <Route path={`${baseURL}products`} component={Products} />
         <Route path={`${baseURL}products.html`} component={Products} />
         <Route path={`${baseURL}incidents`} component={Incidents} />

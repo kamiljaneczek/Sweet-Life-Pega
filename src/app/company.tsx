@@ -2,7 +2,7 @@
 import Header from './components/header';
 import Footer from './components/footer';
 
-const About = () => {
+const Company = () => {
   return (
     <>
       <Header />
@@ -106,4 +106,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Company;
