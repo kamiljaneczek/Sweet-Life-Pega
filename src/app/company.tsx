@@ -21,9 +21,9 @@ const Company = () => {
             <img
               alt='Sweet Life Founders'
               className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
-              height={310}
-              src='/placeholder.svg'
-              width={550}
+              height={200}
+              src='https://picsum.photos/id/64/400/600'
+              width={300}
             />
           </div>
         </div>
@@ -32,11 +32,11 @@ const Company = () => {
         <div className='container px-4 md:px-6'>
           <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
             <img
-              alt='Sweet Life Factory'
+              alt='Sweet Life Founders'
               className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
-              height={310}
-              src='/placeholder.svg'
-              width={550}
+              height={200}
+              src='https://picsum.photos/id/65/400/600'
+              width={300}
             />
             <div className='space-y-4'>
               <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>Our Growth</div>
@@ -62,47 +62,15 @@ const Company = () => {
               </p>
             </div>
             <img
-              alt='Sweet Life Products'
+              alt='Sweet Life Founders'
               className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
-              height={310}
-              src='/placeholder.svg'
-              width={550}
+              height={200}
+              src='https://picsum.photos/id/166/400/600'
+              width={300}
             />
           </div>
         </div>
       </section>
-      <section>
-        <h1>About Sweet Life</h1>
-        <p>
-          Welcome to Sweet Life, where dreams are made of sugar and the sweetest moments are created. Founded by sisters Jane and Kate, Sweet Life is
-          a culmination of our passion for crafting delightful sweets that bring joy to people's lives.
-        </p>
-        <p>
-          Driven by our love for confectionery and dedication to quality, Sweet Life is on a mission to spread happiness and create delicious memories
-          through our delectable treats.
-        </p>
-        <h2>Meet the Founders</h2>
-        <div className='founders'>
-          <div className='founder'>
-            <img src='jane.jpg' alt='Jane - Co-founder' />
-            <h3>Jane Doe</h3>
-            <p>Co-founder, Chief Baker</p>
-          </div>
-          <div className='founder'>
-            <p>Co-founder & Creative Director</p>
-          </div>
-        </div>
-        <h2>Our Values and Mission:</h2>
-        <p>
-          At Sweet Life, we believe in creating confectionery masterpieces with the highest quality ingredients and a dash of love in every recipe.
-          Our mission is to sweeten your life with indulgent treats that not only satisfy your taste buds but also warm your heart.
-        </p>
-        <p>
-          With a commitment to innovation, excellence, and customer satisfaction, Sweet Life is dedicated to crafting a world filled with sweetness
-          and happiness, one candy at a time.
-        </p>
-      </section>
-
       <section className='w-full py-12 md:py-24 lg:py-32'>
         <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
           <h2 className='text-2xl font-bold'>We will make your life sweet!</h2>
@@ -118,7 +86,10 @@ const Company = () => {
               Learn more
             </Button>
           </div>
-          <img src='assets/img/cupcake.svg' className='w-32 h-32' />
+          <div className='flex flex-col items-center align-middle center'>
+            {' '}
+            <img src='assets/img/cupcake.svg' className='w-32 h-32' />{' '}
+          </div>
         </div>
       </section>
 

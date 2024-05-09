@@ -9,7 +9,7 @@ import Company from './app/company';
 import Products from './app/products';
 import Contact from './app/contact';
 import Support from './app/support';
-import Playground1 from './app/playground/play1';
+import DesingSystem from './app/desingsystem';
 
 const baseURL = '/';
 
@@ -29,8 +29,8 @@ if (outletElement) {
         <Route path={`${baseURL}support.html`} component={Support} />
         <Route path={`${baseURL}contact`} component={Contact} />
         <Route path={`${baseURL}contact.html`} component={Contact} />
-        <Route path={`${baseURL}play1`} component={Playground1} />
-        <Route path={`${baseURL}play1.html`} component={Playground1} />
+        <Route path={`${baseURL}desingsystem`} component={DesingSystem} />
+        <Route path={`${baseURL}desingsystem.html`} component={DesingSystem} />
         <Route path='*' component={Home} />
       </Switch>
     </BrowserRouter>,

@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { useEffect } from 'react';
 
-import { Button } from '../../design-system/ui/button';
+import { Button } from '../design-system/ui/button';
 
-import useConstellation from '../../hooks/useConstellation';
+import useConstellation from '../hooks/useConstellation';
 
-export default function Main() {
+export default function DesingSystem() {
   // const [isPegaReady, setIsPegaReady] = useState(false);
   const isPegaReady = useConstellation();
 
