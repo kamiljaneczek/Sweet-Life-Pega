@@ -6,7 +6,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Header from './components/header';
 import Footer from './components/footer';
 
-export default function Main() {
+export default function Home() {
   /**
    * kick off the application's portal that we're trying to serve up
    */

@@ -4,8 +4,8 @@ import {} from 'react-router-dom';
 import './common.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import Main from './app/main';
-import Company from './app/Company';
+import Home from './app/home';
+import Company from './app/company';
 import Products from './app/products';
 import Contact from './app/contact';
 import Incidents from './app/incidents';
@@ -19,8 +19,8 @@ if (outletElement) {
   render(
     <BrowserRouter>
       <Switch>
-        <Route exact path={`${baseURL}`} component={Main} />
-        <Route path={`${baseURL}index.html`} component={Main} />
+        <Route exact path={`${baseURL}`} component={Home} />
+        <Route path={`${baseURL}index.html`} component={Home} />
         <Route path={`${baseURL}company`} component={Company} />
         <Route path={`${baseURL}company.html`} component={Company} />
         <Route path={`${baseURL}products`} component={Products} />
@@ -31,7 +31,7 @@ if (outletElement) {
         <Route path={`${baseURL}contact.html`} component={Contact} />
         <Route path={`${baseURL}play1`} component={Playground1} />
         <Route path={`${baseURL}play1.html`} component={Playground1} />
-        <Route path='*' component={Main} />
+        <Route path='*' component={Home} />
       </Switch>
     </BrowserRouter>,
     document.getElementById('outlet')
