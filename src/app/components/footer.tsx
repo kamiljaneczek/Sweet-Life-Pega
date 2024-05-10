@@ -5,9 +5,7 @@ const Footer = () => {
         <a href='/' className='flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white'>
           Sweet Life Inc.
         </a>
-        <p className='my-6 text-gray-500 dark:text-gray-400'>
-          Open-source library of over 400+ web components and interactive elements built for better web.
-        </p>
+        <p className='my-6 text-gray-500 dark:text-gray-400'>Indulge in the Sweet Life: Where Every Treat is a Moment of Bliss!</p>
         <ul className='flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white'>
           <li>
             <a href='/company' className='mr-4 hover:underline md:mr-6 '>
@@ -30,17 +28,17 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a href='#' className='mr-4 hover:underline md:mr-6'>
+            <a href='/' className='mr-4 hover:underline md:mr-6'>
               Affiliate Program
             </a>
           </li>
           <li>
-            <a href='#' className='mr-4 hover:underline md:mr-6'>
+            <a href='/' className='mr-4 hover:underline md:mr-6'>
               FAQs
             </a>
           </li>
           <li>
-            <a href='#' className='mr-4 hover:underline md:mr-6'>
+            <a href='/contact' className='mr-4 hover:underline md:mr-6'>
               Contact
             </a>
           </li>

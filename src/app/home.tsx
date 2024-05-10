@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/no-unescaped-entities */
 
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../design-system/ui/carousel';
 import Header from './components/header';
 import Footer from './components/footer';
+import { Button } from '../design-system/ui/button';
 
 export default function Home() {
   return (
@@ -34,8 +34,8 @@ export default function Home() {
               Begging for More.
             </p>
             <div className='flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4'>
-              <a
-                href='#'
+              <Button
+                variant='default'
                 className='inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-primary focus:ring-4 focus:ring-primary dark:focus:ring-primary'
               >
                 Learn more
@@ -46,28 +46,28 @@ export default function Home() {
                     clipRule='evenodd'
                   />
                 </svg>
-              </a>
-              <a
-                href='#'
+              </Button>
+              <Button
+                variant='ghost'
                 className='inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800'
               >
                 <svg className='mr-2 -ml-1 w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
                   <path d='M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z' />
                 </svg>
                 Watch video
-              </a>
+              </Button>
             </div>
           </div>
         </section>
         <section className='w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800'>
           <div className='container px-4 md:px-6'>
-            <div className='space-y-4 text-center'>
+            <div className='space-y-4 mb-4 text-center'>
               <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 sm:text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
-              <h2 className='mb-12 text-3xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>
+              <h2 className='text-3xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>
                 Our offer includes various types of chocolates, candy bars, cookies, jellies.
               </h2>
             </div>
-            <div className='grid gap-10 sm:px-10 md:gap-16 md:grid-cols-3 mt-4'>
+            <div className='grid gap-10 sm:px-10 md:gap-16 md:grid-cols-3 pt-6'>
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
                   <img src='assets/img/cookie.svg' className='w-16 h-16' />
@@ -76,12 +76,9 @@ export default function Home() {
                 <p className='text-gray-500 dark:text-gray-400'>
                   Our cookies are baked fresh daily using the finest ingredients. Enjoy the perfect balance of sweetness and crunch in every bite.
                 </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
+                <Button variant='default' size='sm'>
                   Read more
-                </a>
+                </Button>
               </div>
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
@@ -91,12 +88,9 @@ export default function Home() {
                 <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our ice creams are made with the freshest ingredients and churned to perfection. Indulge in a variety of classic and unique flavors.
                 </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
+                <Button variant='default' size='sm'>
                   Read more
-                </a>
+                </Button>
               </div>
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
@@ -107,12 +101,9 @@ export default function Home() {
                 <p className='text-gray-500 dark:text-gray-400'>
                   Our lollipops are handcrafted with care, using only the finest ingredients. Enjoy a variety of unique and delightful flavors.
                 </p>
-                <a
-                  className='inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                  href='#'
-                >
+                <Button variant='default' size='sm'>
                   Read more
-                </a>
+                </Button>
               </div>
             </div>
           </div>
@@ -131,8 +122,16 @@ export default function Home() {
                 <dd className='font-light text-gray-500 dark:text-gray-400'>products</dd>
               </div>
               <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>45</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>years of tradition</dd>
+              </div>
+              <div className='flex flex-col items-center justify-center'>
                 <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>3</dt>
                 <dd className='font-light text-gray-500 dark:text-gray-400'>factories</dd>
+              </div>
+              <div className='flex flex-col items-center justify-center'>
+                <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>650</dt>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>employees</dd>
               </div>
               <div className='flex flex-col items-center justify-center'>
                 <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>25</dt>
@@ -140,7 +139,7 @@ export default function Home() {
               </div>
               <div className='flex flex-col items-center justify-center'>
                 <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>100%</dt>
-                <dd className='font-light text-gray-500 dark:text-gray-400'>happy customer</dd>
+                <dd className='font-light text-gray-500 dark:text-gray-400'>happy customers</dd>
               </div>
             </dl>
           </div>
@@ -175,7 +174,7 @@ export default function Home() {
                   />
                   <div className='space-y-0.5 font-medium dark:text-white text-left'>
                     <div>Bonnie Green</div>
-                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Developer at Open AI</div>
+                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>New client</div>
                   </div>
                 </figcaption>
               </figure>
@@ -201,7 +200,7 @@ export default function Home() {
                   />
                   <div className='space-y-0.5 font-medium dark:text-white text-left'>
                     <div>Roberta Casas</div>
-                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Lead designer at Dropbox</div>
+                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Happy client</div>
                   </div>
                 </figcaption>
               </figure>
@@ -230,7 +229,7 @@ export default function Home() {
                   />
                   <div className='space-y-0.5 font-medium dark:text-white text-left'>
                     <div>Jese Leos</div>
-                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Software Engineer at Facebook</div>
+                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Enterprise client</div>
                   </div>
                 </figcaption>
               </figure>
@@ -256,65 +255,16 @@ export default function Home() {
                   />
                   <div className='space-y-0.5 font-medium dark:text-white text-left'>
                     <div>Joseph McFall</div>
-                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>CTO at Google</div>
+                    <div className='text-sm font-light text-gray-500 dark:text-gray-400'>Longtime client</div>
                   </div>
                 </figcaption>
               </figure>
             </div>
             <div className='text-center'>
-              <a
-                href='#'
-                className='py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
-              >
-                Show more...
-              </a>
+              <Button variant='outline' size='default'>
+                Read more
+              </Button>
             </div>
-          </div>
-        </section>
-
-        <section className='w-full py-12 md:py-24 lg:py-32'>
-          <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10'>
-            <div className='space-y-3'>
-              <h2 className='text-3xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>What our customers have to say</h2>
-              <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
-                Hear from the people who love using our product.
-              </p>
-            </div>
-            <Carousel className='w-full max-w-3xl'>
-              <CarouselContent>
-                <CarouselItem>
-                  <div className='p-6 md:p-8'>
-                    <blockquote className='text-lg font-semibold leading-snug lg:text-xl lg:leading-normal xl:text-2xl'>
-                      “The customer service I received was exceptional. The support team went above and beyond to address my concerns.“
-                    </blockquote>
-                    <div className='mt-4 font-semibold'>Jules Winnfield</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400'>CEO, Acme Inc</div>
-                  </div>
-                </CarouselItem>
-                <CarouselItem>
-                  <div className='p-6 md:p-8'>
-                    <blockquote className='text-lg font-semibold leading-snug lg:text-xl lg:leading-normal xl:text-2xl'>
-                      “I was hesitant at first, but after using the product, I was blown away by how easy it was to set up and use. Highly
-                      recommended!“
-                    </blockquote>
-                    <div className='mt-4 font-semibold'>Mia Wallace</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400'>Marketing Manager, Big Corp</div>
-                  </div>
-                </CarouselItem>
-                <CarouselItem>
-                  <div className='p-6 md:p-8'>
-                    <blockquote className='text-lg font-semibold leading-snug lg:text-xl lg:leading-normal xl:text-2xl'>
-                      “This product has completely transformed the way our team collaborates. The built-in tools make our workflow so much more
-                      efficient.“
-                    </blockquote>
-                    <div className='mt-4 font-semibold'>Vincent Vega</div>
-                    <div className='text-sm text-gray-500 dark:text-gray-400'>CTO, Acme Inc</div>
-                  </div>
-                </CarouselItem>
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
           </div>
         </section>
         <Footer />
