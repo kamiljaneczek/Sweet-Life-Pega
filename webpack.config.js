@@ -74,10 +74,6 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './assets/img/products/*',
-          to: './products'
-        },
-        {
           from: './assets/css/*',
           to: './'
         },
