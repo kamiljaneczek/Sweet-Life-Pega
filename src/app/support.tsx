@@ -48,24 +48,9 @@ export default function Support() {
                   incident.
                 </p>
                 <div className='flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                  <Button
-                    variant='default'
-                    className='inline-flex items-center justify-center px-4 py-2.5 text-base font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover focus:ring-4 focus:ring-primary-hover dark:focus:ring-primary-hover'
-                  >
-                    FAQ
-                  </Button>
-                  <Button
-                    variant='secondary'
-                    className='inline-flex items-center justify-center px-4 py-2.5 text-base font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover focus:ring-4 focus:ring-primary-hover dark:focus:ring-primary-hover'
-                  >
-                    Knowlege base
-                  </Button>
-                  <Button
-                    variant='secondary'
-                    className='inline-flex items-center justify-center px-4 py-2.5 text-base font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover focus:ring-4 focus:ring-primary-hover dark:focus:ring-primary-hover'
-                  >
-                    Terms of service
-                  </Button>
+                  <Button variant='default'>FAQ</Button>
+                  <Button variant='secondary'>Knowlege base</Button>
+                  <Button variant='secondary'>Terms of service</Button>
                 </div>
               </div>
             </div>

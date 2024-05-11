@@ -460,7 +460,7 @@ video {
   --primary: 338 72.6% 42.9%;
   --primary-foreground: 210 40% 98%;
   --primary-hover: 336 73.1% 36.5%;
-  --secondary: 210 40% 96.1%;
+  --secondary: 218 72.6% 42.9%;
   --secondary-foreground: 222.2 47.4% 11.2%;
   --accent: 210 40% 96.1%;
   --accent-foreground: 222.2 47.4% 11.2%;
@@ -852,16 +852,16 @@ body {
   height: 1rem;
 }
 
-.h-40 {
-  height: 10rem;
-}
-
 .h-5 {
   height: 1.25rem;
 }
 
 .h-6 {
   height: 1.5rem;
+}
+
+.h-72 {
+  height: 18rem;
 }
 
 .h-8 {
@@ -882,10 +882,6 @@ body {
 
 .h-px {
   height: 1px;
-}
-
-.h-72 {
-  height: 18rem;
 }
 
 .max-h-96 {
@@ -2306,10 +2302,6 @@ body {
 
   .lg\:hidden {
     display: none;
-  }
-
-  .lg\:h-72 {
-    height: 18rem;
   }
 
   .lg\:h-96 {

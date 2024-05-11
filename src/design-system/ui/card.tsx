@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/heading-has-content */
+/* eslint-disable no-restricted-properties */
 import * as React from 'react';
 
 import { cn } from '../../lib/utils';
