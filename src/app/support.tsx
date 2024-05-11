@@ -21,7 +21,7 @@ export default function Support() {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
         const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
+        mashupCaseType = caseTypes[1].pyWorkTypeImplementationClassName;
       }
 
       const options: any = {
@@ -64,7 +64,7 @@ export default function Support() {
                   back to you as soon as possible.
                 </p>
                 <div id='incident-info' className={classNames('flex justify-center space-x-4', { hidden: showPega !== 'Info' })}>
-                  <Button onClick={handleCreateCase} variant='default' size='lg'>
+                  <Button onClick={handleCreateCase} className='px-4 py-2' variant='default' size='lg'>
                     Create incident
                   </Button>
                 </div>
