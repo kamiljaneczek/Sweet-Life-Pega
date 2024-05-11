@@ -1,7 +1,6 @@
-import { TextField } from '@material-ui/core';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Textarea } from '../../../../design-system/ui/textarea';
 
 interface TextAreaProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextArea here
@@ -56,7 +55,7 @@ export default function TextArea(props: TextAreaProps) {
   };
 
   return (
-    <TextField
+    <Textarea
       multiline
       minRows={5}
       maxRows={5}

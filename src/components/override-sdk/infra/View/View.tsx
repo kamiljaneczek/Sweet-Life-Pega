@@ -4,10 +4,6 @@ import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpe
 import { getAllFields } from '@pega/react-sdk-components/lib/components/helpers/template-utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-// Need to import any templates that we might render
-
-import './View.css';
-
 interface ViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
   template?: string;
@@ -106,9 +102,9 @@ export default function View(props: PropsWithChildren<ViewProps>) {
     }
 
     return (
-      <div className='grid-column'>
+      <div className=''>
         {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
-          <div className='template-title-container'>
+          <div className='mt-6 mb-4 text-center text-2xl font-semibold'>
             <span>{label}</span>
           </div>
         )}

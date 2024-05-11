@@ -96,6 +96,9 @@ import Stages from './src/components/override-sdk/infra/Stages/';
 import VerticalTabs from './src/components/override-sdk/infra/VerticalTabs/';
 import LeftAlignVerticalTabs from './src/components/override-sdk/infra/LeftAlignVerticalTabs/';
 import View from './src/components/override-sdk/infra/View/';
+
+// custom override
+import FlowContainer from './src/components/override-sdk/infra/FlowContainer/FlowContainer';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -196,7 +199,8 @@ const localSdkComponentMap = {
   Stages: Stages,
   VerticalTabs: VerticalTabs,
   LeftAlignVerticalTabs: LeftAlignVerticalTabs,
-  View: View
+  View: View,
+  FlowContainer: FlowContainer
   /* map end - DO NOT REMOVE */
 };
 
