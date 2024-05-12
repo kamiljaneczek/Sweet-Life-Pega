@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import isDeepEqual from 'fast-deep-equal/react';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
