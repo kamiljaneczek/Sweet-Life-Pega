@@ -44,7 +44,7 @@
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
 
-    --accent: 216 34% 17%;
+    --accent: 218 72.6% 42.9%;
     --accent-foreground: 210 40% 98%;
 
     --popover: 224 71% 4%;
@@ -56,8 +56,9 @@
     --card: 224 71% 4%;
     --card-foreground: 213 31% 91%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 338 72.6% 42.9%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 336 73.1% 36.5%;
 
     --secondary: 222.2 47.4% 11.2%;
     --secondary-foreground: 210 40% 98%;

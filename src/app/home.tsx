@@ -34,10 +34,7 @@ export default function Home() {
               Begging for More.
             </p>
             <div className='flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4'>
-              <Button
-                variant='default'
-                className='inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-primary focus:ring-4 focus:ring-primary dark:focus:ring-primary'
-              >
+              <Button variant='default'>
                 Learn more
                 <svg className='ml-2 -mr-1 w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
                   <path
@@ -62,7 +59,7 @@ export default function Home() {
         <section className='w-full py-12 lg:py-18 bg-gray-100 dark:bg-gray-800'>
           <div className='container px-4 md:px-6'>
             <div className='space-y-4 mb-4 text-center'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-3xl md:text-4xl dark:text-white dark:bg-gray-800'>What we do</div>
               <h2 className='text-3xl font-semibold tracking-tight leading-none text-gray-900 dark:text-white'>
                 Our offer includes various types of chocolates, candy bars, cookies, jellies.
               </h2>

@@ -39,7 +39,7 @@ export default function Support() {
       <Header />
       {isPegaReady ? (
         <main>
-          <section className=''>
+          <section className='dark:bg-gray-900'>
             <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
               <div className='max-w-screen-md'>
                 <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Questions or need help?</h2>
@@ -55,7 +55,7 @@ export default function Support() {
               </div>
             </div>
           </section>
-          <section className='pt-12 bg-white dark:bg-gray-900'>
+          <section className='pt-12 bg-white dark:bg-gray-800'>
             <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
               <div className='max-w-screen-md'>
                 <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Incidents</h2>
@@ -64,8 +64,8 @@ export default function Support() {
                   back to you as soon as possible.
                 </p>
                 <div id='incident-info' className={classNames('flex justify-center space-x-4', { hidden: showPega !== 'Info' })}>
-                  <Button onClick={handleCreateCase} className='px-4 py-2' variant='default' size='lg'>
-                    Create incident
+                  <Button onClick={handleCreateCase} className='px-6 py-4' variant='default' size='lg'>
+                    <span className='text-lg font-bold' /> Create incident
                   </Button>
                 </div>
                 <div className='flex flex-row align-middle items-center justify-center'>
@@ -74,7 +74,7 @@ export default function Support() {
               </div>
             </div>
           </section>
-          <section className=''>
+          <section className='dark:bg-gray-900'>
             <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
               <div className='max-w-screen-md'>
                 <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Customer service policies</h2>
