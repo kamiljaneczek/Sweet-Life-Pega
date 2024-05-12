@@ -8,16 +8,10 @@ const Header = () => {
       <nav className='bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800'>
         <div className='flex flex-wrap justify-between items-center mx-auto max-w-screen-xl'>
           <a href='/' className='flex items-center'>
-            <h1 className='text-5xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white'>Sweet Life</h1>
+            <h1 className='text-2xl lg:text-5xl font-bold lg:font-extrabold tracking-tight leading-none text-gray-900 dark:text-white'>Sweet Life</h1>
           </a>
           <div className='flex items-center gap-2 lg:order-2'>
             <Button variant='outline'>Log in</Button>
-            <a
-              href='#'
-              className='text-white bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-primary-hover font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary dark:hover:bg-primary-hover focus:outline-none dark:focus:ring-primary-hover'
-            >
-              Get started
-            </a>
             <Button
               data-collapse-toggle='mobile-menu-2'
               type='button'
@@ -48,7 +42,7 @@ const Header = () => {
             </Button>
           </div>
           <div className='hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1' id='mobile-menu-2'>
-            <ul className='flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0'>
+            <ul className='flex flex-col mt-4 font-bold text-lg lg:flex-row lg:space-x-8 lg:mt-0'>
               <li>
                 <a
                   href='/'
@@ -95,7 +89,7 @@ const Header = () => {
 
           {isMobleMenuOpen ? (
             <div className='justify-between items-center w-full lg:hidden lg:w-auto lg:order-1' id='mobile-menu-2'>
-              <ul className='flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0'>
+              <ul className='flex flex-col mt-4 text-lg font-bold lg:flex-row lg:space-x-8 lg:mt-0'>
                 <li>
                   <a
                     href='/'

@@ -10,7 +10,7 @@ const Company = () => {
         <div className='container px-4 md:px-6'>
           <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
             <div className='space-y-4'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>Our Story</div>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-800'>Our Story</div>
               <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>The Origin of Sweet Life</h2>
               <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                 Kate and Blake, two sisters, started Sweet Life with a passion for creating high-quality, delicious sweets. They drew inspiration from
@@ -38,7 +38,7 @@ const Company = () => {
               width={300}
             />
             <div className='space-y-4'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>Our Growth</div>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1  dark:bg-gray-800'>Our Growth</div>
               <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>Scaling Sweet Life</h2>
               <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                 Sweet Life now operates 3 state-of-the-art factories, allowing them to scale production and meet the growing demand for their
@@ -52,7 +52,7 @@ const Company = () => {
         <div className='container px-4 md:px-6'>
           <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
             <div className='space-y-4'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>Our Vision</div>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-800'>Our Vision</div>
               <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>Bringing Joy Through Sweets</h2>
               <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                 Sweet Life is committed to using only the finest, freshest ingredients in their products. They believe in sustainable and ethical

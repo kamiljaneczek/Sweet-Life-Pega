@@ -2407,6 +2407,15 @@ body {
     line-height: 1.75rem;
   }
 
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .lg\:font-extrabold {
+    font-weight: 800;
+  }
+
   .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }

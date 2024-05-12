@@ -48,7 +48,7 @@ export default function Home() {
                 </svg>
               </Button>
               <Button
-                variant='ghost'
+                variant='secondary'
                 className='inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800'
               >
                 <svg className='mr-2 -ml-1 w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
@@ -73,10 +73,10 @@ export default function Home() {
                   <img src='assets/img/cookie.svg' className='w-16 h-16' />
                 </div>
                 <h2 className='mb-4 text-2xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>Delicious Homemade Cookies</h2>
-                <p className='text-gray-500 dark:text-gray-400'>
+                <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our cookies are baked fresh daily using the finest ingredients. Enjoy the perfect balance of sweetness and crunch in every bite.
                 </p>
-                <Button variant='default' size='sm'>
+                <Button variant='outline' size='sm'>
                   Read more
                 </Button>
               </div>
@@ -88,7 +88,7 @@ export default function Home() {
                 <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our ice creams are made with the freshest ingredients and churned to perfection. Indulge in a variety of classic and unique flavors.
                 </p>
-                <Button variant='default' size='sm'>
+                <Button variant='outline' size='sm'>
                   Read more
                 </Button>
               </div>
@@ -98,10 +98,10 @@ export default function Home() {
                   <img src='assets/img/lollipop.svg' className='w-16 h-16' />
                 </div>
                 <h2 className='mb-4 text-2xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>Artisanal Lollipops</h2>
-                <p className='text-gray-500 dark:text-gray-400'>
+                <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our lollipops are handcrafted with care, using only the finest ingredients. Enjoy a variety of unique and delightful flavors.
                 </p>
-                <Button variant='default' size='sm'>
+                <Button variant='outline' size='sm'>
                   Read more
                 </Button>
               </div>
