@@ -49,8 +49,8 @@ export default function Support() {
                 </p>
                 <div className='flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
                   <Button variant='default'>FAQ</Button>
-                  <Button variant='secondary'>Knowlege base</Button>
-                  <Button variant='secondary'>Terms of service</Button>
+                  <Button variant='outline'>Knowlege base</Button>
+                  <Button variant='outline'>Terms of service</Button>
                 </div>
               </div>
             </div>

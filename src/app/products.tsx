@@ -82,16 +82,16 @@ const Products = () => {
       {isPegaReady ? (
         <main className='py-12 px-6'>
           <div className='container mx-auto'>
-            <div className='flex items-center justify-between mb-8'>
-              <h1 className='text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>
+            <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
+              <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>
               <div className='flex items-center space-x-4'>
                 <Label className='text-[#666] dark:text-gray-400' htmlFor='price-range'>
                   Price Range
                 </Label>
                 <Select>
-                  <SelectTrigger className='w-40 text-[#666] dark:text-gray-400 dark:bg-gray-800 dark:border-gray-700' id='price-range'>
+                  <SelectTrigger className='w-[60px] lg:w-[180px]' id='price-range'>
                     <SelectValue placeholder='Select price range' />
-                  </SelectTrigger>{' '}
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='all'>all</SelectItem>
                     <SelectItem value='0-10'>$0 - $10</SelectItem>
@@ -102,9 +102,9 @@ const Products = () => {
                   Category
                 </Label>
                 <Select>
-                  <SelectTrigger>
+                  <SelectTrigger className='w-[60px] lg:w-[180px]'>
                     <SelectValue placeholder='Select category' />
-                  </SelectTrigger>{' '}
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='Chocolates'>Chocolates</SelectItem>
                     <SelectItem value='Bonbons'>Bonbons</SelectItem>
@@ -127,12 +127,7 @@ const Products = () => {
                       <span className='font-semibold'>{product.CategoryName}</span>
                     </p>
 
-                    <Button
-                      variant='secondary'
-                      className='mt-3 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-blue-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-blue-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-blue-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]'
-                    >
-                      Show details
-                    </Button>
+                    <Button variant='accent'>Show details</Button>
                   </div>
 
                   <div className='border-t-2 border-neutral-100 px-6 py-4 dark:border-neutral-500'>

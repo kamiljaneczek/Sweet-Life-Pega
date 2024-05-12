@@ -26,7 +26,7 @@ export default function Home() {
                 />
               </svg>
             </a>
-            <h1 className='mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white'>
+            <h1 className='mb-4 text-3xl lg:text-4xl text-bold lg:font-extrabold lg:tracking-tight  tracking-tighter leading-none text-gray-900 dark:text-white'>
               Indulge in the Sweet Life: Where Every Treat is a Moment of Bliss!
             </h1>
             <p className='mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400'>
