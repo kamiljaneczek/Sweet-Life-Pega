@@ -1,5 +1,6 @@
 import { Button } from '../../design-system/ui/button';
 import { useState } from 'react';
+import ThemeSwitch from '../../design-system/theme';
 
 const Header = () => {
   const [isMobleMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -10,7 +11,9 @@ const Header = () => {
           <a href='/' className='flex items-center'>
             <h1 className='text-2xl lg:text-4xl font-bold lg:font-extrabold tracking-tight leading-none text-gray-900 dark:text-white'>Sweet Life</h1>
           </a>
-          <div className='flex items-center gap-2 lg:order-2'>
+          <div className='flex items-center gap-4 lg:order-2'>
+            <ThemeSwitch />
+
             <Button variant='outline'>Log in</Button>
             <Button
               data-collapse-toggle='mobile-menu-2'

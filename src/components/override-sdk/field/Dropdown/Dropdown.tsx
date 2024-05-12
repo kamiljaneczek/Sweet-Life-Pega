@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TextField } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
 import isDeepEqual from 'fast-deep-equal/react';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Label } from '../../../../design-system/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../design-system/ui/select';
 
 interface IOption {
   key: string;
@@ -163,7 +163,7 @@ export default function Dropdown(props: DropdownProps) {
   const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
   const localePath = localeContext === 'datapage' ? displayName : localeName;
 
-  let readOnlyProp = {};
+  // const readOnlyProp = {};
 
   if (displayMode === 'LABELS_LEFT') {
     return (
@@ -186,7 +186,7 @@ export default function Dropdown(props: DropdownProps) {
     );
   }
 
-  if (readOnly) {
+  /*   if (readOnly) {
     readOnlyProp = { readOnly: true };
   }
 
@@ -194,10 +194,10 @@ export default function Dropdown(props: DropdownProps) {
 
   testProp = {
     'data-test-id': testId
-  };
+  }; */
 
   const handleChange = evt => {
-    const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
+    const selectedValue = evt === placeholder ? '' : evt;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
     if (onRecordChange) {
       onRecordChange(evt);
@@ -207,27 +207,29 @@ export default function Dropdown(props: DropdownProps) {
   // Material UI shows a warning if the component is rendered before options are set.
   //  So, hold off on rendering anything until options are available...
   return options.length === 0 ? null : (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={!readOnly ? handleChange : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value === '' && !readOnly ? placeholder : value}
-      select
-      InputProps={{ ...readOnlyProp, ...testProp }}
-    >
-      {options.map((option: any) => (
-        <MenuItem key={option.key} value={option.key}>
-          {/* @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'  */}
-          {thePConn.getLocalizedValue(option.value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
-        </MenuItem>
-      ))}
-    </TextField>
+    <>
+      {label && <Label className='block text-sm font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
+      <Select
+        onValueChange={!readOnly ? handleChange : undefined}
+        required={required}
+        disabled={disabled}
+        defaultValue={value === '' && !readOnly ? placeholder : value}
+      >
+        <SelectTrigger className='w-[60px] lg:w-[180px]' id='price-range'>
+          <SelectValue
+            placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
+          />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option: any) => (
+            <SelectItem key={option.key} value={option.key}>
+              {/* @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'  */}
+              {thePConn.getLocalizedValue(option.value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {helperTextToDisplay && <Label className='block  text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperTextToDisplay}</Label>}
+    </>
   );
 }

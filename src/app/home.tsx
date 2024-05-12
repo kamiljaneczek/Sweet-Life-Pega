@@ -26,7 +26,7 @@ export default function Home() {
                 />
               </svg>
             </a>
-            <h1 className='mb-4 text-3xl lg:text-4xl text-bold lg:font-extrabold lg:tracking-tight  tracking-tighter leading-none text-gray-900 dark:text-white'>
+            <h1 className='mb-4 text-3xl lg:text-4xl font-bold lg:font-extrabold lg:tracking-tight  tracking-tighter leading-none text-gray-900 dark:text-white'>
               Indulge in the Sweet Life: Where Every Treat is a Moment of Bliss!
             </h1>
             <p className='mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400'>
@@ -59,11 +59,11 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className='w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800'>
+        <section className='w-full py-12 lg:py-18 bg-gray-100 dark:bg-gray-800'>
           <div className='container px-4 md:px-6'>
             <div className='space-y-4 mb-4 text-center'>
-              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 sm:text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
-              <h2 className='text-3xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>
+              <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-3xl md:text-4xl dark:bg-gray-800'>What we do</div>
+              <h2 className='text-3xl font-semibold tracking-tight leading-none text-gray-900 dark:text-white'>
                 Our offer includes various types of chocolates, candy bars, cookies, jellies.
               </h2>
             </div>
@@ -72,7 +72,7 @@ export default function Home() {
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
                   <img src='assets/img/cookie.svg' className='w-16 h-16' />
                 </div>
-                <h2 className='mb-4 text-2xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>Delicious Homemade Cookies</h2>
+                <h2 className='mb-4 text-2xl font-semibold tracking-tight leading-none text-gray-900 dark:text-white'>Delicious Homemade Cookies</h2>
                 <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our cookies are baked fresh daily using the finest ingredients. Enjoy the perfect balance of sweetness and crunch in every bite.
                 </p>
@@ -84,7 +84,7 @@ export default function Home() {
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800'>
                   <img src='assets/img/icecream.svg' className='w-16 h-16' />
                 </div>
-                <h2 className='mb-4 text-2xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>Handcrafted Ice Creams</h2>
+                <h2 className='mb-4 text-2xl font-semibold tracking-tight leading-none text-gray-900 dark:text-white'>Handcrafted Ice Creams</h2>
                 <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our ice creams are made with the freshest ingredients and churned to perfection. Indulge in a variety of classic and unique flavors.
                 </p>
@@ -97,7 +97,7 @@ export default function Home() {
                   {' '}
                   <img src='assets/img/lollipop.svg' className='w-16 h-16' />
                 </div>
-                <h2 className='mb-4 text-2xl font-bold tracking-tight leading-none text-gray-900 dark:text-white'>Artisanal Lollipops</h2>
+                <h2 className='mb-4 text-2xl font-semibold tracking-tight leading-none text-gray-900 dark:text-white'>Artisanal Lollipops</h2>
                 <p className='text-gray-500 dark:text-gray-400 text-lg'>
                   Our lollipops are handcrafted with care, using only the finest ingredients. Enjoy a variety of unique and delightful flavors.
                 </p>

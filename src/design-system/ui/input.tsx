@@ -12,19 +12,30 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, label, helperText, ...props }, ref) => {
+  const { onChange, onBlur, disabled, required, error } = props;
   return (
     <>
-      {label && <Label className='block text-sm font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
+      {label && (
+        <Label className='block text-sm font-medium text-gray-900 dark:text-gray-300'>
+          {label} {required ? ' *' : null}
+        </Label>
+      )}
       <input
         type={type}
+        disabled={disabled}
         className={cn(
-          'shadow-sm bg-gray-50  border-gray-300 text-gray-900  focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'shadow-md bg-gray-50 border-gray-300 text-gray-900  focus:ring-primary focus:border-primary p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary dark:shadow-sm-light flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         ref={ref}
-        {...props}
+        onChange={onChange}
+        onBlur={onBlur}
       />
-      {helperText && <Label className='block  text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>}
+      {helperText && error ? (
+        <Label className='block -mt-1 pr-2 text-xs font-light text-destructive dark:ttext-destructive'>{helperText}</Label>
+      ) : (
+        helperText && <Label className='block -mt-1 pr-2 text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>
+      )}
     </>
   );
 });

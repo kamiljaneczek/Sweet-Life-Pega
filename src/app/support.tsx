@@ -21,7 +21,7 @@ export default function Support() {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
         const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[1].pyWorkTypeImplementationClassName;
+        mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
       }
 
       const options: any = {
