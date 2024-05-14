@@ -1,0 +1,32 @@
+{
+  "name": "YourOrg_SweetLife_FeaturedProducts",
+  "label": "Featured Products",
+  "description": "Featured Products",
+  "organization": "YourOrg",
+  "version": "0.0.1",
+  "library": "SweetLife",
+  "allowedApplications": [],
+  "componentKey": "YourOrg_SweetLife_FeaturedProducts",
+  "type": "Template",
+  "subtype": "PAGE",
+  "icon": "OneColumnPage.svg",
+  "properties": [
+    {
+      "name": "useConfigurableLayout",
+      "label": "Use inline layout for insights",
+      "format": "BOOLEAN"
+    },
+    {
+      "name": "enableGetNextWork",
+      "label": "Enable Get next work",
+      "format": "BOOLEAN"
+    },
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER",
+      "addTypeList": ["Widgets", "Views", "Insights"]
+    }
+  ],
+  "defaultConfig": {}
+}

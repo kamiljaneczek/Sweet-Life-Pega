@@ -38,8 +38,8 @@
   },
   "dxcbConfig": {
     "publishAccess": {
-      "rulesetName": "CustomDXComponents",
-      "rulesetVersion": "01-01-01",
+      "rulesetName": "TellUsMoreRef",
+      "rulesetVersion": "02-01-06",
       "sourceOfComponents": "Server",
       "devBuild": false,
       "clientId": "10095186356008396159",

@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "include": [
+    "../src/lib/utils.ts","./src/design-system/**/*.tsx","../src/design-system/ui/**/*.tsx",
     "../src/components/custom-constellation/**/**/*.ts",
     "../src/components/custom-constellation/**/**/*.tsx",
     "../src/components/custom-constellation/**/**/*.js",

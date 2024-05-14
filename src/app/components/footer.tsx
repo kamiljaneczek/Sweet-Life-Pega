@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className='p-4 bg-white md:p-8 lg:p-10 dark:bg-gray-800'>
+    <footer className='p-4 mb-auto bg-white md:p-8 lg:p-10 dark:bg-gray-800'>
       <div className='mx-auto max-w-screen-xl text-center'>
         <a href='/' className='flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white'>
           Sweet Life Inc.

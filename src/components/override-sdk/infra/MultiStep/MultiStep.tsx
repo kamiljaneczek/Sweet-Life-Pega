@@ -60,23 +60,6 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
         {arNavigationSteps.map(mainStep => {
           return (
             <React.Fragment key={mainStep.actionID}>
-              {mainStep.steps && (
-                <ul>
-                  {mainStep.steps.map(subStep => (
-                    <li className=''>
-                      <div>
-                        {subStep.visited_status === 'current' && <label className=''>{subStep.name}</label>}
-                        {subStep.visited_status !== 'current' && <label className=''>{subStep.name}</label>}
-                      </div>
-                      {subStep.visited_status === 'current' && (
-                        <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
-                          {children}
-                        </AssignmentCard>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
               {!mainStep?.steps && mainStep.visited_status === 'current' && (
                 <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
                   {children}

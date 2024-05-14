@@ -7,9 +7,9 @@ import { Button } from '../design-system/ui/button';
 
 export default function Home() {
   return (
-    <div className='min-h-screen bg-white text-black'>
+    <>
       <Header />
-      <main>
+      <div className='flex-grow bg-white text-black'>
         <section className='bg-white dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12'>
             <a
@@ -265,7 +265,7 @@ export default function Home() {
           </div>
         </section>
         <Footer />
-      </main>
-    </div>
+      </div>
+    </>
   );
 }

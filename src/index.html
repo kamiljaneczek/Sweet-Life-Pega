@@ -11,21 +11,19 @@
     <link rel="icon" href="assets/img/favicon.ico" />
     <link href="assets/css/common.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" as="style" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" as="style" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet" />
   </head>
   <body>
     <noscript>
       <strong>The React SDK example does not work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
 
-    <div class="bg-slate-100">
+    <div id="outlet" class="flex flex-col min-h-screen bg-white dark:bg-gray-800">
       <!-- React Router will put content in "outlet" -->
-      <div id="outlet" class="flex flex-col"></div>
     </div>
     <!-- built files will be auto injected -->
   </body>

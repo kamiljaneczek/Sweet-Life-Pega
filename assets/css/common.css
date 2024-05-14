@@ -466,8 +466,8 @@ video {
   --accent-foreground: 210 40% 98%;
   --destructive: 0 100% 50%;
   --destructive-foreground: 210 40% 98%;
-  --ring: 215 20.2% 65.1%;
-  --radius: 0.5rem;
+  --ring: 218 72.6% 42.9%;
+  --radius: 0.6rem;
 }
 
 .dark {
@@ -490,8 +490,8 @@ video {
   --secondary-foreground: 210 40% 98%;
   --destructive: 0 63% 31%;
   --destructive-foreground: 210 40% 98%;
-  --ring: 216 34% 17%;
-  --radius: 0.5rem;
+  --ring: 218 72.6% 42.9%;
+  --radius: 0.6rem;
 }
 
 * {
@@ -789,6 +789,14 @@ body {
   margin-top: 1.5rem;
 }
 
+.mb-0 {
+  margin-bottom: 0px;
+}
+
+.mb-auto {
+  margin-bottom: auto;
+}
+
 .block {
   display: block;
 }
@@ -895,6 +903,10 @@ body {
 
 .h-px {
   height: 1px;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .max-h-96 {
@@ -1465,10 +1477,6 @@ body {
   padding-top: 0px;
 }
 
-.pt-12 {
-  padding-top: 3rem;
-}
-
 .pt-4 {
   padding-top: 1rem;
 }
@@ -1871,8 +1879,8 @@ body {
   text-decoration-line: underline;
 }
 
-.focus\:border-primary:focus {
-  border-color: hsl(var(--primary));
+.focus\:border-accent:focus {
+  border-color: hsl(var(--accent));
 }
 
 .focus\:bg-accent:focus {
@@ -1900,13 +1908,13 @@ body {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.focus\:ring-accent:focus {
+  --tw-ring-color: hsl(var(--accent));
+}
+
 .focus\:ring-gray-100:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(243 244 246 / var(--tw-ring-opacity));
-}
-
-.focus\:ring-primary:focus {
-  --tw-ring-color: hsl(var(--primary));
 }
 
 .focus\:ring-ring:focus {
@@ -2086,6 +2094,15 @@ body {
   border-color: rgb(115 115 115 / var(--tw-border-opacity));
 }
 
+.dark\:bg-accent:is(.dark *) {
+  background-color: hsl(var(--accent));
+}
+
+.dark\:bg-gray-600:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
 .dark\:bg-gray-700:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -2099,25 +2116,6 @@ body {
 .dark\:bg-gray-900:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-neutral-700:is(.dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(64 64 64 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-neutral-600:is(.dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(82 82 82 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-accent:is(.dark *) {
-  background-color: hsl(var(--accent));
-}
-
-.dark\:bg-gray-600:is(.dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
 .dark\:text-gray-300:is(.dark *) {
@@ -2140,13 +2138,13 @@ body {
   color: rgb(250 250 250 / var(--tw-text-opacity));
 }
 
+.dark\:text-primary-foreground:is(.dark *) {
+  color: hsl(var(--primary-foreground));
+}
+
 .dark\:text-white:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.dark\:text-primary-foreground:is(.dark *) {
-  color: hsl(var(--primary-foreground));
 }
 
 .dark\:placeholder-gray-400:is(.dark *)::-moz-placeholder {
@@ -2169,17 +2167,17 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.dark\:focus\:border-primary:focus:is(.dark *) {
-  border-color: hsl(var(--primary));
+.dark\:focus\:border-accent:focus:is(.dark *) {
+  border-color: hsl(var(--accent));
+}
+
+.dark\:focus\:ring-accent:focus:is(.dark *) {
+  --tw-ring-color: hsl(var(--accent));
 }
 
 .dark\:focus\:ring-gray-800:focus:is(.dark *) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(31 41 55 / var(--tw-ring-opacity));
-}
-
-.dark\:focus\:ring-primary:focus:is(.dark *) {
-  --tw-ring-color: hsl(var(--primary));
 }
 
 @media (min-width: 640px) {
@@ -2229,11 +2227,6 @@ body {
     padding-right: 4rem;
   }
 
-  .sm\:py-16 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
   .sm\:text-center {
     text-align: center;
   }
@@ -2278,11 +2271,6 @@ body {
   .md\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-  }
-
-  .md\:py-24 {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
   }
 
   .md\:py-16 {
@@ -2419,11 +2407,6 @@ body {
   .lg\:py-16 {
     padding-top: 4rem;
     padding-bottom: 4rem;
-  }
-
-  .lg\:py-32 {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
   }
 
   .lg\:text-3xl {

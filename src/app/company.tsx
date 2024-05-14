@@ -6,7 +6,7 @@ const Company = () => {
   return (
     <>
       <Header />
-      <div className='dark:bg-gray-900'>
+      <div className='flex-grow dark:bg-gray-900'>
         <section className='w-full py-12 md:py-16 '>
           <div className='container px-4 md:px-6'>
             <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
@@ -22,7 +22,7 @@ const Company = () => {
                 alt='Sweet Life Founders'
                 className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
                 height={200}
-                src='https://picsum.photos/id/64/400/600'
+                src='https://picsum.photos/id/633/400/600'
                 width={300}
               />
             </div>
@@ -33,7 +33,7 @@ const Company = () => {
             <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-700'>Our Growth</div>
-                <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>The Origin of Sweet Life</h2>
+                <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>Present</h2>
                 <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                   Sweet Life now operates 3 state-of-the-art factories, allowing them to scale production and meet the growing demand for their
                   products. The factories are equipped with the latest technology and staffed by a team of skilled confectioners.
@@ -54,7 +54,7 @@ const Company = () => {
             <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-700'>Our Vision</div>
-                <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>The Origin of Sweet Life</h2>
+                <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl'>Who we are and what we do</h2>
                 <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                   Sweet Life is committed to using only the finest, freshest ingredients in their products. They believe in sustainable and ethical
                   business practices, supporting local communities, and bringing joy to their customers through their creations. The company's vision
@@ -65,7 +65,7 @@ const Company = () => {
                 alt='Sweet Life Founders'
                 className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
                 height={200}
-                src='https://picsum.photos/id/166/400/600'
+                src='https://picsum.photos/id/56/400/600'
                 width={300}
               />
             </div>
@@ -82,7 +82,7 @@ const Company = () => {
                 globe where our signature treats are meticulously crafted. Employing a diverse team of 600 talented individuals, we take pride in our
                 presence in 25 countries, bringing the taste of Sweet Life to connoisseurs worldwide!
               </p>
-              <div className='flex my-4 flex-col items-center align-middle center'>
+              <div className='flex my-8 flex-col items-center align-middle center'>
                 <img src='assets/img/cupcake.svg' className='w-32 h-32' />
               </div>
               <p className='max-w-[800px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>

@@ -11,25 +11,6 @@ import Footer from './components/footer';
 import Loading from './components/loading';
 import { Button } from '../design-system/ui/button';
 
-/* interface IconComponentProps {
-  iconName: keyof typeof productIcon;
-}
-
-const productIcon = {
-  Cookie,
-  CandyCane,
-  Lollipop,
-  Dessert,
-  Donut,
-  Croissant
-};
-
-function IconComponent({ iconName }: IconComponentProps) {
-  const Icon = productIcon[iconName];
-
-  return <Icon />;
-}
- */
 const Products = () => {
   const isPegaReady = useConstellation();
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -80,7 +61,7 @@ const Products = () => {
     <>
       <Header />
       {isPegaReady ? (
-        <main className='py-12 px-6 dark:bg-gray-900'>
+        <div className='flex-grow py-12 px-6 dark:bg-gray-900'>
           <div className='container mx-auto'>
             <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
               <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>
@@ -142,7 +123,7 @@ const Products = () => {
             </div>
           </div>
           <div id='pega-root' />
-        </main>
+        </div>
       ) : (
         <Loading />
       )}

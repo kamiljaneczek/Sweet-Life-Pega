@@ -21,7 +21,7 @@ export default function Support() {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
         const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
+        mashupCaseType = caseTypes[1].pyWorkTypeImplementationClassName;
       }
 
       const options: any = {
@@ -38,9 +38,9 @@ export default function Support() {
     <>
       <Header />
       {isPegaReady ? (
-        <main>
+        <div className='flex-grow'>
           <section className='dark:bg-gray-900'>
-            <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
+            <div className='py-8 px-4 mx-auto max-w-screen-xl 6 lg:px-6'>
               <div className='max-w-screen-md'>
                 <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Questions or need help?</h2>
                 <p className='mb-8 font-light text-gray-500 sm:text-xl dark:text-gray-400'>
@@ -55,15 +55,26 @@ export default function Support() {
               </div>
             </div>
           </section>
-          <section className='pt-12 bg-white dark:bg-gray-800'>
-            <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
+                    <section className='dark:bg-gray-900'>
+            <div className='py-8 px-4 mx-auto max-w-screen-xl lg:px-6'>
+              <div className='max-w-screen-md'>
+                <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Customer service policies</h2>
+                <p className='mb-8 font-light text-gray-500 sm:text-xl dark:text-gray-400'>
+                  By using our services, you agree to our customer service policies. Please read our <a href='#'>policies</a> carefully before using
+                  our services.
+                </p>
+              </div>
+            </div>
+          </section>
+          <section className='bg-white dark:bg-gray-800'>
+            <div className='py-8 px-4 mx-auto max-w-screen-xl  lg:px-6'>
               <div className='max-w-screen-md'>
                 <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Incidents</h2>
                 <p className='mb-8 font-light text-gray-700 sm:text-xl dark:text-gray-400'>
                   Tell us about your concerns. We need to ask you a few questions to get started. It shall take only couple of minutes. We will get
                   back to you as soon as possible.
                 </p>
-                <div id='incident-info' className={classNames('flex justify-center space-x-4', { hidden: showPega !== 'Info' })}>
+                <div id='incident-info' className={classNames('flex space-x-4', { hidden: showPega !== 'Info' })}>
                   <Button onClick={handleCreateCase} className='px-6 py-4' variant='default' size='lg'>
                     <span className='text-lg font-bold' /> Create incident
                   </Button>
@@ -74,18 +85,8 @@ export default function Support() {
               </div>
             </div>
           </section>
-          <section className='dark:bg-gray-900'>
-            <div className='py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6'>
-              <div className='max-w-screen-md'>
-                <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Customer service policies</h2>
-                <p className='mb-8 font-light text-gray-500 sm:text-xl dark:text-gray-400'>
-                  By using our services, you agree to our customer service policies. Please read our <a href='#'>policies</a> carefully before using
-                  our services.
-                </p>
-              </div>
-            </div>
-          </section>
-        </main>
+
+        </div>
       ) : (
         <Loading />
       )}
