@@ -99,6 +99,7 @@ import View from './src/components/override-sdk/infra/View/';
 
 // custom override
 import FlowContainer from './src/components/override-sdk/infra/FlowContainer/FlowContainer';
+import SweetLifeDeligthLibraryFeaturedProducts from './src/components/custom-sdk/widget/SweetLife_DeligthLibrary_FeaturedProducts/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -200,7 +201,8 @@ const localSdkComponentMap = {
   VerticalTabs: VerticalTabs,
   LeftAlignVerticalTabs: LeftAlignVerticalTabs,
   View: View,
-  FlowContainer: FlowContainer
+  FlowContainer: FlowContainer,
+  SweetLife_DeligthLibrary_FeaturedProducts: SweetLifeDeligthLibraryFeaturedProducts
   /* map end - DO NOT REMOVE */
 };
 

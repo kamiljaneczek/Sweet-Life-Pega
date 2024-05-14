@@ -6,7 +6,7 @@ import { Label } from '../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select';
 import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
-import { IProduct } from '../types';
+import { IProduct } from '../types/types';
 import Footer from './components/footer';
 import Loading from './components/loading';
 import { Button } from '../design-system/ui/button';

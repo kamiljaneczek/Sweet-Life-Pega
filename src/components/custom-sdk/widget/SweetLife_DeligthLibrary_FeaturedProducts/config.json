@@ -1,0 +1,39 @@
+{
+  "name": "SweetLife_DeligthLibrary_FeaturedProducts",
+  "label": "Featured Products",
+  "description": "Featured Products",
+  "organization": "SweetLife",
+  "version": "0.0.1",
+  "library": "DeligthLibrary",
+  "allowedApplications": [],
+  "componentKey": "SweetLife_DeligthLibrary_FeaturedProducts",
+  "type": "Widget",
+  "subtype": "PAGE",
+  "icon": "OneColumnPage.svg",
+  "properties": [
+    {
+      "name": "description",
+      "label": "Description",
+      "required": true,
+      "format": "TEXT",
+      "defaultValue": "Check out our featured products!"
+    },
+    {
+      "name": "dataPage",
+      "label": "Data Page name to get the products",
+      "format": "TEXT"
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ],
+  "defaultConfig": {}
+}

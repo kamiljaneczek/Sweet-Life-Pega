@@ -58,8 +58,8 @@
     },
 
     "componentDefaults": {
-      "organization": "YourOrg",
-      "library": "YourComponentLib",
+      "organization": "SweetLife",
+      "library": "DeligthLibrary",
       "version": "0.0.1",
       "type": "",
       "subtype": "",
