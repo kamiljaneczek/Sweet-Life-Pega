@@ -285,7 +285,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
       {!bShowConfirm &&
         (!todo_showTodo ? (
           !displayOnlyFA ? (
-            <Card className=''>
+            <Card className='shadow-none border-none'>
               {displayPageMessages()}
               <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
@@ -294,7 +294,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
               </MuiPickersUtilsProvider>
             </Card>
           ) : (
-            <Card className=''>
+            <Card className='shadow-none border-none'>
               <div className='py-4 text-center'>
                 <Typography variant='h1'>{containerName}</Typography>
               </div>

@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
   return (
     <>
       {label && (
-        <Label className='block text-sm font-medium text-gray-900 dark:text-gray-300'>
+        <Label className='block text-base font-medium text-gray-900 dark:text-gray-300'>
           {label} {required ? ' *' : null}
         </Label>
       )}
