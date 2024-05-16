@@ -56,6 +56,7 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
             );
           })} */}
       </div>
+
       <CardContent>
         {arNavigationSteps.map(mainStep => {
           return (

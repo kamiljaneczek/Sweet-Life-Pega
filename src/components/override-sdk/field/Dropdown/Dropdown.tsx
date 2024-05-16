@@ -209,7 +209,7 @@ export default function Dropdown(props: DropdownProps) {
   //  So, hold off on rendering anything until options are available...
   return options.length === 0 ? null : (
     <>
-      {label && <Label className='block text-sm font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
+      {label && <Label className='block text-base font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
       <Select
         onValueChange={!readOnly ? handleChange : undefined}
         required={required}
@@ -230,7 +230,7 @@ export default function Dropdown(props: DropdownProps) {
           ))}
         </SelectContent>
       </Select>
-      {helperTextToDisplay && <Label className='block  text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperTextToDisplay}</Label>}
+      {helperTextToDisplay && <Label className='block  text-sm font-light text-muted text-gray-900 dark:text-gray-300'>{helperTextToDisplay}</Label>}
     </>
   );
 }

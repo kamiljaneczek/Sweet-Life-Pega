@@ -7,8 +7,6 @@ import connectToState from '@pega/react-sdk-components/lib/components/helpers/st
 import { getKeyForMappedField, mapStateToProps } from './utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-import './DefaultForm.css';
-
 interface DefaultFormProps extends PConnProps {
   // If any, enter additional props that only exist on this component
   NumCols: string;
@@ -54,7 +52,7 @@ export default function DefaultForm(props: PropsWithChildren<DefaultFormProps>) 
   return (
     <>
       {instructions && (
-        <div className='psdk-default-form-instruction-text'>
+        <div className='text-xl mb-2'>
           {/* server performs sanitization method for instructions html content */}
           {/* eslint-disable react/no-danger */}
           <div key='instructions' id='instruction-text' dangerouslySetInnerHTML={{ __html: instructions }} />
