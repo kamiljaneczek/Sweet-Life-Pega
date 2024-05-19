@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
 import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
@@ -82,7 +84,7 @@ export default function Date(props: DateProps) {
   };
 
   const handleChange = date => {
-    console.log('handleChange: ', date);
+    //  console.log('handleChange: ', date);
     onChange({ value: getFormattedDate(date) });
     setDate(date);
   };
