@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState, createElement } from 'react';
-import Button from '@material-ui/core/Button';
+import { Button } from '../../../../design-system/ui/button';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { isEmptyObject } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import './PromotedFilters.css';
 
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
@@ -144,14 +143,14 @@ export default function PromotedFilters(props: PromotedFilterProps) {
   return (
     <>
       <div>{listViewProps.title}</div>
-      <div className='psdk-grid-filter'>
+      <div className='mb-4'>
         <Filters filters={filters} transientItemID={transientItemID} localeReference={listViewProps.localeReference} />
       </div>
       <div>
-        <Button key='1' type='button' onClick={clearFilterData} data-testid='clear' variant='contained' color='primary'>
+        <Button key='1' type='button' onClick={clearFilterData} data-testid='clear' variant='secondary'>
           {localizedVal('Clear', localeCategory)}
         </Button>
-        <Button style={{ float: 'right' }} key='2' type='submit' onClick={getFilterData} data-testid='search' variant='contained' color='primary'>
+        <Button style={{ float: 'right' }} key='2' type='submit' onClick={getFilterData} data-testid='search' variant='accent'>
           {localizedVal('Search', localeCategory)}
         </Button>
       </div>

@@ -52,7 +52,7 @@ export default function DefaultForm(props: PropsWithChildren<DefaultFormProps>) 
   return (
     <>
       {instructions && (
-        <div className='text-xl mb-2'>
+        <div className='text-base mt-2 font-light mb-4'>
           {/* server performs sanitization method for instructions html content */}
           {/* eslint-disable react/no-danger */}
           <div key='instructions' id='instruction-text' dangerouslySetInnerHTML={{ __html: instructions }} />

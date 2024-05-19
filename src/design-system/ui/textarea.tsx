@@ -17,19 +17,27 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   InputProps?: any;
 }
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, helperText, label, ...props }, ref) => {
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, helperText, error, required, label, ...props }, ref) => {
   return (
     <>
-      {label && <Label className='block text-base font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
+      {label && (
+        <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>
+          {label} {required ? ' *' : null}
+        </Label>
+      )}
       <textarea
         className={cn(
-          'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'shadow-md flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         ref={ref}
         {...props}
       />
-      {helperText && <Label className='block  text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>}
+      {helperText && error ? (
+        <Label className='block -mt-0.5 pr-2 text-xs font-light text-destructive dark:text-destructive'>{helperText}</Label>
+      ) : (
+        helperText && <Label className='block -mt-0.5 pl-2 text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>
+      )}
     </>
   );
 });

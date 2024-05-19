@@ -1,10 +1,10 @@
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
 import { getCurrencyCharacters, getCurrencyOptions } from './currency-utils';
+import { Input } from '../../../../design-system/ui/input';
+import { useState } from 'react';
 
 /* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
 as per the locale.
@@ -42,6 +42,8 @@ export default function Currency(props: CurrrencyProps) {
   const propName = (pConn.getStateProps() as any).value;
   const helperTextToDisplay = validatemessage || helperText;
 
+  const [inputValue, setInputValue] = useState('');
+
   // console.log(`Currency: label: ${label} value: ${value}`);
 
   const testProp = {
@@ -65,34 +67,30 @@ export default function Currency(props: CurrrencyProps) {
     return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
   }
 
-  function currOnBlur(event, inValue) {
-    // console.log(`Currency currOnBlur inValue: ${inValue}`);
-    handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
+  function handleBlur() {
+    handleEvent(actions, 'changeNblur', propName, inputValue);
+  }
+  function handleChange(event) {
+    // update internal value
+    setInputValue(event?.target?.value);
   }
 
   // console.log(`theCurrSym: ${theCurrSym} | theCurrDec: ${theCurrDec} | theCurrSep: ${theCurrSep}`);
 
   return (
-    <CurrencyTextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
+    <Input
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
       required={required}
       disabled={disabled}
       readOnly={!!readOnly}
       error={status === 'error'}
       label={label}
       value={value}
+      onChange={handleChange}
+      onBlur={!readOnly ? handleBlur : undefined}
       type='text'
-      outputFormat='number'
-      textAlign='left'
       InputProps={{ inputProps: { ...testProp } }}
-      currencySymbol={theCurrSym}
-      decimalCharacter={theCurrDec}
-      digitGroupSeparator={theCurrSep}
-      onBlur={!readOnly ? currOnBlur : undefined}
     />
   );
 }

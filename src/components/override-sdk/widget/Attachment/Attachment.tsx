@@ -2,8 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect, useCallback } from 'react';
-import { CircularProgress, IconButton, Menu, MenuItem, Button } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import download from 'downloadjs';
 
 import {
@@ -15,7 +14,8 @@ import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-import './Attachment.css';
+import { Button } from '../../../../design-system/ui/button';
+import { GripVertical, Loader } from 'lucide-react';
 
 interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
   // If any, enter additional props that only exist on this component
@@ -386,7 +386,7 @@ export default function Attachment(props: AttachmentProps) {
             disabled={disabled}
             onChange={onFileAdded}
           />
-          <Button style={{ textTransform: 'none' }} variant='outlined' color='primary' component='span'>
+          <Button style={{ textTransform: 'none' }} variant='outline'>
             {allowMultiple === 'true'
               ? uploadMultipleFilesLabel === 'file_upload_text_multiple'
                 ? 'Choose files'
@@ -411,7 +411,7 @@ export default function Attachment(props: AttachmentProps) {
                 {!item.inProgress && <img className='psdk-utility-card-svg-icon' src={srcImg} />}
                 {item.inProgress && (
                   <div>
-                    <CircularProgress />
+                    <Loader />
                   </div>
                 )}
               </div>
@@ -421,22 +421,22 @@ export default function Attachment(props: AttachmentProps) {
               </div>
               <div className='psdk-utility-action'>
                 {item.ID && (
-                  <button type='button' className='psdk-utility-button' aria-label='Delete Attachment' onClick={() => deleteFile(item)}>
+                  <Button type='button' className='psdk-utility-button' aria-label='Delete Attachment' onClick={() => deleteFile(item)}>
                     <img className='psdk-utility-card-action-svg-icon' src={deleteIcon} />
-                  </button>
+                  </Button>
                 )}
                 {!item.ID && (
                   <div>
-                    <IconButton
+                    <Button
                       id='setting-button'
                       aria-controls={open ? 'file-menu' : undefined}
                       aria-expanded={open ? 'true' : undefined}
                       aria-haspopup='true'
                       onClick={handleClick}
                     >
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu style={{ marginTop: '3rem' }} id='file-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                      <GripVertical />
+                    </Button>
+                    {/*                  <Menu style={{ marginTop: '3rem' }} id='file-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                       <MenuItem
                         style={{ fontSize: '14px' }}
                         key='download'
@@ -447,7 +447,7 @@ export default function Attachment(props: AttachmentProps) {
                       <MenuItem style={{ fontSize: '14px' }} key='delete' onClick={() => deleteFile(item)}>
                         Delete
                       </MenuItem>
-                    </Menu>
+                    </Menu> */}
                   </div>
                 )}
               </div>

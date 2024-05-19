@@ -1,10 +1,15 @@
-import { KeyboardDatePicker } from '@material-ui/pickers';
-
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
 import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Calendar } from '../../../../design-system/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../../design-system/ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { Button } from '../../../../design-system/ui/button';
+import { useState } from 'react';
+import { cn } from '../../../../lib/utils';
+import { Label } from '../../../../design-system/ui/label';
 
 // Will return the date string in YYYY-MM-DD format which we'll be POSTing to the server
 function getFormattedDate(date) {
@@ -41,6 +46,7 @@ export default function Date(props: DateProps) {
   const actions = pConn.getActionsApi();
   const propName = (pConn.getStateProps() as any).value;
   const helperTextToDisplay = validatemessage || helperText;
+  const [date, setDate] = useState<Date>();
 
   // Start with default dateFormatInfo
   const dateFormatInfo = dateFormatInfoDefault;
@@ -76,9 +82,9 @@ export default function Date(props: DateProps) {
   };
 
   const handleChange = date => {
-    if (date && date.isValid()) {
-      onChange({ value: getFormattedDate(date) });
-    }
+    console.log('handleChange: ', date);
+    onChange({ value: getFormattedDate(date) });
+    setDate(date);
   };
 
   const handleAccept = date => {
@@ -88,26 +94,25 @@ export default function Date(props: DateProps) {
   };
 
   return (
-    <KeyboardDatePicker
-      disableToolbar
-      variant='inline'
-      inputVariant='outlined'
-      placeholder={dateFormatInfo.dateFormatStringLC}
-      format={dateFormatInfo.dateFormatString}
-      mask={dateFormatInfo.dateFormatMask}
-      fullWidth
-      autoOk
-      required={required}
-      disabled={disabled}
-      error={status === 'error'}
-      helperText={helperTextToDisplay}
-      size='small'
-      label={label}
-      value={value || null}
-      onChange={handleChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      onAccept={handleAccept}
-      InputProps={{ ...testProp }}
-    />
+    <>
+      {label && (
+        <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>
+          {label} {required ? ' *' : null}
+        </Label>
+      )}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant='outline' className={cn('w-[280px] justify-start text-left font-normal', !date && 'text-muted-foreground')}>
+            <CalendarIcon className='mr-2 h-4 w-4' />
+            {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0'>
+          <Calendar mode='single' selected={date} onSelect={handleChange} initialFocus />
+        </PopoverContent>
+      </Popover>
+
+      {helperText && <Label className='block -mt-0.5 pl-2 text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>}
+    </>
   );
 }

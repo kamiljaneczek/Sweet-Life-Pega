@@ -113,6 +113,6 @@ export function startMashup() {
 
   // load the Mashup and handle the onPCoreEntry response that establishes the
   //  top level Pega root element (likely a RootContainer)
-
+  console.log('startMashup: calling myLoadMashup', window);
   myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
 }

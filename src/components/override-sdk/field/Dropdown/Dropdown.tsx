@@ -8,6 +8,7 @@ import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpe
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { Label } from '../../../../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../design-system/ui/select';
+import { cn } from '../../../../lib/utils';
 
 interface IOption {
   key: string;
@@ -208,29 +209,31 @@ export default function Dropdown(props: DropdownProps) {
   // Material UI shows a warning if the component is rendered before options are set.
   //  So, hold off on rendering anything until options are available...
   return options.length === 0 ? null : (
-    <>
-      {label && <Label className='block text-base font-medium text-gray-900 dark:text-gray-300'>{label}</Label>}
-      <Select
-        onValueChange={!readOnly ? handleChange : undefined}
+    <Select
+      onValueChange={!readOnly ? handleChange : undefined}
+      required={required}
+      disabled={disabled}
+      defaultValue={value === '' && !readOnly ? placeholder : value}
+    >
+      <SelectTrigger
+        label={label}
         required={required}
-        disabled={disabled}
-        defaultValue={value === '' && !readOnly ? placeholder : value}
+        helperText={helperTextToDisplay}
+        error={status === 'error'}
+        className='ow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2shad.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
       >
-        <SelectTrigger className='w-[60px] lg:w-[180px]' id='price-range'>
-          <SelectValue
-            placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
-          />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option: any) => (
-            <SelectItem key={option.key} value={option.key}>
-              {/* @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'  */}
-              {thePConn.getLocalizedValue(option.value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      {helperTextToDisplay && <Label className='block  text-sm font-light text-muted text-gray-900 dark:text-gray-300'>{helperTextToDisplay}</Label>}
-    </>
+        <SelectValue
+          placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
+        />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option: any) => (
+          <SelectItem key={option.key} value={option.key}>
+            {/* @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'  */}
+            {thePConn.getLocalizedValue(option.value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

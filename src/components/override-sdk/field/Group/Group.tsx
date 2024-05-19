@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from 'react';
 import { Grid } from '@material-ui/core';
-import FieldGroup from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldGroup';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface GroupProps extends PConnFieldProps {
@@ -16,7 +16,7 @@ export default function Group(props: GroupProps) {
   const { children, heading, showHeading, instructions, collapsible, displayMode, type } = props;
 
   const isReadOnly = displayMode === 'LABELS_LEFT';
-
+  const FieldGroup = getComponentFromMap('FieldGroup');
   const content = useMemo(() => {
     return (
       <Grid container spacing={2}>
