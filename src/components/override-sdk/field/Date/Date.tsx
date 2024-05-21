@@ -15,7 +15,12 @@ import { Label } from '../../../../design-system/ui/label';
 
 // Will return the date string in YYYY-MM-DD format which we'll be POSTing to the server
 function getFormattedDate(date) {
-  return `${date.$y.toString()}-${(date.$M + 1).toString().padStart(2, '0')}-${date.$D.toString().padStart(2, '0')}`;
+  // return `${date.$y.toString()}-${(date.$M + 1).toString().padStart(2, '0')}-${date.$D.toString().padStart(2, '0')}`;
+  const newDate = `${date.getFullYear()}-${(date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1)}-${
+    (date.getDate() < 9 ? '0' : '') + date.getDate()
+  }`;
+
+  return newDate;
 }
 
 interface DateProps extends PConnFieldProps {
@@ -84,9 +89,12 @@ export default function Date(props: DateProps) {
   };
 
   const handleChange = date => {
-    //  console.log('handleChange: ', date);
+    console.log('handleChange: ', date.toLocaleString());
+
+    console.log('visibleDate: ', getFormattedDate(date));
+
     onChange({ value: getFormattedDate(date) });
-    setDate(date);
+    setDate(date.toDateString());
   };
 
   const handleAccept = date => {
