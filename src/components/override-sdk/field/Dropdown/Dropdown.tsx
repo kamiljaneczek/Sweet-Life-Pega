@@ -220,10 +220,11 @@ export default function Dropdown(props: DropdownProps) {
         required={required}
         helperText={helperTextToDisplay}
         error={status === 'error'}
-        className='ow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2shad.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+        className='flex w-full p-2shad.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
       >
         <SelectValue
-          placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
+          // placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
+          placeholder='Select1...' // 2nd and 3rd args empty string until typedef marked correctly
         />
       </SelectTrigger>
       <SelectContent>
