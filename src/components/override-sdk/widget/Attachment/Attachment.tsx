@@ -58,10 +58,8 @@ export default function Attachment(props: AttachmentProps) {
   const srcImg = Utils.getImageSrc('document-doc', Utils.getSDKStaticConentUrl());
 
   let valueRef = (pConn.getStateProps() as any).value;
-  console.log('valueRef: ', valueRef);
 
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
-  console.log('valueRef after the slice: ', valueRef);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -370,8 +368,6 @@ export default function Attachment(props: AttachmentProps) {
   }, []);
 
   const handleClick = event => {
-    console.log('clicked');
-    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
