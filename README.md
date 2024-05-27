@@ -9,3 +9,7 @@
 
 The SDK-R v23.1.11 release upgrades the React version to React 17. This release allows React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 23.1.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
+
+Using:
+- tailwindcss
+- shadcn
