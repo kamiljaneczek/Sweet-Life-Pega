@@ -15,7 +15,8 @@ import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-import { Button } from '../../../../design-system/ui/button';
+// import { Button } from '../../../../design-system/ui/button';
+import Button from '@material-ui/core/Button';
 import { GripVertical, Loader } from 'lucide-react';
 
 interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
@@ -55,10 +56,14 @@ export default function Attachment(props: AttachmentProps) {
   }
   const deleteIcon = Utils.getImageSrc('trash', Utils.getSDKStaticConentUrl());
   const srcImg = Utils.getImageSrc('document-doc', Utils.getSDKStaticConentUrl());
+
   let valueRef = (pConn.getStateProps() as any).value;
+
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const [files, setFiles] = useState<any[]>(() =>
     value?.pxResults && +value.pyCount > 0 ? value.pxResults.map(f => buildFilePropsFromResponse(f)) : []
   );
@@ -376,18 +381,18 @@ export default function Attachment(props: AttachmentProps) {
         <div hidden={true} id='attachment-ID'>
           {valueRef}
         </div>
+        <input
+          style={{ display: 'none' }}
+          id={valueRef}
+          name='upload-photo'
+          type='file'
+          multiple={allowMultiple === 'true'}
+          required={required}
+          disabled={disabled}
+          onChange={onFileAdded}
+        />
         <label htmlFor={valueRef}>
-          <input
-            style={{ display: 'none' }}
-            id={valueRef}
-            name='upload-photo'
-            type='file'
-            multiple={allowMultiple === 'true'}
-            required={required}
-            disabled={disabled}
-            onChange={onFileAdded}
-          />
-          <Button style={{ textTransform: 'none' }} variant='outline'>
+          <Button style={{ textTransform: 'none' }} variant='outlined' component='span'>
             {allowMultiple === 'true'
               ? uploadMultipleFilesLabel === 'file_upload_text_multiple'
                 ? 'Choose files'

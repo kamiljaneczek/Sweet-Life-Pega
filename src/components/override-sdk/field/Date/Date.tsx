@@ -85,10 +85,6 @@ export default function Date(props: DateProps) {
   };
 
   const handleChange = date => {
-    // console.log('handleChange: ', date.toLocaleString());
-
-    // console.log('visibleDate: ', getFormattedDate(date));
-
     onChange({ value: getFormattedDate(date) });
     setDate(date.toDateString());
   };
