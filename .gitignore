@@ -46,3 +46,8 @@ tests/playwright-report
 
 # unit testing coverage
 /coverage
+
+
+/keys
+
+sdk-config.json
