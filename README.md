@@ -7,5 +7,7 @@ More materials:
 -
 
 Using:
+- react
+- typescript
 - tailwindcss
 - shadcn
