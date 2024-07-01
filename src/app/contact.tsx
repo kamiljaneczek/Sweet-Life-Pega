@@ -127,7 +127,7 @@ const Contact = () => {
                   </Button>
                 </form>
               ) : (
-                <div className='flex flex-row align-middle items-center justify-center'>
+                <div className='flex flex-col align-middle items-center justify-center'>
                   <p className='mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl'>
                     Case created successfully. Your Case ID is: <span className='font-bold text-gray-600'> {caseID}</span>
                   </p>
