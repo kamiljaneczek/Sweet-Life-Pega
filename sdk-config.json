@@ -1,28 +1,27 @@
 {
   "comment_sdk_config": "This is the configuration file for the React SDK",
+  "sdk_optional_configs_doc_comment": "See the document(link below) for more details on all the available config settings",
+  "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
   "authConfig": {
-    "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
-    "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI,",
-    "authConfig_comment3": "mashupAuthService, portalGrantType, mashupGrantType, tokenStorage",
     "authService": "pega",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
-    "mashupClientId": "11351708984521870813",
-    "mashupUserIdentifier": "",
-    "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding   //pass Rules123!3111 as base64 encoded",
+    "mashupClientId": "25795373220702300272",
+    "mashupUserIdentifier": "customer@mediaco",
+    "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
     "mashupPassword": "",
-    "grantType": "customBearer",
-    "mashupGrantType": "customBearer",
+
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "13472497343171375122"
+    "portalClientId": "25795373220702300272"
   },
+
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://lab-16149-us-east-1.external.pegalabs.io/prweb",
+    "infinityRestServerUrl": "https://localhost:1080/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "TellUsMoreRef",
+    "appAlias": "",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",
@@ -31,11 +30,12 @@
     "appPortal": "",
 
     "appMashupCaseType_comment": "If specified, uses this case type for mashup.  Otherwise, uses the first case type found for the app",
-    "appMashupCaseType": "SL-TellUsMoreRef-Work-Incident",
+    "appMashupCaseType": "",
 
     "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
     "excludePortals": ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]
   },
+
   "dxcbConfig": {
     "publishAccess": {
       "rulesetName": "CustomDXComponents",
