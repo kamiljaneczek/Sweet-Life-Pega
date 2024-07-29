@@ -18,4 +18,5 @@ To learn how to use Pega Constellation SDKs see series of articles:
 ## Installation
 - install RAP with Pega application
 - npm install
+- modify authorization config in sdk-config.json
 - npm run
