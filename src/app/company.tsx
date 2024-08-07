@@ -22,7 +22,7 @@ const Company = () => {
                 alt='Sweet Life Founders'
                 className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
                 height={200}
-                src='https://picsum.photos/id/633/400/600'
+                src='https://picsum.photos/id/20/3670/2462'
                 width={300}
               />
             </div>
@@ -43,7 +43,7 @@ const Company = () => {
                 alt='Sweet Life Founders'
                 className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
                 height={200}
-                src='https://picsum.photos/id/65/400/600'
+                src='https://picsum.photos/id/42/3456/2304'
                 width={300}
               />
             </div>
@@ -65,7 +65,7 @@ const Company = () => {
                 alt='Sweet Life Founders'
                 className='mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full'
                 height={200}
-                src='https://picsum.photos/id/56/400/600'
+                src='https://picsum.photos/id/163/2000/1333'
                 width={300}
               />
             </div>
@@ -75,7 +75,7 @@ const Company = () => {
         <section className='w-full py-12 md:py-16'>
           <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-6'>
             <div className='space-y-2'>
-              <h2 className='text-3xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>More about us</h2>
+              <h2 className='text-4xl py-4 font-bold tracking-tighter sm:text-2xl md:text-3xl'>More about us</h2>
               <p className='max-w-[800px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400'>
                 With a focus on quality and innovation, Sweet Life Inc. has carved a niche in the premium sweets market, delighting customers with an
                 exquisite range of chocolate bon bons. Our dedication to excellence is reflected in our three state-of-the-art factories across the
