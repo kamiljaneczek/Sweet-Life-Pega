@@ -16,7 +16,7 @@ import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 // import { Button } from '../../../../design-system/ui/button';
-import Button from '@material-ui/core/Button';
+import { Button } from '../../../../design-system/ui/button';
 import { GripVertical, Loader } from 'lucide-react';
 
 interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
@@ -392,7 +392,7 @@ export default function Attachment(props: AttachmentProps) {
           onChange={onFileAdded}
         />
         <label htmlFor={valueRef}>
-          <Button style={{ textTransform: 'none' }} variant='outlined' component='span'>
+          <Button variant="outline">
             {allowMultiple === 'true'
               ? uploadMultipleFilesLabel === 'file_upload_text_multiple'
                 ? 'Choose files'

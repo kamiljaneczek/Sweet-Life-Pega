@@ -34,9 +34,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
         {...props}
       />
       {helperText && error ? (
-        <Label className='block mt-1 pl-1 text-sm  font-light text-destructive dark:text-destructive'>{helperText}</Label>
+        <Label className='block mt-2 pl-1 text-sm  font-light text-destructive dark:text-destructive'>{helperText}</Label>
       ) : (
-        helperText && <Label className='block -mt-0.5 pl-2 text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>
+        helperText && <Label className='block mt-2 pl-2 text-xs font-light text-muted text-gray-900 dark:text-gray-300'>{helperText}</Label>
       )}
     </>
   );

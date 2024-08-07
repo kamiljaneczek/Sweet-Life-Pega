@@ -51,7 +51,7 @@ export default function FieldValueList(props: FieldValueListProps) {
   function getGridItemLabel() {
     return (
       <Grid item xs={variant === 'stacked' ? 12 : 6} className={variant === 'stacked' ? classes.noPaddingBottom : ''}>
-        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
+        <Typography variant='body2' component='span' className='dark:text-primary-foreground'>
           {name}
         </Typography>
       </Grid>
@@ -63,7 +63,7 @@ export default function FieldValueList(props: FieldValueListProps) {
 
     return (
       <Grid item xs={variant === 'stacked' ? 12 : 6} className={variant === 'stacked' ? classes.noPaddingTop : ''}>
-        <Typography variant={variant === 'stacked' ? 'h6' : 'body2'} component='span' className={classes.fieldValue}>
+        <Typography variant={variant === 'stacked' ? 'h6' : 'body2'} component='span' className='dark:text-primary-foreground'>
           {formattedValue}
         </Typography>
       </Grid>

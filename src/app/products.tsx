@@ -65,7 +65,7 @@ const Products = () => {
           <div className='container mx-auto'>
             <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
               <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>
-              <div className='flex items-center space-x-4'>
+              {/*  <div className='flex items-center space-x-4'>
                 <Label className='text-[#666] dark:text-gray-400' htmlFor='price-range'>
                   Price Range
                 </Label>
@@ -92,7 +92,7 @@ const Products = () => {
                     <SelectItem value='Candies'>Candies</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-8'>
               {products.map(product => (

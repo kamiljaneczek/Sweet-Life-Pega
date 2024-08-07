@@ -34,7 +34,7 @@ export default function FieldGroup(props: PropsWithChildren<FieldGroupProps>) {
             {collapsible ? (
               <span id='field-group-header' className='text-center pb-6 text-xl font-medium' onClick={headerClickHandler}>
                 {collapsed ? <ArrowRight /> : <ArrowDown />}
-                lili {name}
+                {name}
               </span>
             ) : (
               <span id='field-group-header' className=' text-center text-xl font-medium'>

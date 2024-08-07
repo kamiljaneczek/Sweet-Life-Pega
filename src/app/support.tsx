@@ -59,7 +59,7 @@ export default function Support() {
           <div className='py-8 px-4 mx-auto max-w-screen-xl 6 lg:px-6'>
             <div className='max-w-screen-md'>
               <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Questions or need help?</h2>
-              <p className='mb-8 text-gray-500 sm:text-xl dark:text-gray-400'>
+              <p className='mb-8 text-gray-500 text-lg dark:text-gray-400'>
                 We are here to help you. If you have any questions or need help, please let us know. Search in our knowledge base or create a new
                 incident.
               </p>
@@ -92,7 +92,7 @@ export default function Support() {
           <div className='py-8 px-4 mx-auto max-w-screen-xl lg:px-6'>
             <div className=' max-w-screen-md'>
               <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Customer service policies</h2>
-              <p className='mb-8 text-gray-500 text-xl dark:text-gray-400'>
+              <p className='mb-8 text-gray-500 text-lg dark:text-gray-400'>
                 By using our services, you agree to our customer service policies. Please read our <a href='#'>policies</a> carefully before using our
                 services.
               </p>
@@ -129,7 +129,7 @@ export default function Support() {
           <div className='py-8 px-4 mx-auto max-w-screen-xl  lg:px-6'>
             <div className='max-w-screen-md'>
               <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>Incidents</h2>
-              <p className='mb-8 text-gray-700 sm:text-xl dark:text-gray-400'>
+              <p className='mb-8 text-gray-700 text-lg dark:text-gray-400'>
                 Tell us about your concerns. We need to ask you a few questions to get started. It shall take only couple of minutes. We will get back
                 to you as soon as possible.
               </p>
@@ -169,7 +169,7 @@ export default function Support() {
                   hidden: showPega === 'Info' || showPega === 'Pega'
                 })}
               >
-                <div className='mb-8 mx-6 md:mx-12 font-normal text-gray-700 sm:text-xl dark:text-gray-400'>
+                <div className='mb-8 mx-6 md:mx-12 font-normal text-gray-700 text-lg dark:text-gray-400'>
                   Thank you for your submission. We will get back to you as soon as possible. Your case number is{' '}
                   <span className='font-extrabold'>{caseId}</span>
                   {'. '}Please use it in any of followup conversation.
