@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { Progress } from '../../../../design-system/ui/progress';
 
@@ -26,7 +25,6 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
   });
   useEffect(() => {
     setProgressValue(Math.floor(((currStepIndex + 1) / arNavigationSteps.length) * 100));
-    console.log('progressValue', Math.floor((currStepIndex / arNavigationSteps.length) * 100));
   }, [currStepIndex]);
 
   function buttonPress(sAction: string, sButtonType: string) {

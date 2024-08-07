@@ -24,6 +24,7 @@ export default function ActionButtons(props: ActionButtonsProps) {
         {arSecondaryButtons.map(sButton => (
           <Button
             variant='secondary'
+            key={sButton.name}
             size='lg'
             onClick={() => {
               _onButtonPress(sButton.jsAction, 'secondary');

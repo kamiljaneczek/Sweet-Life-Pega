@@ -8,6 +8,10 @@ interface OneColumnProps extends PConnProps {
 export default function OneColumn(props: PropsWithChildren<OneColumnProps>) {
   const { children } = props;
   return (children as ReactElement[]).map(child => {
-    return <div className=''>{child}</div>;
+    return (
+      <div key={child.key} className=''>
+        {child}
+      </div>
+    );
   });
 }

@@ -13,8 +13,18 @@ import Loading from './components/loading';
 
 export default function Support() {
   const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
+  const [caseId, setCaseId] = useState('');
   const isPegaReady = useConstellation();
-  console.log('isPegaReady', isPegaReady);
+
+  const handleCaseComplete = eventPayload => {
+    setShowPega('Confirmation');
+    setCaseId(eventPayload.caseID.split(' ')[1]);
+  };
+
+  const handleCaseCancel = () => {
+    console.log('Case Cancelled');
+    setShowPega('Info');
+  };
 
   function handleCreateCase() {
     setShowPega('Pega');
@@ -32,6 +42,11 @@ export default function Support() {
       (PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options) as any).then(() => {
         console.log('createCase rendering is complete');
       });
+
+      const constants = PCore.getConstants();
+
+      PCore.getPubSubUtils().subscribe(constants.PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING, handleCaseComplete, 'CaseComplete');
+      PCore.getPubSubUtils().subscribe(constants.PUB_SUB_EVENTS.EVENT_CANCEL, handleCaseCancel, 'CaseCancel');
     });
   }
 
@@ -121,7 +136,7 @@ export default function Support() {
                 <div
                   id='incident-info'
                   className={classNames('flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4', {
-                    hidden: showPega !== 'Info'
+                    hidden: showPega === 'Confirmation' || showPega === 'Pega'
                   })}
                 >
                   <HoverCard openDelay={200}>
@@ -131,12 +146,27 @@ export default function Support() {
                       </Button>
                     </HoverCardTrigger>
                     <HoverCardContent>
-                      <p className='font-bold'>In nothing helps, you can create an incident and we will get back to you as soon as possible.</p>
+                      <p className='font-bold'>If nothing helps, please create an incident and we will get back to you as soon as possible.</p>
                     </HoverCardContent>
                   </HoverCard>
                 </div>
                 <div className='flex flex-row align-middle items-center justify-center'>
-                  <div id='pega-root' className={classNames('flex-grow w-full max-w-3xl', { hidden: showPega !== 'Pega' })} />
+                  <div
+                    id='pega-root'
+                    className={classNames('flex-grow w-full max-w-3xl', { hidden: showPega === 'Confirmation' || showPega === 'Info' })}
+                  />
+                </div>
+                <div
+                  id='incident-confirmation'
+                  className={classNames('flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4', {
+                    hidden: showPega === 'Info' || showPega === 'Pega'
+                  })}
+                >
+                  <div className='mb-8 mx-6 md:mx-12 font-normal text-gray-700 sm:text-xl dark:text-gray-400'>
+                    Thank you for your submission. We will get back to you as soon as possible. Your case number is{' '}
+                    <span className='font-extrabold'>{caseId}</span>
+                    {'. '}Please use it in any of followup conversation.
+                  </div>
                 </div>
               </div>
             </div>

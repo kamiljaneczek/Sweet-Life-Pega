@@ -1,7 +1,7 @@
-import MuiPhoneNumber from 'material-ui-phone-number';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useState } from 'react';
+import { Input } from '../../../../design-system/ui/input';
 
 interface PhoneProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Phone here
@@ -28,8 +28,12 @@ export default function Phone(props: PhoneProps) {
     placeholder
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
-
+  const [inputValue, setInputValue] = useState('');
   let testProp = {};
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   testProp = {
     'data-test-id': testId
@@ -44,32 +48,31 @@ export default function Phone(props: PhoneProps) {
   }
 
   if (readOnly) {
-    const disableDropdown = true;
     return (
       <div>
-        <MuiPhoneNumber
-          fullWidth
+        <Input
           helperText={helperTextToDisplay}
           placeholder={placeholder ?? ''}
-          size='small'
           required={required}
           disabled={disabled}
           onChange={onChange}
+          className='shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
           error={status === 'error'}
           label={label}
-          value={value}
+          value={inputValue}
           InputProps={{
             readOnly: true,
             inputProps: { ...testProp }
           }}
-          disableDropdown={disableDropdown}
         />
       </div>
     );
   }
 
-  const handleChange = inputVal => {
-    let phoneValue = inputVal && inputVal.replace(/\D+/g, '');
+  const handleChange = event => {
+    setInputValue(event?.target?.value);
+    const val = event?.target?.value;
+    let phoneValue = val && val.replace(/\D+/g, '');
     phoneValue = `+${phoneValue}`;
     onChange({ value: phoneValue });
   };
@@ -81,20 +84,17 @@ export default function Phone(props: PhoneProps) {
   };
 
   return (
-    <MuiPhoneNumber
-      fullWidth
-      variant='outlined'
+    <Input
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
-      defaultCountry='us'
       required={required}
       disabled={disabled}
+      className='shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
       onChange={handleChange}
       onBlur={!readOnly ? handleBlur : undefined}
       error={status === 'error'}
       label={label}
-      value={value}
+      value={inputValue}
       InputProps={{ ...testProp }}
     />
   );

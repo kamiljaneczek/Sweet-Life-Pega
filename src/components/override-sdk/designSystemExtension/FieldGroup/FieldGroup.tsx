@@ -28,16 +28,16 @@ export default function FieldGroup(props: PropsWithChildren<FieldGroupProps>) {
 
   return (
     <div className='flex flex-row justify-between'>
-      <div className='w-full'>
+      <div className='w-full mt-6 mb-8'>
         {name && (
-          <div className='text-center'>
+          <div className='text-center mb-6 '>
             {collapsible ? (
-              <span id='field-group-header' className='text-center text-xl font-medium' onClick={headerClickHandler}>
+              <span id='field-group-header' className='text-center pb-6 text-xl font-medium' onClick={headerClickHandler}>
                 {collapsed ? <ArrowRight /> : <ArrowDown />}
                 lili {name}
               </span>
             ) : (
-              <span id='field-group-header' className='mt-6 mb-2 text-center text-xl font-medium'>
+              <span id='field-group-header' className=' text-center text-xl font-medium'>
                 {name}
               </span>
             )}
