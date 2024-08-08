@@ -12,7 +12,7 @@ To learn how to use Pega Constellation SDKs see series of articles: [https://sup
 - [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
 - [TypeScript](https://www.typescriptlang.org)
 - [Tailwind CSS](https://tailwindcss.com)
-- [ShadCN]([ShadCN](https://ui.shadcn.com/))
+- [ShadCN](https://ui.shadcn.com/)
 
 ## More materials:
 - RAP file for Pega application:[ https://github.com/kamiljaneczek/Sweet-Life-Pega/blob/cff535ff709b5232b90198c8bf0c9b657faa3238/package/tellusmore_ref.zip](https://github.com/kamiljaneczek/Sweet-Life-Pega/blob/1ddc639f252a77efa221de03fa19ba9d1e16ce36/package/tellusmore_ref_v2.zip)
