@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
-import { SelectTrigger } from '@radix-ui/react-select';
+/* import { SelectTrigger } from '@radix-ui/react-select'; */
 import Header from './components/header';
-import { Label } from '../design-system/ui/label';
-import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select';
+/* import { Label } from '../design-system/ui/label';
+import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select'; */
 import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
 import { IProduct } from '../types/types';

@@ -392,7 +392,7 @@ export default function Attachment(props: AttachmentProps) {
           onChange={onFileAdded}
         />
         <label htmlFor={valueRef}>
-          <Button variant="outline">
+          <Button variant='outline'>
             {allowMultiple === 'true'
               ? uploadMultipleFilesLabel === 'file_upload_text_multiple'
                 ? 'Choose files'
