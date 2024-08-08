@@ -7,9 +7,9 @@ More about project: [kjaneczek.pl](https://www.kjaneczek.pl/portfolio/sweet-life
 To learn how to use Pega Constellation SDKs see series of articles: [https://support.pega.com/discussion/constellation-flexible-ui](https://support.pega.com/discussion/constellation-flexible-ui)
 
 ## Tech stack:
-- [React](https://react.dev/)
 - [Pega Infinity 24](https://docs.pega.com/bundle/platform/page/platform/release-notes/platform-release-notes.html)
 - [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
+- [React](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org)
 - [Tailwind CSS](https://tailwindcss.com)
 - [ShadCN](https://ui.shadcn.com/)
