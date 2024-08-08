@@ -54,38 +54,36 @@ module.exports = {
       },
       fontFamily: {
         body: [
-          'Noto Sans',
+          'Roboto',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
           'system-ui',
           'Segoe UI',
-          'Roboto',
+
           'Helvetica Neue',
           'Arial',
-          'Noto Sans',
+
           'sans-serif',
           'Apple Color Emoji',
           'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji'
+          'Segoe UI Symbol'
         ],
         sans: [
-          'Noto Sans',
+          'Roboto',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
           'system-ui',
           'Segoe UI',
-          'Roboto',
+
           'Helvetica Neue',
           'Arial',
-          'Noto Sans',
+
           'sans-serif',
           'Apple Color Emoji',
           'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji'
+          'Segoe UI Symbol'
         ]
       },
       keyframes: {
