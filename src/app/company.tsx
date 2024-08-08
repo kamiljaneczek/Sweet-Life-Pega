@@ -13,7 +13,7 @@ const Company = () => {
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-700'>Our Story</div>
                 <h2 className='text-3xl font-bold tracking-tighter  md:text-5xl'>The Origin of Sweet Life</h2>
-                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed xl:text-2xl/relaxed dark:text-gray-400'>
+                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed  dark:text-gray-400'>
                   Kate and Blake, two sisters, started Sweet Life with a passion for creating high-quality, delicious sweets. They drew inspiration
                   from their family's long-standing tradition of baking and their childhood memories of making treats together.
                 </p>
@@ -34,7 +34,7 @@ const Company = () => {
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-700'>Our Growth</div>
                 <h2 className='text-3xl font-bold tracking-tighter md:text-5xl'>Present</h2>
-                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed xl:text-2xl/relaxed dark:text-gray-400'>
+                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed  dark:text-gray-400'>
                   Sweet Life now operates 3 state-of-the-art factories, allowing them to scale production and meet the growing demand for their
                   products. The factories are equipped with the latest technology and staffed by a team of skilled confectioners.
                 </p>
@@ -55,7 +55,7 @@ const Company = () => {
               <div className='space-y-4'>
                 <div className='inline-block rounded-lg bg-gray-100 px-3 py-1 dark:bg-gray-700'>Our Vision</div>
                 <h2 className='text-3xl font-bold tracking-tighter md:text-5xl'>Who we are and what we do</h2>
-                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed xl:text-2xl/relaxed dark:text-gray-400'>
+                <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed  dark:text-gray-400'>
                   Sweet Life is committed to using only the finest, freshest ingredients in their products. They believe in sustainable and ethical
                   business practices, supporting local communities, and bringing joy to their customers through their creations. The company's vision
                   is to become a leading provider of premium, handcrafted sweets that are enjoyed by people around the world.
@@ -76,7 +76,7 @@ const Company = () => {
           <div className='container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-6'>
             <div className='space-y-2'>
               <h2 className='text-4xl py-4 font-bold tracking-tighter  md:text-3xl'>More about us</h2>
-              <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed xl:text-2xl/relaxed dark:text-gray-400'>
+              <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed  dark:text-gray-400'>
                 With a focus on quality and innovation, Sweet Life Inc. has carved a niche in the premium sweets market, delighting customers with an
                 exquisite range of chocolate bon bons. Our dedication to excellence is reflected in our three state-of-the-art factories across the
                 globe where our signature treats are meticulously crafted. Employing a diverse team of 600 talented individuals, we take pride in our
@@ -85,7 +85,7 @@ const Company = () => {
               <div className='flex my-8 flex-col items-center align-middle center'>
                 <img src='assets/img/cupcake.svg' className='w-32 h-32' />
               </div>
-              <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed xl:text-2xl/relaxed dark:text-gray-400'>
+              <p className='max-w-[600px] text-lg text-gray-500 md:text-xl/relaxed  dark:text-gray-400'>
                 At Sweet Life Inc., we are committed to creating unforgettable experiences through our delectable confections. Our passion for
                 crafting the perfect chocolate bon bons drives us to constantly innovate and push the boundaries of flavor and quality. Each bite of
                 our sweets is a testament to our dedication to perfection and our unwavering commitment to customer satisfaction. As a company deeply
