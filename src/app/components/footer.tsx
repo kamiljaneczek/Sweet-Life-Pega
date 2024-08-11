@@ -44,9 +44,9 @@ const Footer = () => {
           </li>
         </ul>
         <span className='text-sm text-gray-500 sm:text-center dark:text-gray-400'>
-          © 2023
-          <a href='#' className='hover:underline'>
-            Sweet Life
+          © 2024 Made by{' '}
+          <a href='https://www.kjaneczek.pl' className='hover:underline'>
+            KJANECZEK.PL
           </a>
           . All Rights Reserved.
         </span>
