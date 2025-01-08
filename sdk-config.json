@@ -19,7 +19,7 @@
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://lab0339.lab.pega.com/prweb",
+    "infinityRestServerUrl": "https://lab-03764-bos.lab.pega.com/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
     "appAlias": "TellUsMoreRef",
