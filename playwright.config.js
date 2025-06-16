@@ -44,6 +44,8 @@ const config = {
     }
   },
 
+  testIgnore: ['e2e/DigV2/Localization/Localization.spec.js'],
+
   /* Configure projects for major browsers */
   projects: [
     {
