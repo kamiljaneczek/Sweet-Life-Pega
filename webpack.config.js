@@ -218,6 +218,14 @@ module.exports = (env, argv) => {
         {
           test: /\.(map)$/ /* latest react-sdk-components needs to ignore compiling .d.ts and .map files */,
           loader: 'null-loader'
+        },
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto',
+          resolve: {
+            fullySpecified: false
+          }
         }
       ]
     },

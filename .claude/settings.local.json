@@ -1,12 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(pnpm add:*)",
-      "Bash(npm install:*)",
-      "Bash(corepack:*)",
-      "Bash(curl:*)",
-      "Bash(source:*)",
-      "Bash(git:*)"
-    ]
+    "allow": ["Bash(pnpm add:*)", "Bash(npm install:*)", "Bash(corepack:*)", "Bash(curl:*)", "Bash(source:*)", "Bash(git:*)", "Bash(npm run:*)"]
   }
 }
