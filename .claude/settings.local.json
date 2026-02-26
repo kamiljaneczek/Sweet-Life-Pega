@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add:*)",
+      "Bash(npm install:*)",
+      "Bash(corepack:*)",
+      "Bash(curl:*)",
+      "Bash(source:*)",
+      "Bash(git:*)"
+    ]
+  }
+}

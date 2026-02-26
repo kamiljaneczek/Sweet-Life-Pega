@@ -21,4 +21,4 @@ To learn how to use Pega Constellation SDKs see series of articles: [https://sup
 - install RAP with Pega application on a Infinity server
 - npm install to install frontend
 - modify authorization config in sdk-config.json to point to your Infinity server
-- npm run
+- npm run start-dev
