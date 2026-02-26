@@ -1,4 +1,7 @@
-<p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
+This is a community project, no SRs will be acceptebdby Pega GCS.
+If foudn issues create help fxiing it.
+
+
 
 # React SDK - Release Announcement - v25.1.10
 
