@@ -1,7 +1,8 @@
+/* eslint-disable react/no-array-index-key */
 import React, { createElement, isValidElement } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters/index';
 
 import createPConnectComponent from './react_pconnect';
@@ -46,7 +47,6 @@ export default function DetailsFields(props) {
     fieldComponents.push({
       type: theCompType,
       label,
-      // eslint-disable-next-line react/no-array-index-key
       value: <React.Fragment key={index}>{createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}</React.Fragment>
     });
   });
@@ -115,14 +115,12 @@ export default function DetailsFields(props) {
       }
       if (isValidElement(field?.value)) {
         return (
-          // eslint-disable-next-line react/no-array-index-key
           <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
             {getGridItem(field, `${index}-item`)}
           </Grid>
         );
       }
       return (
-        // eslint-disable-next-line react/no-array-index-key
         <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
           {getGridItemLabel(field, `${index}-label`)}
           {getGridItemValue(field, `${index}-value`)}

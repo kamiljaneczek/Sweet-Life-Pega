@@ -23,7 +23,7 @@ test.describe('E2E test', () => {
     await newServiceCase.click();
     caseID = await page.locator('#caseId').textContent();
 
-    const firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
+    let firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
     await firstNameInput.click();
     await firstNameInput.fill('John');
 
@@ -31,7 +31,7 @@ test.describe('E2E test', () => {
     await middleNameInput.click();
     await middleNameInput.fill('');
 
-    const lastNameInput = page.locator('input[data-test-id="77587239BF4C54EA493C7033E1DBF636"]');
+    let lastNameInput = page.locator('input[data-test-id="77587239BF4C54EA493C7033E1DBF636"]');
     await lastNameInput.click();
     await lastNameInput.fill('Doe');
 
@@ -39,7 +39,7 @@ test.describe('E2E test', () => {
     await suffix.locator('button[title="Open"]').click();
     await page.locator('li:has-text("Jr")').click();
 
-    const emailInput = page.locator('input[data-test-id="CE8AE9DA5B7CD6C3DF2929543A9AF92D"]');
+    let emailInput = page.locator('input[data-test-id="CE8AE9DA5B7CD6C3DF2929543A9AF92D"]');
     await emailInput.click();
     await emailInput.fill('john@doe.com');
 
@@ -47,9 +47,19 @@ test.describe('E2E test', () => {
     const serviceDateInput = serviceDate.locator('input');
     await serviceDateInput.click();
     const futureDate = common.getFutureDate();
-    await serviceDateInput.fill(futureDate);
+    await serviceDateInput.pressSequentially(futureDate);
 
     await page.locator('button:has-text("submit")').click();
+
+    const caseSummary = page.locator('div[id="CaseSummary"]');
+    firstNameInput = caseSummary.locator('input').first();
+    await expect(firstNameInput).toHaveValue('John');
+
+    lastNameInput = caseSummary.locator('input').nth(1);
+    await expect(lastNameInput).toHaveValue('Doe');
+
+    emailInput = caseSummary.locator('input').nth(2);
+    await expect(emailInput).toHaveValue('john@doe.com');
 
     const streetInput = page.locator('input[data-test-id="D61EBDD8A0C0CD57C22455E9F0918C65"]');
     await streetInput.click();
@@ -60,7 +70,7 @@ test.describe('E2E test', () => {
     await cityInput.fill('Cambridge');
 
     const state = page.locator('div[data-test-id="46A2A41CC6E552044816A2D04634545D"]');
-    const stateSelector = state.locator('div[role="button"]');
+    const stateSelector = state.locator('div[role="combobox"]');
     await stateSelector.click();
     await page.locator('li[data-value="MA"]').click();
 
@@ -72,9 +82,7 @@ test.describe('E2E test', () => {
     const countrySelector = phone.locator('button');
     await countrySelector.click();
     await page.locator('text=United States+1 >> nth=0').click();
-    const phoneInput = phone.locator('input');
-    await phoneInput.click();
-    await phoneInput.fill('6175551212');
+    await common.enterPhoneNumber(phone, '6175551212');
 
     await page.locator('button:has-text("submit")').click();
 
@@ -102,33 +110,18 @@ test.describe('E2E test', () => {
     const sendToMgr = page.locator('label[data-test-id="C3B43E79AEC2D689F0CF97BD6AFB7DC4"]');
     await sendToMgr.check();
 
-    const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
+    // const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
     const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);
 
-    const pCoreVersion = await page.evaluate(() => window.PCore.getPCoreVersion());
-    const isInfinity23OrHigher = ['8.23.0', '23.1.1'].includes(pCoreVersion);
-
-    await Promise.all([
-      page.waitForResponse(
-        `${endpoints.serverConfig.infinityRestServerUrl}${
-          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
-        }/api/application/v2/attachments/upload`
-      )
-    ]);
+    await expect(page.locator('CircularProgress')).not.toBeVisible();
+    await page.waitForTimeout(5000);
 
     await page.locator('button:has-text("submit")').click();
 
-    await Promise.all([
-      page.waitForResponse(
-        `${endpoints.serverConfig.infinityRestServerUrl}${
-          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
-        }/api/application/v2/cases/${currentCaseID}/attachments${isInfinity23OrHigher ? '?includeThumbnail=false' : ''}`
-      )
-    ]);
-
+    await page.waitForTimeout(5000);
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
     await expect(Number(attachmentCount)).toBeGreaterThan(0);
   }, 10000);

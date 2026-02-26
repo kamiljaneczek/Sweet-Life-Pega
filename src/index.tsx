@@ -1,6 +1,5 @@
 // from react_root.js
-import { render } from 'react-dom';
-import {} from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import './common.css';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
@@ -16,7 +15,8 @@ const baseURL = '/';
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  render(
+  const root = createRoot(outletElement);
+  root.render(
     <BrowserRouter>
       <Switch>
         <Route exact path={`${baseURL}`} component={Home} />
@@ -33,8 +33,7 @@ if (outletElement) {
         <Route path={`${baseURL}desingsystem.html`} component={DesingSystem} />
         <Route path='*' component={Home} />
       </Switch>
-    </BrowserRouter>,
-    document.getElementById('outlet')
+    </BrowserRouter>
   );
 }
 
