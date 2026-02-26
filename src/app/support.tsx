@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../design-system/ui/hover-card';
 
@@ -31,8 +30,8 @@ export default function Support() {
     getSdkConfig().then(sdkConfig => {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
-        const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[1].pyWorkTypeImplementationClassName;
+        const caseTypes = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyCaseTypeList;
+        mashupCaseType = caseTypes?.[1]?.pyWorkTypeImplementationClassName;
       }
 
       const options: any = {
@@ -154,14 +153,11 @@ export default function Support() {
                 </HoverCard>
               </div>
               <div className='flex flex-row align-middle items-center justify-center'>
-                {isPegaReady ? (
-                  <div
-                    id='pega-root'
-                    className={classNames('flex-grow w-full max-w-3xl', { hidden: showPega === 'Confirmation' || showPega === 'Info' })}
-                  />
-                ) : (
-                  <Loading />
-                )}
+                {!isPegaReady && <Loading />}
+                <div
+                  id='pega-root'
+                  className={classNames('flex-grow w-full max-w-3xl', { hidden: !isPegaReady || showPega === 'Confirmation' || showPega === 'Info' })}
+                />
               </div>
               <div
                 id='incident-confirmation'

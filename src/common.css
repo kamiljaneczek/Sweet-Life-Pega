@@ -143,8 +143,3 @@
   cursor: pointer;
   color: var(--app-primary-dark-color);
 }
-
-/* Overriding CurrencyTextField style for fixing the alignment issue */
-[class*='MuiInputAdornment-positionStart'] {
-  margin-right: 0 !important;
-}

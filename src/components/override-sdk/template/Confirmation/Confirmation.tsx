@@ -1,10 +1,10 @@
-/* eslint-disable no-nested-ternary */
 import { PropsWithChildren, useState } from 'react';
-import { Button, Card, makeStyles } from '@material-ui/core';
 
 import { getToDoAssignments } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Button } from '../../../../design-system/ui/button';
+import { Card } from '../../../../design-system/ui/card';
 
 interface ConfirmationProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -14,25 +14,11 @@ interface ConfirmationProps extends PConnProps {
   showTasks: boolean;
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
-}));
-
 export default function Confirmation(props: PropsWithChildren<ConfirmationProps>) {
   // Get emitted components from map (so we can get any override that may exist)
   const ToDo = getComponentFromMap('Todo'); // NOTE: ConstellationJS Engine uses "Todo" and not "ToDo"!!!
   const Details = getComponentFromMap('Details');
 
-  const classes = useStyles();
   const CONSTS = PCore.getConstants();
   const [showConfirmView, setShowConfirmView] = useState(true);
   const { showTasks, getPConnect } = props;
@@ -40,7 +26,7 @@ export default function Confirmation(props: PropsWithChildren<ConfirmationProps>
   // Not using whatsNext at the moment, need to figure out the use of it
   // const whatsNext = datasource?.source;
   // const items = whatsNext.length > 0 ? whatsNext.map(item => item.label) : '';
-  const activeContainerItemID = PCore.getContainerUtils().getActiveContainerItemName(getPConnect().getTarget());
+  const activeContainerItemID = PCore.getContainerUtils().getActiveContainerItemName(getPConnect().getTarget() ?? null);
   const rootInfo = PCore.getContainerUtils().getContainerItemData(getPConnect().getTarget(), activeContainerItemID);
   const onConfirmViewClose = () => {
     setShowConfirmView(false);
@@ -51,7 +37,7 @@ export default function Confirmation(props: PropsWithChildren<ConfirmationProps>
   const detailProps = { ...props, showLabel: false };
   const showDetails = detailProps?.children?.[0]?.props?.getPConnect()?.getChildren()?.length > 0;
   return showConfirmView ? (
-    <Card className={classes.root}>
+    <Card className='m-1 p-1'>
       <h2 id='confirm-label'>{props.showLabel ? props.label : ''}</h2>
       {showDetails ? <Details {...detailProps} /> : undefined}
       {showTasks ? (
@@ -59,14 +45,12 @@ export default function Confirmation(props: PropsWithChildren<ConfirmationProps>
           <ToDo {...todoProps} datasource={{ source: toDoList }} getPConnect={getPConnect} type={CONSTS.TODO} headerText='Open Tasks' isConfirm />
         ) : undefined
       ) : undefined}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button variant='contained' color='primary' onClick={onConfirmViewClose}>
-          Done
-        </Button>
+      <div className='flex justify-end'>
+        <Button onClick={onConfirmViewClose}>Done</Button>
       </div>
     </Card>
   ) : toDoList && toDoList.length > 0 ? (
-    <Card className={classes.root}>
+    <Card className='m-1 p-1'>
       <ToDo {...props} datasource={{ source: toDoList }} getPConnect={getPConnect} type={CONSTS.TODO} headerText='Tasks' isConfirm />
     </Card>
   ) : null;

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Popover from '@material-ui/core/Popover';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import { Popover, PopoverContent, PopoverTrigger } from '../../../../design-system/ui/popover';
 
 // Operator is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -22,20 +19,8 @@ interface OperatorProps extends PConnProps {
   displayLabel?: any;
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(1),
-    margin: theme.spacing(1)
-  },
-  popover: {
-    padding: theme.spacing(1),
-    margin: theme.spacing(1)
-  }
-}));
-
 export default function Operator(props: OperatorProps) {
   // const componentName = "Operator";
-  const classes = useStyles();
 
   const fieldLabel = props?.label?.toLowerCase();
   const displayLabel = props?.displayLabel?.toLowerCase();
@@ -57,17 +42,10 @@ export default function Operator(props: OperatorProps) {
   }
 
   // Popover-related
-  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [popoverFields, setPopoverFields] = useState<any[]>([]);
 
-  const popoverOpen = Boolean(popoverAnchorEl);
-  const popoverId = popoverOpen ? 'operator-details-popover' : undefined;
-
-  const handlePopoverClose = () => {
-    setPopoverAnchorEl(null);
-  };
-
-  function showOperatorDetails(event) {
+  function showOperatorDetails() {
     const operatorPreviewPromise = PCore.getUserApi().getOperatorDetails(caseOpId);
     const localizedVal = PCore.getLocaleUtils().getLocaleValue;
     const localeCategory = 'Operator';
@@ -112,7 +90,6 @@ export default function Operator(props: OperatorProps) {
           }
         ];
       } else {
-        // eslint-disable-next-line no-console
         console.log(
           `Operator: PCore.getUserApi().getOperatorDetails(${caseOpId}); returned empty res.data.pyOperatorInfo.pyUserName - adding default`
         );
@@ -148,39 +125,35 @@ export default function Operator(props: OperatorProps) {
       setPopoverFields(fields);
     });
 
-    setPopoverAnchorEl(event.currentTarget);
+    setPopoverOpen(true);
   }
 
   function getPopoverGrid() {
-    // return popoverFields.map((field) => {
-    //   return <div className={classes.popover}>{field.name}: {field.value}</div>
-    // })
-
     if (popoverFields.length === 0) {
       return;
     }
 
     // There are fields, so build the grid.
     return (
-      <Grid container className={classes.popover} spacing={1}>
-        <Grid item xs={12}>
-          <Typography variant='h6'>{caseOpName}</Typography>
-        </Grid>
+      <div className='p-2 max-w-[45ch]'>
+        <div className='mb-2'>
+          <h6 className='text-lg font-medium'>{caseOpName}</h6>
+        </div>
         {popoverFields.map(field => {
           return (
             <React.Fragment key={field.id}>
-              <Grid container item xs={12} spacing={1}>
-                <Grid item xs={6}>
-                  <Typography variant='caption'>{field.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant='subtitle2'>{field.value}</Typography>
-                </Grid>
-              </Grid>
+              <div className='flex gap-1 py-0.5'>
+                <div className='w-1/2'>
+                  <span className='text-xs text-muted-foreground'>{field.name}</span>
+                </div>
+                <div className='w-1/2'>
+                  <span className='text-sm font-medium'>{field.value}</span>
+                </div>
+              </div>
             </React.Fragment>
           );
         })}
-      </Grid>
+      </div>
     );
   }
 
@@ -188,30 +161,21 @@ export default function Operator(props: OperatorProps) {
 
   return (
     <>
-      <TextField
-        defaultValue={caseOpName}
-        label={caseOpLabel}
-        onClick={showOperatorDetails}
-        InputProps={{
-          readOnly: true,
-          disableUnderline: true,
-          inputProps: { style: { cursor: 'pointer' } }
-        }}
-      />
+      <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+        <PopoverTrigger asChild>
+          <button type='button' onClick={showOperatorDetails} className='text-left cursor-pointer bg-transparent border-0 p-0'>
+            <div className='flex flex-col'>
+              <span className='text-xs text-muted-foreground'>{caseOpLabel}</span>
+              <span className='text-sm text-foreground'>{caseOpName}</span>
+            </div>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align='center' side='bottom'>
+          {getPopoverGrid()}
+        </PopoverContent>
+      </Popover>
       <br />
       {Utils.generateDateTime(caseTime, 'DateTime-Since')}
-
-      <Popover
-        id={popoverId}
-        open={popoverOpen}
-        anchorEl={popoverAnchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        PaperProps={{ style: { maxWidth: '45ch' } }}
-      >
-        {getPopoverGrid()}
-      </Popover>
     </>
   );
 }

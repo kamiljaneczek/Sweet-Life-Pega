@@ -1,7 +1,3 @@
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import Link from '@material-ui/core/Link';
-
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
 // FieldGroupList is one of the few components that does NOT have getPConnect.
@@ -20,11 +16,11 @@ export default function FieldGroupList(props: FieldGroupListProps) {
   }
 
   return (
-    <Grid container spacing={4} justifyContent='space-between'>
-      <Grid item style={{ width: '100%' }}>
-        <Grid container spacing={1}>
+    <div className='flex justify-between gap-4'>
+      <div className='w-full'>
+        <div className='flex flex-col gap-1'>
           {props.items.map(item => (
-            <Grid item style={{ width: '100%' }}>
+            <div className='w-full' key={item.id}>
               <b>{item.name}</b>
               {props.onDelete && (
                 <button
@@ -42,17 +38,17 @@ export default function FieldGroupList(props: FieldGroupListProps) {
               )}
               {item.children}
               <br />
-              {props.onAdd && <Divider />}
+              {props.onAdd && <hr className='border-t border-border' />}
               <br />
-            </Grid>
+            </div>
           ))}
           {props.onAdd && (
-            <Link onClick={props.onAdd} style={{ cursor: 'pointer' }}>
+            <button type='button' onClick={props.onAdd} className='cursor-pointer text-primary hover:underline text-left'>
               +Add
-            </Link>
+            </button>
           )}
-        </Grid>
-      </Grid>
-    </Grid>
+        </div>
+      </div>
+    </div>
   );
 }

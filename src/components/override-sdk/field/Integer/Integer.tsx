@@ -1,7 +1,7 @@
-import { TextField } from '@material-ui/core';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import { Input } from '../../../../design-system/ui/input';
 
 interface IntegerProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Integer here
@@ -44,12 +44,6 @@ export default function Integer(props: IntegerProps) {
     return <TextInput {...props} />;
   }
 
-  let testProp = {};
-
-  testProp = {
-    'data-test-id': testId
-  };
-
   function intOnChange(event) {
     // console.log(`Integer intOnChange inValue: ${event.target.value}`);
 
@@ -68,21 +62,22 @@ export default function Integer(props: IntegerProps) {
   }
 
   return (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder={placeholder ?? ''}
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={intOnChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      type='text'
-      inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', ...testProp }}
-    />
+    <div data-test-id={testId}>
+      <Input
+        type='text'
+        inputMode='numeric'
+        pattern='[0-9]*'
+        label={label}
+        placeholder={placeholder ?? ''}
+        required={required}
+        disabled={disabled}
+        onChange={intOnChange}
+        onBlur={!readOnly ? onBlur : undefined}
+        error={status === 'error'}
+        helperText={helperTextToDisplay}
+        InputProps={{}}
+        value={value}
+      />
+    </div>
   );
 }

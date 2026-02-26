@@ -1,9 +1,6 @@
 import { Preview } from '@storybook/react';
-import { Configuration, PopoverManager, Toaster, ModalManager, WorkTheme } from '@pega/cosmos-react-core';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { Configuration, PopoverManager, Toaster, ModalManager } from '@pega/cosmos-react-core';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { theme } from '../src/theme';
 
 import sdkConfig from '../sdk-config.json';
 import { themes as sbThemes } from '@storybook/theming';
@@ -21,7 +18,7 @@ setPCoreMocks();
 
 const isDark = String(sdkConfig?.theme).toLowerCase() === 'dark';
 
-const CANVAS_COLOR = (theme as any).backgroundColor || (isDark ? '#060326' : 'whitesmoke');
+const CANVAS_COLOR = isDark ? '#060326' : 'whitesmoke';
 
 const decorators = [
   (Story, context) => {
@@ -36,12 +33,7 @@ const decorators = [
         </PopoverManager>
       </Configuration>
     ) : (
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Story {...context} />
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <Story {...context} />
     );
   },
   decorator

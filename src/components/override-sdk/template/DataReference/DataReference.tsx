@@ -85,7 +85,6 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
           }
         })
         .catch(err => {
-          // eslint-disable-next-line no-console
           console.error(err?.stack);
           return Promise.resolve({
             data: { data: [] }
@@ -128,7 +127,7 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
     const refreshOptions = { autoDetectRefresh: true };
     if (canBeChangedInReviewMode && pConn.getValue('__currentPageTabViewName', '')) {
       // 2nd arg empty string until typedef marked correctly
-      getPConnect().getActionsApi().refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName', ''), null, refreshOptions); // 2nd arg empty string until typedef marked correctly
+      getPConnect().getActionsApi().refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName', ''), '', refreshOptions);
       PCore.getDeferLoadManager().refreshActiveComponents(pConn.getContextName());
     } else {
       const pgRef = pConn.getPageReference().replace('caseInfo.content', '');

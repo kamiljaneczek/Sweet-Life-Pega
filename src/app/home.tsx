@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable react/no-unescaped-entities */
-
 import Header from './components/header';
 import Footer from './components/footer';
 import { Button } from '../design-system/ui/button';
@@ -124,7 +121,8 @@ export default function Home() {
         </section>
         <section className='bg-white dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12'>
-            {isPegaReady ? <div id='pega-root' className={classNames('', { hidden: showPega !== 'Pega' })} /> : <Loading />}
+            {!isPegaReady && <Loading />}
+            <div id='pega-root' className={classNames('', { hidden: !isPegaReady || showPega !== 'Pega' })} />
           </div>
         </section>
         <section

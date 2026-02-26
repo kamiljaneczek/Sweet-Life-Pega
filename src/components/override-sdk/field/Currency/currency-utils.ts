@@ -1,6 +1,5 @@
-// eslint-disable-next-line import/no-named-default
 import { default as CurrencyAlias } from '@pega/react-sdk-components/lib/components/helpers/formatters/Currency';
-// eslint-disable-next-line import/no-named-default
+
 import { default as CurrencyMapAlias } from '@pega/react-sdk-components/lib/components/helpers/formatters/CurrencyMap';
 
 export const getCurrencyOptions = (inISOCode: string) => {

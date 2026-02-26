@@ -1,7 +1,7 @@
-import { TextField } from '@material-ui/core';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import { Input } from '../../../../design-system/ui/input';
 
 interface URLComponentProps extends PConnFieldProps {
   // If any, enter additional props that only exist on URLComponent here
@@ -45,28 +45,21 @@ export default function URLComponent(props: URLComponentProps) {
     return <TextInput {...props} />;
   }
 
-  let testProp = {};
-
-  testProp = {
-    'data-test-id': testId
-  };
-
   return (
-    <TextField
-      type='url'
-      fullWidth
-      variant='outlined'
-      helperText={helperTextToDisplay}
-      placeholder={placeholder ?? ''}
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      InputProps={{ inputProps: { ...testProp } }}
-    />
+    <div data-test-id={testId}>
+      <Input
+        type='url'
+        label={label}
+        placeholder={placeholder ?? ''}
+        required={required}
+        disabled={disabled}
+        onChange={onChange}
+        onBlur={!readOnly ? onBlur : undefined}
+        error={status === 'error'}
+        helperText={helperTextToDisplay}
+        InputProps={{}}
+        value={value}
+      />
+    </div>
   );
 }

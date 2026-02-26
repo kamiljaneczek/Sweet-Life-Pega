@@ -1,5 +1,4 @@
 import { createElement } from 'react';
-import Grid from '@material-ui/core/Grid';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -28,7 +27,7 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
   const children = (getPConnect().getChildren() as any[]).map((configObject, index) =>
     createElement(createPConnectComponent(), {
       ...configObject,
-      // eslint-disable-next-line react/no-array-index-key
+
       key: index.toString()
     })
   );
@@ -46,28 +45,24 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
         field.config.displayAsStatus = true;
       }
 
-      return getPConnect().createComponent(field, '', '', {}); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional
+      return getPConnect().createComponent(field, undefined, undefined, {}); // 2nd, 3rd, and 4th args now properly typed as optional
     });
   }
 
   return (
     <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
       {showHighlightedData && highlightedDataArr.length > 0 && (
-        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+        <div className='grid grid-cols-2 gap-2 pb-4'>
           {highlightedDataArr.map((child, i) => (
-            <Grid item xs={6} key={`hf-${i + 1}`}>
-              {child}
-            </Grid>
+            <div key={`hf-${i + 1}`}>{child}</div>
           ))}
-        </Grid>
+        </div>
       )}
-      <Grid container spacing={1}>
+      <div className='grid grid-cols-2 gap-2'>
         {children.map((child, i) => (
-          <Grid item xs={6} key={`r-${i + 1}`}>
-            {child}
-          </Grid>
+          <div key={`r-${i + 1}`}>{child}</div>
         ))}
-      </Grid>
+      </div>
     </FieldGroup>
   );
 }

@@ -1,8 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable import/prefer-default-export */
-import { render } from 'react-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { useMemo } from 'react';
+import { createRoot, Root } from 'react-dom/client';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
@@ -10,39 +7,29 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../sdk-local-component-map';
-import { theme } from '../theme';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
 
 declare const myLoadMashup: any;
 
+let defined_root: Root | null = null;
+
 function RootComponent(props) {
   const PegaConnectObj = createPConnectComponent();
-
-  // remove from Provider to work around compiler error for now: context={StoreContext}
-  // return (
-  //   <Provider store={PCore.getStore()} context={StoreContext} >
-  //     <PegaConnectObj {...props} />
-  //   </Provider>
-  // );
-
-  // const thePConnObj = <div>the RootComponent</div>;
   const thePConnObj = <PegaConnectObj {...props} />;
 
-  // NOTE: For Embedded mode, we add in displayOnlyFA to our React context
-  //  so it is available to any component that may need it.
-  // VRS: Attempted to remove displayOnlyFA but it presently handles various components which
-  //  SDK does not yet support, so all those need to be fixed up before it can be removed. To
-  //  be done in a future sprint.
-  return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <StoreContext.Provider value={{ store: PCore.getStore(), displayOnlyFA: true }}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {thePConnObj}
-      </ThemeProvider>
-    </StoreContext.Provider>
-  );
+  /**
+   * NOTE: For Embedded mode, we add in displayOnlyFA to our React context
+   * so it is available to any component that may need it.
+   * VRS: Attempted to remove displayOnlyFA but it presently handles various components which
+   * SDK does not yet support, so all those need to be fixed up before it can be removed.
+   * To be done in a future sprint.
+   */
+  const contextValue = useMemo(() => {
+    return { store: PCore.getStore(), displayOnlyFA: true };
+  }, [PCore.getStore()]);
+
+  return <StoreContext.Provider value={contextValue}>{thePConnObj}</StoreContext.Provider>;
 }
 
 /**
@@ -80,15 +67,27 @@ function initialRender(inRenderObj) {
     Component.displayName = componentName;
   }
 
-  const theComponent = (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />
-    </ThemeProvider>
-  );
+  const theComponent = <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />;
 
   // Initial render of component passed in (which should be a RootContainer)
-  render(<>{theComponent}</>, target);
+  const renderToTarget = (el: HTMLElement) => {
+    defined_root = createRoot(el);
+    defined_root.render(<>{theComponent}</>);
+  };
+
+  if (target) {
+    renderToTarget(target);
+  } else if (domContainerID) {
+    // Element not in DOM yet (React may not have rendered it). Wait for it.
+    const observer = new MutationObserver(() => {
+      const el = document.getElementById(domContainerID);
+      if (el) {
+        observer.disconnect();
+        renderToTarget(el);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
   //  setIsPegaReady(true);
   // Initial render to show that we have a PConnect and can render in the target location
   // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);

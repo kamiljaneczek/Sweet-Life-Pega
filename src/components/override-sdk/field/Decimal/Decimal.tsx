@@ -1,14 +1,12 @@
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { useState } from 'react';
 
-import { getCurrencyCharacters, getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
+import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-/* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
-as per the locale.
-*/
+import { Input } from '../../../../design-system/ui/input';
 
 interface DecimalProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Decimal here
@@ -35,8 +33,6 @@ export default function Decimal(props: DecimalProps) {
     displayMode,
     hideLabel,
     currencyISOCode = 'USD',
-    decimalPrecision = 2,
-    showGroupSeparators = true,
     testId,
     placeholder
   } = props;
@@ -46,12 +42,10 @@ export default function Decimal(props: DecimalProps) {
   const propName = (pConn.getStateProps() as any).value;
   const helperTextToDisplay = validatemessage || helperText;
 
-  const theSymbols = getCurrencyCharacters(currencyISOCode);
-  const theCurrDec = theSymbols.theDecimalIndicator;
-  const theCurrSep = theSymbols.theDigitGroupSeparator;
-
   const theCurrencyOptions = getCurrencyOptions(currencyISOCode);
-  const formattedValue = format(value, pConn.getComponentName().toLowerCase(), theCurrencyOptions);
+  const formattedValue = format(value, (pConn.getComponentName() ?? '').toLowerCase(), theCurrencyOptions);
+
+  const [inputValue, setInputValue] = useState('');
 
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} />;
@@ -65,32 +59,30 @@ export default function Decimal(props: DecimalProps) {
     'data-test-id': testId
   };
 
-  function decimalOnBlur(event, inValue) {
-    handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
+  function handleBlur() {
+    const numValue = inputValue !== '' ? Number(inputValue) : inputValue;
+    handleEvent(actions, 'changeNblur', propName, numValue as unknown as string);
+  }
+
+  function handleChange(event) {
+    setInputValue(event?.target?.value);
   }
 
   return (
-    <CurrencyTextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
+    <Input
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
       required={required}
       disabled={disabled}
+      readOnly={!!readOnly}
       error={status === 'error'}
       label={label}
       value={value}
-      readOnly={!!readOnly}
+      className='shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+      onChange={handleChange}
+      onBlur={!readOnly ? handleBlur : undefined}
       type='text'
-      outputFormat='number'
-      textAlign='left'
       InputProps={{ inputProps: { ...testProp } }}
-      currencySymbol=''
-      decimalCharacter={theCurrDec}
-      digitGroupSeparator={showGroupSeparators ? theCurrSep : ''}
-      decimalPlaces={decimalPrecision}
-      onBlur={!readOnly ? decimalOnBlur : undefined}
     />
   );
 }

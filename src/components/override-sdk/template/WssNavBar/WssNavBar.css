@@ -1,7 +1,15 @@
 .link-style {
-  color: white !important;
-  text-transform: capitalize !important;
-  font-size: 1rem !important;
+  color: white;
+  text-transform: capitalize;
+  font-size: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+
+.link-style:hover {
+  opacity: 0.8;
 }
 
 .nav-bar {

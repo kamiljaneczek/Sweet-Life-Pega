@@ -1,12 +1,5 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Box from '@material-ui/core/Box';
-import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
-import { IconButton, Menu, MenuItem, Typography, Button } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import MenuIcon from '@material-ui/icons/Menu';
+import { useState, useEffect, useRef } from 'react';
+import { Menu as MenuIcon } from 'lucide-react';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import './WssNavBar.css';
@@ -17,144 +10,170 @@ interface WssNavBarProps extends PConnProps {
   navLinks: any[];
   operator: { currentUserInitials: string };
   navDisplayOptions: { alignment: string; position: string };
-  // eslint-disable-next-line react/no-unused-prop-types
+
   portalName: string;
   imageSrc: string;
-  // eslint-disable-next-line react/no-unused-prop-types
+
   fullImageSrc: string;
   appName: any;
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2)
-  },
-  appListLogo: {
-    width: '3.6rem'
-  },
-  appName: {
-    color: 'white',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(4),
-    fontSize: '1.5rem'
-  }
-}));
-
 export default function WssNavBar(props: WssNavBarProps) {
   const { appInfo, navLinks, operator, navDisplayOptions } = props;
   const { alignment, position } = navDisplayOptions;
-  const classes = useStyles();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'AppShell';
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+  const handleToggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleToggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  const handleCloseMobileMenu = () => {
+    setMobileMenuOpen(false);
   };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    setUserMenuOpen(false);
   };
 
+  // Close menus when clicking outside
+  useEffect(() => {
+    if (!mobileMenuOpen && !userMenuOpen) return undefined;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target as Node) &&
+        mobileButtonRef.current &&
+        !mobileButtonRef.current.contains(e.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+      if (
+        userMenuOpen &&
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node) &&
+        userButtonRef.current &&
+        !userButtonRef.current.contains(e.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [mobileMenuOpen, userMenuOpen]);
+
   const navLinksContent = (
-    <Box id='nav-links' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} style={{ justifyContent: alignment }}>
+    <div id='nav-links' className='hidden md:flex flex-grow' style={{ justifyContent: alignment }}>
       {navLinks.map(link => (
-        <Button className='link-style' key={link.text} onClick={link.onClick}>
+        <button type='button' className='link-style' key={link.text} onClick={link.onClick}>
           {link.text}
-        </Button>
+        </button>
       ))}
-    </Box>
+    </div>
   );
 
   return (
     <div id='NavBar' className='nav-bar'>
-      <AppBar position='static' color='primary'>
-        <Container maxWidth='xl'>
-          <Toolbar disableGutters style={{ justifyContent: 'space-between' }}>
-            <Button id='appName' style={{ textTransform: 'capitalize' }} onClick={appInfo.onClick}>
-              <img src={appInfo.imageSrc} className={classes.appListLogo} />
-              <span className={classes.appName}>{appInfo.appName}</span>
-            </Button>
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size='small'
+      <nav className='bg-primary'>
+        <div className='max-w-screen-xl mx-auto px-4'>
+          <div className='flex items-center justify-between' style={{ minHeight: '64px' }}>
+            <button
+              type='button'
+              id='appName'
+              className='flex items-center capitalize bg-transparent border-none cursor-pointer'
+              onClick={appInfo.onClick}
+            >
+              <img src={appInfo.imageSrc} className='w-[3.6rem]' alt='app logo' />
+              <span className='text-white ml-4 mr-8 text-2xl'>{appInfo.appName}</span>
+            </button>
+
+            {/* Mobile menu button */}
+            <div className='flex md:hidden relative'>
+              <button
+                ref={mobileButtonRef}
+                type='button'
+                className='p-2 text-white bg-transparent border-none cursor-pointer rounded hover:bg-white/10'
                 aria-label='account of current user'
                 aria-controls='menu-appbar'
                 aria-haspopup='true'
-                onClick={handleOpenNavMenu}
-                color='inherit'
+                onClick={handleToggleMobileMenu}
               >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left'
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-              >
-                {navLinks.map(link => (
-                  <MenuItem key={link.text} onClick={link.onClick}>
-                    <Typography>{link.text}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                <MenuIcon size={24} />
+              </button>
+              {mobileMenuOpen && (
+                <div
+                  ref={mobileMenuRef}
+                  id='menu-appbar'
+                  className='absolute top-full left-0 z-50 bg-white rounded shadow-lg border border-gray-200 py-1 min-w-[160px]'
+                >
+                  <ul className='m-0 p-0 list-none'>
+                    {navLinks.map(link => (
+                      <li
+                        key={link.text}
+                        className='px-4 py-2 cursor-pointer hover:bg-gray-100 text-gray-900'
+                        onClick={() => {
+                          link.onClick();
+                          handleCloseMobileMenu();
+                        }}
+                      >
+                        <span>{link.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
 
             {position === 'inline' && <>{navLinksContent}</>}
 
-            <Box sx={{ flexGrow: 0 }}>
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar>{operator.currentUserInitials}</Avatar>
-              </IconButton>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+            {/* User avatar and menu */}
+            <div className='flex-shrink-0 relative'>
+              <button
+                ref={userButtonRef}
+                type='button'
+                className='p-1 bg-transparent border-none cursor-pointer rounded-full'
+                onClick={handleToggleUserMenu}
               >
-                <MenuItem onClick={logout}>
-                  <Typography>{localizedVal('Log off', localeCategory)}</Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
-          </Toolbar>
+                <span className='inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-400 text-white text-sm font-medium'>
+                  {operator.currentUserInitials}
+                </span>
+              </button>
+              {userMenuOpen && (
+                <div
+                  ref={userMenuRef}
+                  className='absolute right-0 top-full z-50 bg-white rounded shadow-lg border border-gray-200 py-1 min-w-[160px]'
+                >
+                  <ul className='m-0 p-0 list-none'>
+                    <li
+                      className='px-4 py-2 cursor-pointer hover:bg-gray-100 text-gray-900'
+                      onClick={() => {
+                        logout();
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      <span>{localizedVal('Log off', localeCategory)}</span>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
           {position === 'below' && <>{navLinksContent}</>}
-        </Container>
-      </AppBar>
+        </div>
+      </nav>
     </div>
   );
 }

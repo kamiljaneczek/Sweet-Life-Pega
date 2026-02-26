@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
@@ -43,10 +42,10 @@ export default function ScalarList(props: ScalarListProps) {
           readOnly: 'true'
         }
       },
-      '',
-      '',
+      undefined,
+      undefined,
       {}
-    ); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional;
+    ); // 2nd, 3rd, and 4th args now properly typed as optional
   });
 
   if (['LABELS_LEFT', 'STACKED_LARGE_VAL', 'DISPLAY_ONLY'].includes(displayMode)) {

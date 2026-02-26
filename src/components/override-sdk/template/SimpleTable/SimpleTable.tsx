@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useRef } from 'react';
 
 import { buildMetaForListView, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';

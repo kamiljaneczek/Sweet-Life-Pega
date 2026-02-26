@@ -1,7 +1,5 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
@@ -12,7 +10,7 @@ interface AssignmentProps extends PConnProps {
   itemKey: string;
   isInModal: boolean;
   banners: any[];
-  // eslint-disable-next-line react/no-unused-prop-types
+
   actionButtons: any[];
 }
 
@@ -45,6 +43,20 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const snackbarTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (showSnackbar) {
+      snackbarTimerRef.current = setTimeout(() => {
+        setShowSnackbar(false);
+      }, 3000);
+    }
+    return () => {
+      if (snackbarTimerRef.current) {
+        clearTimeout(snackbarTimerRef.current);
+      }
+    };
+  }, [showSnackbar]);
 
   function findCurrentIndicies(arStepperSteps: any[], arIndicies: number[], depth: number): number[] {
     let count = 0;
@@ -126,21 +138,18 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
 
   function showToast(message: string) {
     const theMessage = `Assignment: ${message}`;
-    // eslint-disable-next-line no-console
+
     console.error(theMessage);
     setSnackbarMessage(message);
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
+  function handleSnackbarClose() {
     setShowSnackbar(false);
   }
 
   function onSaveActionSuccess(data) {
-    actionsAPI.cancelAssignment(itemKey).then(() => {
+    actionsAPI.cancelAssignment(itemKey, false).then(() => {
       PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
     });
   }
@@ -153,8 +162,13 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
 
           navigatePromise
             .then(() => {})
-            .catch(() => {
-              showToast(`${localizedVal('Navigation failed!', localeCategory)}`);
+            .catch((error) => {
+              if (!error) {
+                showToast(`${localizedVal('Validation failed. Please check the highlighted fields.', localeCategory)}`);
+              } else {
+                console.error('Assignment navigateToStep error:', error);
+                showToast(`${localizedVal('Navigation failed!', localeCategory)}`);
+              }
             });
 
           break;
@@ -170,8 +184,13 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
               const caseType = thePConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
               onSaveActionSuccess({ caseType, caseID, assignmentID });
             })
-            .catch(() => {
-              showToast(`${localizedVal('Save failed', localeCategory)}`);
+            .catch((error) => {
+              if (!error) {
+                showToast(`${localizedVal('Validation failed. Please check the highlighted fields.', localeCategory)}`);
+              } else {
+                console.error('Assignment saveAssignment error:', error);
+                showToast(`${localizedVal('Save failed', localeCategory)}`);
+              }
             });
 
           break;
@@ -194,17 +213,25 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
-              .catch(() => {
+              .catch((error) => {
+                console.error('Assignment cancelCreateStageAssignment error:', error);
+                console.error('Error message:', error?.message);
+                console.error('Error details:', error?.details);
+                console.error('Error response:', error?.response?.status, error?.response?.data);
                 showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
               });
           } else {
-            const cancelPromise = cancelAssignment(itemKey);
+            const cancelPromise = cancelAssignment(itemKey, false);
 
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
-              .catch(() => {
+              .catch((error) => {
+                console.error('Assignment cancelAssignment error:', error);
+                console.error('Error message:', error?.message);
+                console.error('Error details:', error?.details);
+                console.error('Error response:', error?.response?.status, error?.response?.data);
                 showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
               });
           }
@@ -215,15 +242,20 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
           break;
       }
     } else if (sButtonType === 'primary') {
-      // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
         case 'finishAssignment': {
           const finishPromise = finishAssignment(itemKey);
 
           finishPromise
             .then(() => {})
-            .catch(() => {
-              showToast(`${localizedVal('Submit failed!', localeCategory)}`);
+            .catch((error) => {
+              if (!error) {
+                // PCore handled validation (422) and set field-level error messages
+                showToast(`${localizedVal('Validation failed. Please check the highlighted fields.', localeCategory)}`);
+              } else {
+                console.error('Assignment finishAssignment error:', error);
+                showToast(`${localizedVal('Submit failed!', localeCategory)}`);
+              }
             });
 
           break;
@@ -263,7 +295,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     refreshProps.forEach(prop => {
       PCore.getRefreshManager().registerForRefresh(
         'PROP_CHANGE',
-        thePConn.getActionsApi().refreshCaseView.bind(thePConn.getActionsApi(), caseKey, null, pageReference, {
+        thePConn.getActionsApi().refreshCaseView.bind(thePConn.getActionsApi(), caseKey, '', pageReference, {
           ...refreshOptions,
           refreshFor: prop[0]
         }),
@@ -278,47 +310,37 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     <div id='Assignment'>
       {banners}
       {bHasNavigation ? (
-        <>
-          <MultiStep
-            getPConnect={getPConnect}
-            itemKey={itemKey}
-            actionButtons={actionButtons}
-            onButtonPress={buttonPress}
-            bIsVertical={bIsVertical}
-            arCurrentStepIndicies={arCurrentStepIndicies}
-            arNavigationSteps={arNavigationSteps}
-          >
-            {children}
-          </MultiStep>
-          <Snackbar
-            open={showSnackbar}
-            autoHideDuration={3000}
-            onClose={handleSnackbarClose}
-            message={snackbarMessage}
-            action={
-              <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-                <CloseIcon fontSize='small' />
-              </IconButton>
-            }
-          />
-        </>
+        <MultiStep
+          getPConnect={getPConnect}
+          itemKey={itemKey}
+          actionButtons={actionButtons}
+          onButtonPress={buttonPress}
+          bIsVertical={bIsVertical}
+          arCurrentStepIndicies={arCurrentStepIndicies}
+          arNavigationSteps={arNavigationSteps}
+        >
+          {children}
+        </MultiStep>
       ) : (
-        <>
-          <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
-            {children}
-          </AssignmentCard>
-          <Snackbar
-            open={showSnackbar}
-            autoHideDuration={3000}
-            onClose={handleSnackbarClose}
-            message={snackbarMessage}
-            action={
-              <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-                <CloseIcon fontSize='small' />
-              </IconButton>
-            }
-          />
-        </>
+        <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
+          {children}
+        </AssignmentCard>
+      )}
+      {showSnackbar && (
+        <div
+          className='fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-md bg-gray-800 px-4 py-3 text-sm text-white shadow-lg transition-opacity duration-300'
+          role='alert'
+        >
+          <span>{snackbarMessage}</span>
+          <button
+            type='button'
+            aria-label='close'
+            className='ml-2 inline-flex items-center rounded p-1 hover:bg-gray-700'
+            onClick={handleSnackbarClose}
+          >
+            <X className='h-4 w-4' />
+          </button>
+        </div>
       )}
     </div>
   );

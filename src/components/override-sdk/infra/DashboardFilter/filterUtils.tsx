@@ -1,7 +1,4 @@
-/* eslint-disable prefer-template */
 /** This file contains various utility methods to generate filter components, regionLayout data, filter expressions, etc.  */
-
-import { Grid, Link } from '@material-ui/core';
 
 import DashboardFilter from './DashboardFilter';
 
@@ -78,17 +75,18 @@ export const buildFilterComponents = (getPConnect, allFilters) => {
   const filterComponents = allFilters.children.map((filter, index) => createFilterComponent(getPConnect, filter, index));
   if (filterComponents && filterComponents.length > 0) {
     filterComponents.push(
-      <Grid>
-        <Link
-          style={{ cursor: 'pointer' }}
+      <div>
+        <button
+          type='button'
+          className='cursor-pointer text-sm font-medium text-primary underline-offset-4 hover:underline'
           onClick={() => {
-            // @ts-ignore - second parameter “payload” for publish method should be optional
+            // @ts-ignore - second parameter "payload" for publish method should be optional
             PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CLEAR_ALL);
           }}
         >
           Clear All
-        </Link>
-      </Grid>
+        </button>
+      </div>
     );
   }
   return filterComponents;
