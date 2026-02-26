@@ -1,6 +1,4 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { NavContext } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
@@ -26,25 +24,6 @@ interface AppShellProps extends PConnProps {
   navDisplayOptions: { alignment: string; position: string };
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2)
-  },
-  wsscontent: {
-    flexGrow: 1,
-    height: '100vh',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
-  }
-}));
-
 export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   // Get emitted components from map (so we can get any override that may exist)
   const NavBar = getComponentFromMap('NavBar');
@@ -58,14 +37,13 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   const pConn = getPConnect();
   const envInfo = PCore.getEnvironmentInfo();
   const imageKey = envInfo.getOperatorImageInsKey();
-  const userName = envInfo.getOperatorName();
+  const userName = envInfo.getOperatorName() ?? '';
   const currentUserInitials = Utils.getInitials(userName);
-  const appNameToDisplay = showAppName ? envInfo.getApplicationLabel() : '';
+  const appNameToDisplay = showAppName ? (envInfo.getApplicationLabel() ?? '') : '';
   const portalClass = pConn.getValue('.classID', ''); // 2nd arg empty string until typedef marked correctly
   const envPortalName = envInfo.getPortalName();
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
 
-  const classes = useStyles();
   const actionsAPI = pConn.getActionsApi();
   const localeReference = pConn.getValue('.pyLocaleReference', ''); // 2nd arg empty string until typedef marked correctly
   const [imageBlobUrl, setImageBlobUrl] = useState<string | null>(null);
@@ -77,7 +55,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   // Initial setting of appName and mapChildren
   useEffect(() => {
-    setAppName(PCore.getEnvironmentInfo().getApplicationName());
+    setAppName(PCore.getEnvironmentInfo().getApplicationName() ?? '');
 
     const tempMap: any = (pConn.getChildren() as any)?.map((child: any, index) => {
       const theChildComp = child.getPConnect().getComponentName();
@@ -116,7 +94,6 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
           setFullIconURL(data);
         })
         .catch(() => {
-          // eslint-disable-next-line no-console
           console.error(`${localizedVal('Unable to load the image for the portal logo/icon with the insName', 'AppShell')}:${portalLogo}`);
         });
     }
@@ -133,7 +110,12 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   const getOperator = () => {
     return {
-      avatar: portalTemplate !== 'wss' ? <Avatar /> : { name: userName, imageSrc: imageBlobUrl },
+      avatar:
+        portalTemplate !== 'wss' ? (
+          <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-400' />
+        ) : (
+          { name: userName, imageSrc: imageBlobUrl }
+        ),
       name: userName,
       currentUserInitials
     };
@@ -187,15 +169,14 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
           operator={getOperator()}
           navDisplayOptions={navDisplayOptions}
         />
-        <div className={classes.wsscontent}>{children}</div>
+        <div className='grow h-screen mx-2'>{children}</div>
       </div>
     );
   }
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <NavContext.Provider value={{ open, setOpen }}>
-      <div id='AppShell' className={classes.root}>
+      <div id='AppShell' className='flex'>
         <NavBar
           getPConnect={getPConnect}
           pConn={getPConnect()}
@@ -203,7 +184,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
           pages={pages}
           caseTypes={caseTypes}
         />
-        <div className={classes.content}>{children}</div>
+        <div className='grow h-screen overflow-auto mx-4'>{children}</div>
       </div>
     </NavContext.Provider>
   );

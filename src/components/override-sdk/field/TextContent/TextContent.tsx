@@ -1,5 +1,3 @@
-import { Typography } from '@material-ui/core';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface TextContentProps extends PConnProps {
@@ -10,38 +8,27 @@ interface TextContentProps extends PConnProps {
 
 export default function TextContent(props: TextContentProps) {
   type ExpectedDisplayAs = 'Paragraph' | 'Heading 1' | 'Heading 2' | 'Heading 3' | 'Heading 4';
-  type ExpectedVariants = 'body1' | 'h1' | 'h2' | 'h3' | 'h4';
 
   const { content, displayAs }: { content: string; displayAs: ExpectedDisplayAs } = props;
 
-  let theVariant: ExpectedVariants = 'body1';
-
   switch (displayAs) {
     case 'Paragraph':
-      theVariant = 'body1';
-      break;
+      return <p className='text-base'>{content}</p>;
 
     case 'Heading 1':
-      theVariant = 'h1';
-      break;
+      return <h1 className='text-4xl font-bold'>{content}</h1>;
 
     case 'Heading 2':
-      theVariant = 'h2';
-      break;
+      return <h2 className='text-3xl font-bold'>{content}</h2>;
 
     case 'Heading 3':
-      theVariant = 'h3';
-      break;
+      return <h3 className='text-2xl font-semibold'>{content}</h3>;
 
     case 'Heading 4':
-      theVariant = 'h4';
-      break;
+      return <h4 className='text-xl font-semibold'>{content}</h4>;
 
     default:
-      // eslint-disable-next-line no-console
       console.error(`TextContent got an expected displayAs prop: ${displayAs}`);
-      break;
+      return <p className='text-base'>{content}</p>;
   }
-
-  return <Typography variant={theVariant}>{content}</Typography>;
 }

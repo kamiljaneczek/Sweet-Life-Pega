@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';

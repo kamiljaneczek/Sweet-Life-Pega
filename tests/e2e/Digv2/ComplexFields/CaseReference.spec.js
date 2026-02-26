@@ -86,7 +86,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Text")').click();
 
-    await page.locator('div[role="button"] >> nth=-1').click();
+    await page.locator('div[role="combobox"]:has-text("Select...")').click();
 
     await page.locator(`li >> text="${name}" >> nth=0`).click();
 
@@ -125,7 +125,7 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Next")').click();
 
     const assignment = page.locator('div[id="Assignment"]');
-    await expect(assignment.locator(`div >> span >> text="${caseID[0]}"`)).toBeVisible();
+    await expect(assignment.locator(`button:has-text("${caseID[0]}")`)).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 

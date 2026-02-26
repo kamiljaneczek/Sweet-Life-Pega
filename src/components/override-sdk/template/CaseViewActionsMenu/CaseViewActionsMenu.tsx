@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React, { useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button } from '../../../../design-system/ui/button';
 
 interface CaseViewActionsMenuProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -24,30 +20,61 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
   const localeCategory = 'CaseView';
   const localeKey = `${caseTypeID}!CASE!${caseTypeName}`.toUpperCase();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage]: any = useState('');
+  const snackbarTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  useEffect(() => {
+    if (showSnackbar) {
+      snackbarTimerRef.current = setTimeout(() => {
+        setShowSnackbar(false);
+      }, 3000);
+    }
+    return () => {
+      if (snackbarTimerRef.current) {
+        clearTimeout(snackbarTimerRef.current);
+      }
+    };
+  }, [showSnackbar]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  const handleClick = () => {
+    setMenuOpen(prev => !prev);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setMenuOpen(false);
   };
-
-  const arMenuItems: any[] = [];
 
   function showToast(message: string) {
     setSnackbarMessage(message);
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
+  function handleSnackbarClose() {
     setShowSnackbar(false);
   }
 
@@ -77,41 +104,65 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
     handleClose();
   }
 
+  const arMenuItems: React.ReactNode[] = [];
+
   availableActions.forEach(action => {
     arMenuItems.push(
-      <MenuItem key={action.ID} onClick={() => _actionMenuActionsClick(action)}>
+      <button
+        type='button'
+        key={action.ID}
+        className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+        onClick={() => _actionMenuActionsClick(action)}
+      >
         {localizedVal(action.name, '', localeKey)}
-      </MenuItem>
+      </button>
     );
   });
 
   availableProcesses.forEach(process => {
     arMenuItems.push(
-      <MenuItem key={process.ID} onClick={() => _actionMenuProcessClick(process)}>
+      <button
+        type='button'
+        key={process.ID}
+        className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+        onClick={() => _actionMenuProcessClick(process)}
+      >
         {localizedVal(process.name, '', localeKey)}
-      </MenuItem>
+      </button>
     );
   });
 
   return (
     <>
-      <Button aria-controls='simple-menu' aria-haspopup='true' onClick={handleClick}>
-        {localizedVal('Actions...', localeCategory)}
-      </Button>
-      <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        {arMenuItems}
-      </Menu>
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        action={
-          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-            <CloseIcon fontSize='small' />
-          </IconButton>
-        }
-      />
+      <div className='relative inline-block'>
+        <Button ref={buttonRef} variant='ghost' aria-controls='actions-menu' aria-haspopup='true' onClick={handleClick}>
+          {localizedVal('Actions...', localeCategory)}
+        </Button>
+        {menuOpen && (
+          <div
+            ref={menuRef}
+            className='absolute left-0 top-full z-50 mt-1 min-w-[160px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md'
+          >
+            {arMenuItems}
+          </div>
+        )}
+      </div>
+      {showSnackbar && (
+        <div
+          className='fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-md bg-gray-800 px-4 py-3 text-sm text-white shadow-lg transition-opacity duration-300'
+          role='alert'
+        >
+          <span>{snackbarMessage}</span>
+          <button
+            type='button'
+            aria-label='close'
+            className='ml-2 inline-flex items-center rounded p-1 hover:bg-gray-700'
+            onClick={handleSnackbarClose}
+          >
+            <X className='h-4 w-4' />
+          </button>
+        </div>
+      )}
     </>
   );
 }

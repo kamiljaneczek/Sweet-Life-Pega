@@ -1,5 +1,6 @@
 /* eslint-disable object-shorthand */
 // Statically load all "local" components that aren't yet in the npm package
+// import MediaCoTodo from '@pega/react-sdk-components/lib/mediaco/ToDo';
 
 import AutoComplete from './src/components/override-sdk/field/AutoComplete/';
 import CancelAlert from './src/components/override-sdk/field/CancelAlert/';

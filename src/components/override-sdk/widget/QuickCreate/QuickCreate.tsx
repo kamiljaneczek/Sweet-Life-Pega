@@ -21,7 +21,6 @@ export default function QuickCreate(props: QuickCreateProps) {
       .getActionsApi()
       .createWork(className, {} as any)
       .catch(error => {
-        // eslint-disable-next-line no-console
         console.log('Error in case creation: ', error?.message);
       });
   };

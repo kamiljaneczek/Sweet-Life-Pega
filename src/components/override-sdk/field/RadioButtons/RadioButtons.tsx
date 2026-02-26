@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, FormHelperText } from '@material-ui/core';
 
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
@@ -82,35 +81,47 @@ export default function RadioButtons(props: RadioButtonsProps) {
     );
   }
 
-  const handleChange = event => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.value);
   };
 
-  const handleBlur = event => {
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     thePConn.getValidationApi().validate(event.target.value, ''); // 2nd arg empty string until typedef marked correctly as optional
   };
 
   return (
-    <FormControl error={status === 'error'} required={required}>
-      <FormLabel component='legend'>{label}</FormLabel>
-      <RadioGroup value={theSelectedButton} onChange={handleChange} onBlur={!readOnly ? handleBlur : undefined} row={inline}>
+    <fieldset className={status === 'error' ? 'text-destructive' : ''}>
+      <legend className='mb-1 text-sm font-medium'>
+        {label}
+        {required && <span className='text-destructive'> *</span>}
+      </legend>
+      <div className={inline ? 'flex flex-wrap gap-4' : 'flex flex-col gap-2'} onBlur={!readOnly ? handleBlur : undefined}>
         {theOptions.map(theOption => {
+          const optionLabel = thePConn.getLocalizedValue(
+            theOption.value,
+            localePath,
+            // @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
+            thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+          );
           return (
-            <FormControlLabel
-              value={theOption.key}
-              key={theOption.key}
-              label={thePConn.getLocalizedValue(
-                theOption.value,
-                localePath,
-                // @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
-                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-              )}
-              control={<Radio key={theOption.key} color='primary' disabled={readOnly} />}
-            />
+            <label key={theOption.key} className='flex cursor-pointer items-center gap-2'>
+              <input
+                type='radio'
+                name={propName}
+                value={theOption.key}
+                checked={theSelectedButton === theOption.key}
+                onChange={handleChange}
+                disabled={readOnly}
+                className='h-4 w-4 border-gray-300 text-primary focus:ring-primary'
+              />
+              <span className='text-sm'>{optionLabel}</span>
+            </label>
           );
         })}
-      </RadioGroup>
-      <FormHelperText>{helperTextToDisplay}</FormHelperText>
-    </FormControl>
+      </div>
+      {helperTextToDisplay && (
+        <p className={`mt-1 text-xs ${status === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}>{helperTextToDisplay}</p>
+      )}
+    </fieldset>
   );
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useEffect } from 'react';
 
 import { Button } from '../design-system/ui/button';

@@ -1,8 +1,7 @@
 // from react_root.js
-import { render } from 'react-dom';
-import {} from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import './common.css';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 
 import Home from './app/home';
 import Company from './app/company';
@@ -16,25 +15,19 @@ const baseURL = '/';
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  render(
+  const root = createRoot(outletElement);
+  root.render(
     <BrowserRouter>
-      <Switch>
-        <Route exact path={`${baseURL}`} component={Home} />
-        <Route path={`${baseURL}index.html`} component={Home} />
-        <Route path={`${baseURL}company`} component={Company} />
-        <Route path={`${baseURL}company.html`} component={Company} />
-        <Route path={`${baseURL}products`} component={Products} />
-        <Route path={`${baseURL}products.html`} component={Products} />
-        <Route path={`${baseURL}support`} component={Support} />
-        <Route path={`${baseURL}support.html`} component={Support} />
-        <Route path={`${baseURL}contact`} component={Contact} />
-        <Route path={`${baseURL}contact.html`} component={Contact} />
-        <Route path={`${baseURL}desingsystem`} component={DesingSystem} />
-        <Route path={`${baseURL}desingsystem.html`} component={DesingSystem} />
-        <Route path='*' component={Home} />
-      </Switch>
-    </BrowserRouter>,
-    document.getElementById('outlet')
+      <Routes>
+        <Route path={`${baseURL}`} element={<Home />} />
+        <Route path={`${baseURL}company`} element={<Company />} />
+        <Route path={`${baseURL}products`} element={<Products />} />
+        <Route path={`${baseURL}support`} element={<Support />} />
+        <Route path={`${baseURL}contact`} element={<Contact />} />
+        <Route path={`${baseURL}desingsystem`} element={<DesingSystem />} />
+        <Route path='*' element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

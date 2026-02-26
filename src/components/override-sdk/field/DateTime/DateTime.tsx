@@ -1,10 +1,10 @@
-import { KeyboardDateTimePicker } from '@material-ui/pickers';
-
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
 import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import { Input } from '../../../../design-system/ui/input';
 
 interface DateTimeProps extends PConnFieldProps {
   // If any, enter additional props that only exist on DateTime here
@@ -15,21 +15,7 @@ export default function DateTime(props: DateTimeProps) {
   const TextInput = getComponentFromMap('TextInput');
   const FieldValueList = getComponentFromMap('FieldValueList');
 
-  const {
-    getPConnect,
-    label,
-    required,
-    disabled,
-    value = '',
-    validatemessage,
-    status,
-    onChange,
-    readOnly,
-    testId,
-    helperText,
-    displayMode,
-    hideLabel
-  } = props;
+  const { getPConnect, label, required, disabled, value = '', validatemessage, status, readOnly, testId, helperText, displayMode, hideLabel } = props;
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -63,41 +49,43 @@ export default function DateTime(props: DateTimeProps) {
     return <TextInput {...props} value={formattedDateTime} />;
   }
 
-  const handleChange = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
-    onChange({ value: changeValue });
-  };
-
-  const handleAccept = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const dateStr = event.target.value;
+    const changeValue = dateStr ? new Date(dateStr).toISOString() : '';
     handleEvent(actions, 'changeNblur', propName, changeValue);
   };
 
-  //
-  // TODO: Keyboard doesn't work in the minute field, it updates one digit then jump to am/pm field
-  //       try an older version of the lib or use DateTimePicker
-  //
+  // Convert ISO string value to datetime-local input format (YYYY-MM-DDTHH:MM)
+  let inputValue = '';
+  if (value) {
+    try {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        inputValue = `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+    } catch {
+      inputValue = '';
+    }
+  }
 
   return (
-    <KeyboardDateTimePicker
-      variant='inline'
-      inputVariant='outlined'
-      fullWidth
-      autoOk
-      required={required}
-      disabled={disabled}
-      placeholder={`${dateFormatInfo.dateFormatStringLC} hh:mm a`}
-      format={`${dateFormatInfo.dateFormatString} hh:mm a`}
-      mask={`${dateFormatInfo.dateFormatMask} __:__ _m`}
-      minutesStep={5}
-      error={status === 'error'}
-      helperText={helperTextToDisplay}
-      size='small'
-      label={label}
-      value={value || null}
-      onChange={handleChange}
-      onAccept={handleAccept}
-      data-test-id={testId}
-    />
+    <div data-test-id={testId}>
+      <Input
+        type='datetime-local'
+        label={label}
+        required={required}
+        disabled={disabled}
+        error={status === 'error'}
+        helperText={helperTextToDisplay}
+        InputProps={{}}
+        value={inputValue}
+        onChange={handleChange}
+      />
+    </div>
   );
 }

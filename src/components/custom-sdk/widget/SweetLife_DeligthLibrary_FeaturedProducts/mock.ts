@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const configProps = {
   label: 'App announcement',
   header: 'Feature Products',

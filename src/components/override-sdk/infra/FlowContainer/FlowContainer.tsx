@@ -1,14 +1,9 @@
-/* eslint-disable no-nested-ternary */
-
 import { useState, useEffect, useContext } from 'react';
 import { Card } from '../../../../design-system/ui/card';
 import Typography from '../../../../design-system/ui/typography';
-import DayjsUtils from '@date-io/dayjs';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/helpers';
+import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/container-helpers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { withSimpleViewContainerRenderer } from '@pega/react-sdk-components/lib/components/infra/Containers/SimpleView/SimpleView';
 
@@ -98,7 +93,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     if (caseViewMode && caseViewMode === 'review') {
       return true;
     }
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+
     if (caseViewMode && caseViewMode === 'perform') {
       return false;
     }
@@ -162,7 +157,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
 
     const childCases = ourPConn.getValue(pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS, ''); // 2nd arg empty string until typedefs properly allow optional
     // const allAssignments = [];
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+
     if (childCases && childCases.length > 0) {
       return true;
     }
@@ -213,8 +208,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     let loadingInfo: any;
     try {
       loadingInfo = thePConn.getLoadingStatus(''); // 1st arg empty string until typedefs properly allow optional
-    } catch (ex) {
-      // eslint-disable-next-line no-console
+    } catch {
       console.error(`${thePConn.getComponentName()}: loadingInfo catch block`);
     }
 
@@ -287,11 +281,9 @@ export const FlowContainer = (props: FlowContainerProps) => {
           !displayOnlyFA ? (
             <Card className='shadow-none border-none'>
               {displayPageMessages()}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {rootViewElement}
-                </Assignment>
-              </MuiPickersUtilsProvider>
+              <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                {rootViewElement}
+              </Assignment>
             </Card>
           ) : (
             <Card className='shadow-none border-none'>
@@ -299,11 +291,9 @@ export const FlowContainer = (props: FlowContainerProps) => {
                 <Typography variant='h1'>{containerName}</Typography>
               </div>
               {displayPageMessages()}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {rootViewElement}
-                </Assignment>
-              </MuiPickersUtilsProvider>
+              <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                {rootViewElement}
+              </Assignment>
             </Card>
           )
         ) : (

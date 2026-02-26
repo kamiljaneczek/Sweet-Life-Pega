@@ -1,55 +1,27 @@
 import { PropsWithChildren, ReactElement } from 'react';
-import { Grid, GridSize } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import './TwoColumn.css';
 
 interface TwoColumnProps extends PConnProps {
   // If any, enter additional props that only exist on this component
   templateCol?: string;
 }
 
-const useStyles = makeStyles(() => ({
-  colStyles: {
-    display: 'grid',
-    gap: '1rem',
-    alignContent: 'baseline'
-  }
-}));
-
 export default function TwoColumn(props: PropsWithChildren<TwoColumnProps>) {
-  const classes = useStyles();
-
   const { children, templateCol = '1fr 1fr' } = props;
   const childrenToRender = children as ReactElement[];
 
   if (childrenToRender.length !== 2) {
-    // eslint-disable-next-line no-console
     console.error(`TwoColumn template sees more than 2 columns: ${childrenToRender.length}`);
   }
 
-  // Calculate the size
-  //  Default to assume the 2 columns are evenly split. However, override if templateCol
-  //  (example value: "1fr 1fr")
-  let aSize: GridSize = 6;
-  let bSize: GridSize = 6;
-
-  const colAArray = templateCol
-    .replaceAll(/[a-z]+/g, '')
-    .split(/\s/)
-    .map(itm => Number(itm));
-  const totalCols = colAArray.reduce((v, itm) => itm + v, 0);
-  const ratio = 12 / totalCols;
-  aSize = (ratio * colAArray[0]) as GridSize;
-  bSize = (ratio * colAArray[1]) as GridSize;
-
+  // templateCol is a valid CSS grid-template-columns value (e.g., "1fr 1fr", "1fr 2fr")
+  // Responsive: stacks on small screens, uses templateCol proportions on md+
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} md={aSize} className={classes.colStyles}>
-        {childrenToRender[0]}
-      </Grid>
-      <Grid item xs={12} md={bSize} className={classes.colStyles}>
-        {childrenToRender[1]}
-      </Grid>
-    </Grid>
+    <div className='psdk-two-column' style={{ '--template-col': templateCol } as React.CSSProperties}>
+      <div className='psdk-two-column-column'>{childrenToRender[0]}</div>
+      <div className='psdk-two-column-column'>{childrenToRender[1]}</div>
+    </div>
   );
 }

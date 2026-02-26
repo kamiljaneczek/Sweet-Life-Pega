@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable operator-assignment */
 import { forwardRef, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { TextField } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
 import { debounce } from 'throttle-debounce';
 import DatePicker from 'react-datepicker';
@@ -97,7 +94,7 @@ export default function DashboardFilter(props: PropsWithChildren<DashboardFilter
     metadata.config.onRecordChange = e => {
       fireFilterChange(e.id);
     };
-    return getPConnect().createComponent(metadata, '', '', {}); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional);
+    return getPConnect().createComponent(metadata, undefined, undefined, {}); // 2nd, 3rd, and 4th args now properly typed as optional
   };
 
   const onChange = dates => {
@@ -111,11 +108,18 @@ export default function DashboardFilter(props: PropsWithChildren<DashboardFilter
 
   const label = metadata.config.label.substring(3);
 
-  // eslint-disable-next-line react/no-unstable-nested-components
   const CustomDateInput = forwardRef<HTMLInputElement, TextProps>(({ value, onClick }, ref: any) => (
-    <TextField label={label} variant='outlined' fullWidth value={value} size='small' onClick={onClick} ref={ref}>
-      {value}
-    </TextField>
+    <div className='relative w-full'>
+      <label className='mb-1 block text-sm font-medium text-foreground'>{label}</label>
+      <input
+        type='text'
+        className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+        value={value as string}
+        onClick={onClick}
+        ref={ref}
+        readOnly
+      />
+    </div>
   ));
 
   return (

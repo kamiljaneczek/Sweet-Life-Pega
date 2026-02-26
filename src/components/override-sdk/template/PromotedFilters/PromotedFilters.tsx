@@ -56,7 +56,6 @@ function Filters({ filters, transientItemID, localeReference }) {
       }
     });
 
-    // eslint-disable-next-line react/no-array-index-key
     return <React.Fragment key={index}>{createElement(createPConnectComponent(), c11nEnv)}</React.Fragment>;
   });
 }

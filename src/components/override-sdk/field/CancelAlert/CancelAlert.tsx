@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Grid, IconButton, Snackbar } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Button } from '../../../../design-system/ui/button';
 import './CancelAlert.css';
 
 interface CancelAlertProps extends PConnFieldProps {
@@ -21,7 +21,7 @@ export default function CancelAlert(props: CancelAlertProps) {
   const actionsAPI = getPConnect().getActionsApi();
   const containerManagerAPI = getPConnect().getContainerManager();
   const isLocalAction = getPConnect().getValue(PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION);
-  const isBulkAction = getPConnect()?.options?.isBulkAction;
+  const isBulkAction = (getPConnect() as any)?.options?.isBulkAction;
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const broadCastUtils: any = PCore.getCoexistenceManager().getBroadcastUtils();
   const isReverseCoexistence = broadCastUtils.isReverseCoexistenceCaseLoaded();
@@ -39,6 +39,20 @@ export default function CancelAlert(props: CancelAlertProps) {
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const snackbarTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (showSnackbar) {
+      snackbarTimer.current = setTimeout(() => {
+        setShowSnackbar(false);
+      }, 3000);
+    }
+    return () => {
+      if (snackbarTimer.current) {
+        clearTimeout(snackbarTimer.current);
+      }
+    };
+  }, [showSnackbar]);
 
   function disableButton(id) {
     setButtonsState(prevState => ({
@@ -77,7 +91,7 @@ export default function CancelAlert(props: CancelAlertProps) {
         });
     } else if (isLocalAction) {
       dismiss(true);
-      actionsAPI.cancelAssignment(containerItemID);
+      actionsAPI.cancelAssignment(containerItemID, false);
     } else if (isBulkAction) {
       dismiss(true);
       actionsAPI.cancelBulkAction(containerItemID);
@@ -87,18 +101,13 @@ export default function CancelAlert(props: CancelAlertProps) {
     }
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
+  function handleSnackbarClose() {
     setShowSnackbar(false);
   }
 
   const leftButton = (
     <Button
-      name={btnIds.CONTINUE_WORKING}
-      variant='contained'
-      color='secondary'
+      variant='secondary'
       onClick={() => {
         dismiss();
         if (isReverseCoexistence) {
@@ -112,7 +121,7 @@ export default function CancelAlert(props: CancelAlertProps) {
   );
 
   const rightButton = (
-    <Button name={btnIds.DELETE} variant='contained' color='primary' disabled={buttonsState[btnIds.DELETE]} onClick={cancelHandler}>
+    <Button variant='default' disabled={buttonsState[btnIds.DELETE]} onClick={cancelHandler}>
       {localizedVal('Discard', localeCategory)}
     </Button>
   );
@@ -126,24 +135,21 @@ export default function CancelAlert(props: CancelAlertProps) {
             <p>{localizedVal(content, localeCategory)}</p>
           </div>
           <div className='action-controls'>
-            <Grid container spacing={4} justifyContent='space-between'>
-              <Grid item>{leftButton}</Grid>
-              <Grid item>{rightButton}</Grid>
-            </Grid>
+            <div className='flex items-center justify-between gap-4'>
+              <div>{leftButton}</div>
+              <div>{rightButton}</div>
+            </div>
           </div>
         </div>
       </div>
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        action={
-          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-            <CloseIcon fontSize='small' />
-          </IconButton>
-        }
-      />
+      {showSnackbar && (
+        <div className='fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-md bg-gray-800 px-4 py-3 text-white shadow-lg transition-opacity duration-300'>
+          <span>{snackbarMessage}</span>
+          <button type='button' onClick={handleSnackbarClose} className='ml-2 rounded p-1 hover:bg-gray-700'>
+            <X className='h-4 w-4' />
+          </button>
+        </div>
+      )}
     </>
   );
 }

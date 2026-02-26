@@ -1,28 +1,6 @@
-/* eslint-disable no-nested-ternary */
 import React, { PropsWithChildren, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
 import { createElement } from 'react';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import SubjectIcon from '@material-ui/icons/Subject';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { MoreVertical, Filter, FileText, ChevronUp, ChevronDown } from 'lucide-react';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
@@ -31,6 +9,8 @@ import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/d
 import { buildFieldsForTable, filterData, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+
+import { Button } from '../../../../design-system/ui/button';
 
 interface SimpleTableManualProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -54,33 +34,6 @@ interface SimpleTableManualProps extends PConnProps {
   viewForEditModal: any;
 }
 
-const useStyles = makeStyles((/* theme */) => ({
-  label: {
-    margin: '8px'
-  },
-  header: {
-    background: '#f5f5f5'
-  },
-  tableCell: {
-    borderRight: '1px solid lightgray',
-    padding: '8px'
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1
-  },
-  moreIcon: {
-    verticalAlign: 'bottom'
-  }
-}));
-
 let menuColumnId = '';
 let menuColumnType = '';
 let menuColumnLabel = '';
@@ -89,7 +42,6 @@ const filterByColumns: any[] = [];
 let myRows: any[];
 
 export default function SimpleTableManual(props: PropsWithChildren<SimpleTableManualProps>) {
-  const classes = useStyles();
   const {
     getPConnect,
     referenceList = [], // if referenceList not in configProps$, default to empy list
@@ -118,7 +70,9 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof any>('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [editAnchorEl, setEditAnchorEl] = useState<null | HTMLElement>(null);
+  const [editMenuPosition, setEditMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [open, setOpen] = useState(false);
   const [filterBy, setFilterBy] = useState<string>();
   const [containsDateOrTime, setContainsDateOrTime] = useState<boolean>(false);
@@ -130,6 +84,8 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   const [displayDialogDateFilter, setDisplayDialogDateFilter] = useState<string>('notequal');
   const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
   const selectedRowIndex: any = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const editMenuRef = useRef<HTMLDivElement>(null);
 
   const parameters = fieldMetadata?.datasource?.parameters;
   const { referenceListStr } = getContext(getPConnect());
@@ -177,17 +133,35 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   useEffect(() => {
     if (editableMode && !allowEditingInModal) {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       buildElementsForTable();
     }
   }, [referenceList.length]);
 
   useEffect(() => {
     if (readOnlyMode || allowEditingInModal) {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       generateRowsData();
     }
   }, [referenceList]);
+
+  // Click-outside handler for column menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setAnchorEl(null);
+        setMenuPosition(null);
+      }
+      if (editMenuRef.current && !editMenuRef.current.contains(event.target as Node)) {
+        setEditAnchorEl(null);
+        setEditMenuPosition(null);
+      }
+    }
+    if (anchorEl || editAnchorEl) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [anchorEl, editAnchorEl]);
 
   // fieldDefs will be an array where each entry will have a "name" which will be the
   //  "resolved" property name (that we can use as the colId) though it's not really
@@ -195,7 +169,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   //  Constellation DX Components do). It will also have the "label", and "meta" contains the original,
   //  unchanged config info. For now, much of the info here is carried over from
   //  Constellation DX Components.
-  const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, showDeleteButton);
+  const fieldDefs = buildFieldsForTable(rawFields, pConn, showDeleteButton, { primaryFieldsViewIndex: 0, fields: resolvedFields });
 
   useLayoutEffect(() => {
     if (allowEditingInModal) {
@@ -233,7 +207,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   // return the value that should be shown as the contents for the given row data
   //  of the given row field
-  function getRowValue(inRowData: Object, inColKey: string): any {
+  function getRowValue(inRowData: object, inColKey: string): any {
     // See what data (if any) we have to display
     const refKeys: string[] = inColKey?.split('.');
     let valBuilder = inRowData;
@@ -268,7 +242,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
       //  we're using as the table's dataSource
       const data: any = [];
       for (const row of referenceList) {
-        const dataForRow: Object = {};
+        const dataForRow: object = {};
         for (const col of displayedColumns) {
           const colKey: string = col;
           const theVal = getRowValue(row, colKey);
@@ -300,7 +274,16 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     if (allowEditingInModal && defaultView) {
       pConn
         .getActionsApi()
-        .openEmbeddedDataModal(defaultView, pConn, referenceListStr, referenceList.length, PCore.getConstants().RESOURCE_STATUS.CREATE);
+        .openEmbeddedDataModal(
+          defaultView,
+          pConn as any,
+          referenceListStr,
+          referenceList.length,
+          PCore.getConstants().RESOURCE_STATUS.CREATE,
+          '',
+          '',
+          ''
+        );
     } else {
       pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
     }
@@ -312,21 +295,26 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   const editRecord = () => {
     setEditAnchorEl(null);
+    setEditMenuPosition(null);
     if (typeof selectedRowIndex.current === 'number') {
       pConn
         .getActionsApi()
         .openEmbeddedDataModal(
           bUseSeparateViewForEdit ? editView : defaultView,
-          pConn,
+          pConn as any,
           referenceListStr,
           selectedRowIndex.current,
-          PCore.getConstants().RESOURCE_STATUS.UPDATE
+          PCore.getConstants().RESOURCE_STATUS.UPDATE,
+          '',
+          '',
+          ''
         );
     }
   };
 
   const deleteRecord = () => {
     setEditAnchorEl(null);
+    setEditMenuPosition(null);
     pConn.getListActions().deleteEntry(selectedRowIndex.current);
   };
 
@@ -395,7 +383,6 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
@@ -409,21 +396,21 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     menuColumnType = columnType;
     menuColumnLabel = labelValue;
 
+    const rect = event.currentTarget.getBoundingClientRect();
+    setMenuPosition({ top: rect.bottom, left: rect.left });
     setAnchorEl(event.currentTarget);
   }
 
   function editMenuClick(event, index) {
     selectedRowIndex.current = index;
+    const rect = event.currentTarget.getBoundingClientRect();
+    setEditMenuPosition({ top: rect.bottom, left: rect.left });
     setEditAnchorEl(event.currentTarget);
-  }
-
-  function _menuClose() {
-    setAnchorEl(null);
-    setEditAnchorEl(null);
   }
 
   function _filterMenu() {
     setAnchorEl(null);
+    setMenuPosition(null);
 
     let bFound = false;
 
@@ -546,7 +533,6 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   function _showFilteredIcon(columnId) {
     for (const filterObj of filterByColumns) {
       if (filterObj.ref === columnId) {
-        // eslint-disable-next-line sonarjs/prefer-single-boolean-return
         if (filterObj.containsFilterValue !== '') {
           return true;
         }
@@ -561,7 +547,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     const len = editableMode ? elements.length : rowData.length;
 
     return len ? (
-      <span style={{ fontSize: '0.9em', opacity: '0.7' }}>
+      <span className='text-sm opacity-70'>
         {len} result{len > 1 ? 's' : ''}
       </span>
     ) : null;
@@ -569,63 +555,73 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   return (
     <>
-      <TableContainer component={Paper} style={{ margin: '4px 0px' }} id='simple-table-manual'>
+      <div className='my-1 rounded border border-gray-200 bg-white shadow-sm' id='simple-table-manual'>
         {propsToUse.label && (
-          <h3 className={classes.label}>
+          <h3 className='m-2'>
             {propsToUse.label} {results()}
           </h3>
         )}
-        <Table>
-          <TableHead className={classes.header}>
-            <TableRow>
+        <table className='w-full border-collapse text-left text-sm'>
+          <thead className='bg-gray-100'>
+            <tr>
               {fieldDefs.map((field: any, index) => {
                 return (
-                  <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
+                  <th key={`head-${displayedColumns[index]}`} className='border-r border-gray-300 p-2 text-left font-semibold'>
                     {readOnlyMode ? (
-                      <div>
-                        <TableSortLabel
-                          active={orderBy === displayedColumns[index]}
-                          direction={orderBy === displayedColumns[index] ? order : 'asc'}
+                      <div className='flex items-center'>
+                        <button
+                          type='button'
+                          className='inline-flex cursor-pointer items-center gap-1 bg-transparent border-none p-0 font-semibold'
                           onClick={createSortHandler(displayedColumns[index])}
                         >
                           {field.label}
-                          {_showFilteredIcon(field.name) && <FilterListIcon className={classes.moreIcon} />}
                           {orderBy === displayedColumns[index] ? (
-                            <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
+                            order === 'desc' ? (
+                              <ChevronDown className='inline-block h-4 w-4 align-bottom' />
+                            ) : (
+                              <ChevronUp className='inline-block h-4 w-4 align-bottom' />
+                            )
                           ) : null}
-                        </TableSortLabel>
-                        <MoreIcon
+                          {_showFilteredIcon(field.name) && <Filter className='inline-block h-4 w-4 align-bottom' />}
+                          {orderBy === displayedColumns[index] ? (
+                            <span className='sr-only'>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
+                          ) : null}
+                        </button>
+                        <button
+                          type='button'
                           id='menu-icon'
-                          className={classes.moreIcon}
+                          className='ml-1 inline-flex cursor-pointer items-center bg-transparent border-none p-0'
                           onClick={event => {
                             _menuClick(event, field.name, field.meta.type, field.label);
                           }}
-                        />
+                        >
+                          <MoreVertical className='h-4 w-4 align-bottom' />
+                        </button>
                       </div>
                     ) : (
                       field.label
                     )}
-                  </TableCell>
+                  </th>
                 );
               })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
+            </tr>
+          </thead>
+          <tbody>
             {editableMode &&
               elements.map((row: any, index) => {
                 const theKey = `row-${index}`;
                 return (
-                  <TableRow key={theKey}>
+                  <tr key={theKey} className='border-b border-gray-200'>
                     {row.map((item, childIndex) => {
                       const theColKey = `data-${index}-${childIndex}`;
                       return (
-                        <TableCell key={theColKey} className={classes.tableCell}>
+                        <td key={theColKey} className='border-r border-gray-300 p-2'>
                           {item}
-                        </TableCell>
+                        </td>
                       );
                     })}
                     {showDeleteButton && (
-                      <TableCell>
+                      <td className='p-2'>
                         <button
                           type='button'
                           className='psdk-utility-button'
@@ -635,9 +631,9 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                         >
                           <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$} />
                         </button>
-                      </TableCell>
+                      </td>
                     )}
-                  </TableRow>
+                  </tr>
                 );
               })}
             {(readOnlyMode || allowEditingInModal) &&
@@ -647,24 +643,45 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                 .slice(0)
                 .map((row, index) => {
                   return (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <TableRow key={index}>
+                    <tr key={index} className='border-b border-gray-200 hover:bg-gray-50'>
                       {displayedColumns.map(colKey => {
                         return (
-                          <TableCell key={colKey} className={classes.tableCell}>
+                          <td key={colKey} className='border-r border-gray-300 p-2'>
                             {showDeleteButton && colKey === 'DeleteIcon' ? (
                               <div>
-                                <MoreIcon
+                                <button
+                                  type='button'
                                   id='table-edit-menu-icon'
-                                  className={classes.moreIcon}
+                                  className='inline-flex cursor-pointer items-center bg-transparent border-none p-0'
                                   onClick={event => {
                                     editMenuClick(event, index);
                                   }}
-                                />
-                                <Menu id='table-edit-menu' anchorEl={editAnchorEl} keepMounted open={Boolean(editAnchorEl)} onClose={_menuClose}>
-                                  <MenuItem onClick={() => editRecord()}>Edit</MenuItem>
-                                  <MenuItem onClick={() => deleteRecord()}>Delete</MenuItem>
-                                </Menu>
+                                >
+                                  <MoreVertical className='h-4 w-4 align-bottom' />
+                                </button>
+                                {Boolean(editAnchorEl) && editMenuPosition && (
+                                  <div
+                                    ref={editMenuRef}
+                                    id='table-edit-menu'
+                                    className='fixed z-50 min-w-[120px] rounded border border-gray-200 bg-white py-1 shadow-lg'
+                                    style={{ top: editMenuPosition.top, left: editMenuPosition.left }}
+                                  >
+                                    <button
+                                      type='button'
+                                      className='block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-100'
+                                      onClick={() => editRecord()}
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      type='button'
+                                      className='block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-100'
+                                      onClick={() => deleteRecord()}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             ) : typeof row[colKey] === 'boolean' && !row[colKey] ? (
                               'False'
@@ -673,14 +690,14 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                             ) : (
                               row[colKey]
                             )}
-                          </TableCell>
+                          </td>
                         );
                       })}
-                    </TableRow>
+                    </tr>
                   );
                 })}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
         {readOnlyMode && rowData && rowData.length === 0 && (
           <div className='no-records' id='no-records'>
             No records found.
@@ -691,97 +708,125 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
             No records found.
           </div>
         )}
-      </TableContainer>
+      </div>
       {showAddRowButton && (
-        <div style={{ fontSize: '1rem' }}>
-          <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
+        <div className='text-base'>
+          <button
+            type='button'
+            className='cursor-pointer bg-transparent border-none text-primary underline-offset-4 hover:underline p-0'
+            onClick={addRecord}
+          >
             + Add
-          </Link>
+          </button>
         </div>
       )}
-      <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={_menuClose}>
-        <MenuItem onClick={_filterMenu}>
-          <FilterListIcon /> Filter
-        </MenuItem>
-        <MenuItem onClick={_groupMenu}>
-          <SubjectIcon /> Group
-        </MenuItem>
-      </Menu>
-      <Dialog open={open} onClose={_closeDialog} aria-labelledby='form-dialog-title'>
-        <DialogTitle id='form-dialog-title'>Filter: {filterBy}</DialogTitle>
-        <DialogContent>
-          {containsDateOrTime ? (
-            <>
-              <Select value={displayDialogDateFilter} onChange={_dialogDateFilter} fullWidth>
-                <MenuItem value='notequal'>is not equal to</MenuItem>
-                <MenuItem value='equal'>is equal to</MenuItem>
-                <MenuItem value='after'>after</MenuItem>
-                <MenuItem value='before'>before</MenuItem>
-                <MenuItem value='null'>is null</MenuItem>
-                <MenuItem value='notnull'>is not null</MenuItem>
-              </Select>
-              {filterType === 'Date' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='date'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
+      {Boolean(anchorEl) && menuPosition && (
+        <div
+          ref={menuRef}
+          id='simple-menu'
+          className='fixed z-50 min-w-[140px] rounded border border-gray-200 bg-white py-1 shadow-lg'
+          style={{ top: menuPosition.top, left: menuPosition.left }}
+        >
+          <button
+            type='button'
+            className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-left text-sm hover:bg-gray-100'
+            onClick={_filterMenu}
+          >
+            <Filter className='h-4 w-4' /> Filter
+          </button>
+          <button
+            type='button'
+            className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-left text-sm hover:bg-gray-100'
+            onClick={_groupMenu}
+          >
+            <FileText className='h-4 w-4' /> Group
+          </button>
+        </div>
+      )}
+      {open && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50' onClick={_closeDialog}>
+          <div className='w-full max-w-md rounded-lg bg-white shadow-xl' onClick={e => e.stopPropagation()}>
+            <div className='border-b border-gray-200 px-6 py-4'>
+              <h2 className='text-lg font-semibold'>Filter: {filterBy}</h2>
+            </div>
+            <div className='px-6 py-4'>
+              {containsDateOrTime ? (
+                <>
+                  <select
+                    className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                    value={displayDialogDateFilter}
+                    onChange={_dialogDateFilter}
+                  >
+                    <option value='notequal'>is not equal to</option>
+                    <option value='equal'>is equal to</option>
+                    <option value='after'>after</option>
+                    <option value='before'>before</option>
+                    <option value='null'>is null</option>
+                    <option value='notnull'>is not null</option>
+                  </select>
+                  {filterType === 'Date' && (
+                    <input
+                      autoFocus
+                      className='mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                      id='containsFilter'
+                      type='date'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                  {filterType === 'DateTime' && (
+                    <input
+                      autoFocus
+                      className='mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                      id='containsFilter'
+                      type='datetime-local'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                  {filterType === 'Time' && (
+                    <input
+                      autoFocus
+                      className='mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                      id='containsFilter'
+                      type='time'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <select
+                    id='filter'
+                    className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                    onChange={_dialogContainsFilter}
+                    value={displayDialogContainsFilter}
+                  >
+                    <option value='contains'>Contains</option>
+                    <option value='equals'>Equals</option>
+                    <option value='startswith'>Starts with</option>
+                  </select>
+                  <input
+                    autoFocus
+                    className='mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary'
+                    id='containsFilter'
+                    type='text'
+                    value={displayDialogContainsValue}
+                    onChange={_dialogContainsValue}
+                  />
+                </>
               )}
-              {filterType === 'DateTime' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='datetime-local'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
-              )}
-              {filterType === 'Time' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='time'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <Select id='filter' fullWidth onChange={_dialogContainsFilter} value={displayDialogContainsFilter}>
-                <MenuItem value='contains'>Contains</MenuItem>
-                <MenuItem value='equals'>Equals</MenuItem>
-                <MenuItem value='startswith'>Starts with</MenuItem>
-              </Select>
-              <TextField
-                autoFocus
-                margin='dense'
-                id='containsFilter'
-                type='text'
-                fullWidth
-                value={displayDialogContainsValue}
-                onChange={_dialogContainsValue}
-              />
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={_closeDialog} color='secondary'>
-            Cancel
-          </Button>
-          <Button onClick={_submitFilter} color='primary'>
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+            </div>
+            <div className='flex justify-end gap-2 border-t border-gray-200 px-6 py-4'>
+              <Button variant='secondary' onClick={_closeDialog}>
+                Cancel
+              </Button>
+              <Button onClick={_submitFilter}>Submit</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

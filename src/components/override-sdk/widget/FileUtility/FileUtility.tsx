@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
+import { useEffect, useRef, useState } from 'react';
+import { MoreVertical, Loader } from 'lucide-react';
 
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
@@ -7,12 +7,12 @@ import download from 'downloadjs';
 // import SummaryList from '../../SummaryList';
 // import ActionButtonsForFileUtil from '../ActionButtonsForFileUtil';
 import './FileUtility.css';
-import { IconButton, Menu, MenuItem, Button, CircularProgress } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Button } from '../../../../design-system/ui/button';
+import { Label } from '../../../../design-system/ui/label';
 
 interface FileUtilityProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -76,8 +76,9 @@ export default function FileUtility(props: FileUtilityProps) {
     ] // 2nd and 3rd args empty string until typedef marked correctly
   };
   const [linkData, setLinkData] = useState(linkTemp);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [link, setLink] = useState({ title: '', url: '', disable: true });
   const [inProgress, setProgress] = useState(false);
   const [showViewAllModal, setViewAll] = useState(false);
@@ -203,7 +204,6 @@ export default function FileUtility(props: FileUtilityProps) {
     attachUtils
       .deleteAttachment(ID, context)
       .then(() => {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         getAttachments();
       })
       .catch();
@@ -304,19 +304,35 @@ export default function FileUtility(props: FileUtilityProps) {
     });
   }
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClick = () => {
+    setMenuOpen(prev => !prev);
   };
 
   function onAddFilesClick() {
     setFileData(current => {
       return { ...current, showfileModal: true };
     });
-    setAnchorEl(null);
+    setMenuOpen(false);
   }
 
   function removeFileFromList(item: any) {
@@ -375,7 +391,7 @@ export default function FileUtility(props: FileUtilityProps) {
     setLinkData(current => {
       return { ...current, showLinkModal: true };
     });
-    setAnchorEl(null);
+    setMenuOpen(false);
   }
 
   function closeAddLinksPopup() {
@@ -491,7 +507,7 @@ export default function FileUtility(props: FileUtilityProps) {
     <div className='psdk-utility'>
       {inProgress && (
         <div className='progress-div'>
-          <CircularProgress />
+          <Loader className='h-6 w-6 animate-spin text-primary' />
         </div>
       )}
       <div className='psdk-header'>
@@ -501,26 +517,43 @@ export default function FileUtility(props: FileUtilityProps) {
           {list.count}
         </div>
         <div style={{ flexGrow: 1 }} />
-        <div>
-          <IconButton
+        <div className='relative inline-block'>
+          <Button
+            ref={menuButtonRef}
+            variant='ghost'
+            size='icon'
             id='long-button'
-            aria-controls={open ? 'simple-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
+            aria-controls={menuOpen ? 'simple-menu' : undefined}
+            aria-expanded={menuOpen ? 'true' : undefined}
             aria-haspopup='true'
             onClick={handleClick}
           >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu style={{ marginTop: '3rem' }} id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem style={{ fontSize: '14px' }} onClick={onAddFilesClick}>
-              {thePConn.getLocalizedValue('Add files', '', '')}
-            </MenuItem>{' '}
-            {/* 2nd and 3rd args empty string until typedef marked correctly */}
-            <MenuItem style={{ fontSize: '14px' }} onClick={onAddLinksClick}>
-              {thePConn.getLocalizedValue('Add links', '', '')}
-            </MenuItem>{' '}
-            {/* 2nd and 3rd args empty string until typedef marked correctly */}
-          </Menu>
+            <MoreVertical className='h-5 w-5' />
+          </Button>
+          {menuOpen && (
+            <div
+              ref={menuRef}
+              id='simple-menu'
+              className='absolute right-0 top-full z-50 mt-1 min-w-[160px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md'
+            >
+              <button
+                type='button'
+                className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+                onClick={onAddFilesClick}
+              >
+                {thePConn.getLocalizedValue('Add files', '', '')}
+              </button>
+              {/* 2nd and 3rd args empty string until typedef marked correctly */}
+              <button
+                type='button'
+                className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+                onClick={onAddLinksClick}
+              >
+                {thePConn.getLocalizedValue('Add links', '', '')}
+              </button>
+              {/* 2nd and 3rd args empty string until typedef marked correctly */}
+            </div>
+          )}
         </div>
       </div>
       {list.data.length > 0 && (
@@ -530,7 +563,7 @@ export default function FileUtility(props: FileUtilityProps) {
       )}
       {list.count > 3 && (
         <div className='psdk-utility-view-all'>
-          <Button style={{ textTransform: 'none' }} color='primary' onClick={() => setViewAll(true)}>
+          <Button variant='link' onClick={() => setViewAll(true)}>
             View all
           </Button>
         </div>
@@ -543,9 +576,9 @@ export default function FileUtility(props: FileUtilityProps) {
               <div className='psdk-modal-file-selector'>
                 <label htmlFor='upload-files'>
                   <input style={{ display: 'none' }} id='upload-files' name='upload-files' type='file' multiple onChange={uploadMyFiles} />
-                  <Button variant='outlined' color='primary' component='span'>
-                    {thePConn.getLocalizedValue('Attach files', '', '')}
-                  </Button>{' '}
+                  <Button variant='outline' asChild>
+                    <span>{thePConn.getLocalizedValue('Attach files', '', '')}</span>
+                  </Button>
                   {/* 2nd and 3rd args empty string until typedef marked correctly */}
                 </label>
               </div>
@@ -573,22 +606,18 @@ export default function FileUtility(props: FileUtilityProps) {
               <div className='psdk-modal-links-row'>
                 <div className='psdk-links-two-column'>
                   <div className='psdk-modal-link-data'>
-                    <TextField
-                      fullWidth
-                      variant='outlined'
-                      label='Link title'
-                      size='small'
+                    <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>Link title *</Label>
+                    <input
+                      className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       required={required}
                       value={link.title}
                       onChange={fieldlinkOnChange}
                     />
                   </div>
                   <div className='psdk-modal-link-data'>
-                    <TextField
-                      fullWidth
-                      variant='outlined'
-                      label='URL'
-                      size='small'
+                    <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>URL *</Label>
+                    <input
+                      className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       required={required}
                       value={link.url}
                       onChange={fieldurlOnChange}
@@ -596,16 +625,9 @@ export default function FileUtility(props: FileUtilityProps) {
                   </div>
                 </div>
                 <div className='psdk-modal-link-add'>
-                  <Button
-                    className='psdk-add-link-action'
-                    color='primary'
-                    variant='contained'
-                    component='span'
-                    onClick={addLink}
-                    disabled={link.disable}
-                  >
+                  <Button variant='default' onClick={addLink} disabled={link.disable}>
                     {thePConn.getLocalizedValue('Add link', '', '')}
-                  </Button>{' '}
+                  </Button>
                   {/* 2nd and 3rd args empty string until typedef marked correctly */}
                 </div>
               </div>
@@ -629,7 +651,6 @@ export default function FileUtility(props: FileUtilityProps) {
           <div className='psdk-modal-file-top'>
             <div className='psdk-view-all-header'>
               <h3>{thePConn.getLocalizedValue('Attachments', '', '')}</h3> {/* 2nd and 3rd args empty string until typedef marked correctly */}
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button type='button' className='psdk-close-button' onClick={() => setViewAll(false)}>
                 <img className='psdk-utility-card-actions-svg-icon' src={closeSvgIcon} />
               </button>

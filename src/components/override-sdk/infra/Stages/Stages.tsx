@@ -1,7 +1,4 @@
-import { Breadcrumbs, Card, Typography } from '@material-ui/core';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import DoneIcon from '@material-ui/icons/Done';
-import { makeStyles } from '@material-ui/core/styles';
+import { ChevronsRight, Check } from 'lucide-react';
 
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
@@ -9,32 +6,6 @@ interface StagesProps extends PConnProps {
   // If any, enter additional props that only exist on this component
   stages: any[];
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  completedStage: {
-    color: theme.palette.text.primary
-  },
-  currentStage: {
-    color: theme.palette.info.dark,
-    fontWeight: 600
-  },
-  futureStage: {
-    color: theme.palette.text.secondary
-  },
-  separatorIcon: {
-    color: theme.palette.text.disabled
-  }
-}));
 
 /**
  * API to filter out the alternate stages which are not in active and return all other stages
@@ -53,8 +24,6 @@ function getFilteredStages(stages) {
 /* TODO - this component should be refactored and not exposed as top level DX Component -
   the stages should be created as part of the CaseView */
 export default function Stages(props: StagesProps) {
-  const classes = useStyles();
-
   const { getPConnect, stages } = props;
   const pConn = getPConnect();
   const key = `${pConn.getCaseInfo().getClassName()}!CASE!${pConn.getCaseInfo().getName()}`.toUpperCase();
@@ -76,43 +45,44 @@ export default function Stages(props: StagesProps) {
   // console.log(`Stages: current: ${currentStageID} stagesObj: ${JSON.stringify(stagesObj)}`);
 
   function getStage(stage, index) {
-    //  Removing nested ternary for lint
-    // const theClass = stage.current ? classes.currentStage : (stage.complete ? classes.completedStage : classes.futureStage);
-    let theClass;
+    let stageClass;
     if (stage.current) {
-      theClass = classes.currentStage;
+      stageClass = 'font-semibold text-blue-700 dark:text-blue-400';
     } else if (stage.complete) {
-      theClass = classes.completedStage;
+      stageClass = 'text-foreground';
     } else {
-      theClass = classes.futureStage;
+      stageClass = 'text-muted-foreground';
     }
 
     return (
-      <span key={index}>
-        {stage.complete ? <DoneIcon color='disabled' fontSize='small' /> : null}
-        <Typography variant='h5' component='span' display='inline' className={theClass}>
-          {stage.name}
-        </Typography>
+      <span key={index} className='inline-flex items-center'>
+        {stage.complete ? <Check className='mr-1 h-4 w-4 text-muted-foreground' /> : null}
+        <span className={`text-base ${stageClass}`}>{stage.name}</span>
       </span>
     );
   }
 
   function getStages(inStages) {
     return (
-      <Breadcrumbs aria-label='stages' separator={<DoubleArrowIcon className={classes.separatorIcon} />}>
+      <nav aria-label='stages' className='flex flex-wrap items-center gap-1'>
         {inStages.map((stage, index) => {
-          return getStage(stage, index);
+          return (
+            <span key={index} className='inline-flex items-center'>
+              {getStage(stage, index)}
+              {!stage.last && <ChevronsRight className='mx-1 h-4 w-4 text-muted-foreground/50' />}
+            </span>
+          );
         })}
-      </Breadcrumbs>
+      </nav>
     );
   }
 
   return (
-    <Card id='Stages' className={classes.root}>
+    <div id='Stages' className='m-1 rounded-lg border bg-card p-1 shadow-sm'>
       {/* Stages<br />
       currentStageID: {currentStageID}<br />
       {JSON.stringify(stagesObj)}<br /><br /> */}
       {getStages(stagesObj)}
-    </Card>
+    </div>
   );
 }

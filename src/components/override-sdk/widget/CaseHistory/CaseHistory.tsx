@@ -1,11 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import isDeepEqual from 'fast-deep-equal/react';
 
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
@@ -14,24 +7,6 @@ import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 interface CaseHistoryProps extends PConnProps {
   // If any, enter additional props that only exist on this component
 }
-
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderColor: 'silver',
-      backgroundColor: theme.palette.text.disabled,
-      color: theme.palette.getContrastText(theme.palette.text.disabled)
-    },
-    body: {
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderColor: 'silver'
-      // fontSize: 14,
-    }
-  })
-)(TableCell);
 
 export default function CaseHistory(props: CaseHistoryProps) {
   const { getPConnect } = props;
@@ -64,8 +39,8 @@ export default function CaseHistory(props: CaseHistoryProps) {
   const dataViewName = 'D_pyWorkHistory';
   const context = thePConn.getContextName();
 
-  function computeRowData(rows: Object[]): void {
-    const theRowData: Object[] = [];
+  function computeRowData(rows: object[]): void {
+    const theRowData: object[] = [];
 
     rows.forEach((row: any, rowIndex: number) => {
       // Now, for each property in the index of row properties (displayedColumns), add an object
@@ -128,10 +103,14 @@ export default function CaseHistory(props: CaseHistoryProps) {
 
     const theHeaderCells: any[] = displayedColumns.map((headerCol, index) => {
       const theCellKey = `${theRowKey}.${index}`;
-      return <StyledTableCell key={theCellKey}>{headerCol.label}</StyledTableCell>;
+      return (
+        <th key={theCellKey} className='border border-[silver] bg-muted px-4 py-2 text-left text-muted-foreground'>
+          {headerCol.label}
+        </th>
+      );
     });
 
-    return <TableRow key={theRowKey}>{theHeaderCells}</TableRow>;
+    return <tr key={theRowKey}>{theHeaderCells}</tr>;
   }
 
   function getTableData() {
@@ -140,15 +119,15 @@ export default function CaseHistory(props: CaseHistoryProps) {
     // Note: using rowData.current since we're using useRef as a mutatable
     //  value that's only updated when it changes.
     if (rowData.current.length > 0) {
-      rowData.current.forEach((dataRow: Object[], index) => {
+      rowData.current.forEach((dataRow: object[], index) => {
         // using dataRow[0]-dataRow[1] as the array key since it's a unique value
         const theKey = `CaseHistory-${index}`;
         theDataRows.push(
-          <TableRow key={theKey}>
-            <StyledTableCell>{dataRow[0] ? dataRow[0] : '---'}</StyledTableCell>
-            <StyledTableCell>{dataRow[1] ? dataRow[1] : '---'}</StyledTableCell>
-            <StyledTableCell>{dataRow[2] ? dataRow[2] : '---'}</StyledTableCell>
-          </TableRow>
+          <tr key={theKey}>
+            <td className='border border-[silver] px-4 py-2'>{dataRow[0] ? String(dataRow[0]) : '---'}</td>
+            <td className='border border-[silver] px-4 py-2'>{dataRow[1] ? String(dataRow[1]) : '---'}</td>
+            <td className='border border-[silver] px-4 py-2'>{dataRow[2] ? String(dataRow[2]) : '---'}</td>
+          </tr>
         );
       });
     }
@@ -157,13 +136,11 @@ export default function CaseHistory(props: CaseHistoryProps) {
   }
 
   return (
-    <div id='CaseHistory'>
-      <TableContainer>
-        <Table>
-          <TableHead>{getTableHeader()}</TableHead>
-          <TableBody>{getTableData()}</TableBody>
-        </Table>
-      </TableContainer>
+    <div id='CaseHistory' className='w-full overflow-auto'>
+      <table className='w-full border-collapse'>
+        <thead>{getTableHeader()}</thead>
+        <tbody>{getTableData()}</tbody>
+      </table>
     </div>
   );
 }

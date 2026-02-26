@@ -1,12 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const zlib = require('zlib');
 
 module.exports = (env, argv) => {
+  const sdkConfig = require('./sdk-config.json');
+  const pegaServerUrl = sdkConfig.serverConfig.infinityRestServerUrl.replace(/\/prweb\/?$/, '');
+
   const pluginsToAdd = [];
   const webpackMode = argv.mode;
 
@@ -103,6 +104,10 @@ module.exports = (env, argv) => {
           globOptions: {
             ignore: webpackMode === 'production' ? ['**/constellation-core.*.map'] : undefined
           }
+        },
+        {
+          from: './node_modules/@pega/constellationjs/dist/js',
+          to: './constellation/prerequisite/js'
         }
       ]
     })
@@ -111,64 +116,74 @@ module.exports = (env, argv) => {
   // Enable gzip and brotli compression
   //  Exclude constellation-core and bootstrap-shell files since
   //    client receives these files in gzip and brotli format
-  pluginsToAdd.push(
-    new CompressionPlugin({
-      filename: '[path][base].gz',
-      algorithm: 'gzip',
-      test: /\.js$|\.ts$|\.css$|\.html$/,
-      exclude: /constellation-core.*.js|bootstrap-shell.js/,
-      threshold: 10240,
-      minRatio: 0.8
-    })
-  );
-  pluginsToAdd.push(
-    new CompressionPlugin({
-      filename: '[path][base].br',
-      algorithm: 'brotliCompress',
-      test: /\.(js|ts|css|html|svg)$/,
-      exclude: /constellation-core.*.js|bootstrap-shell.js/,
-      compressionOptions: {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11
-        }
-      },
-      threshold: 10240,
-      minRatio: 0.8
-    })
-  );
-
-  if (webpackMode === 'development') {
-    // In development mode, add LiveReload plug
-    //  When run in conjunction with build-with-watch,
-    //  This will reload the browser when code is changed/re-compiled
-    const liveReloadOptions = {
-      protocol: 'http',
-      appendScriptTag: true,
-      delay: 1000,
-      hostname: 'localhost'
-    };
-    pluginsToAdd.push(new LiveReloadPlugin(liveReloadOptions));
+  if (webpackMode === 'production') {
+    pluginsToAdd.push(
+      new CompressionPlugin({
+        filename: '[path][base].gz',
+        algorithm: 'gzip',
+        test: /\.js$|\.ts$|\.css$|\.html$/,
+        exclude: /constellation-core.*.js|bootstrap-shell.js|libphonenumber.*.js/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    );
+    pluginsToAdd.push(
+      new CompressionPlugin({
+        filename: '[path][base].br',
+        algorithm: 'brotliCompress',
+        test: /\.(js|ts|css|html|svg)$/,
+        exclude: /constellation-core.*.js|bootstrap-shell.js|libphonenumber.*.js/,
+        compressionOptions: {
+          params: {
+            [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+          }
+        },
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    );
   }
 
   // need to set mode to 'development' to get LiveReload to work
   //  and for debugger statements to not be stripped out of the bundle
   initConfig = {
-    mode: 'development',
+    mode: argv.mode,
     entry: {
       app: './src/index.tsx'
     },
     devServer: {
       static: path.join(__dirname, 'dist'), // was called contentBase in earlier versions
-      historyApiFallback: true,
+      historyApiFallback: {
+        rewrites: [
+          { from: /^\/prweb/, to: false }
+        ]
+      },
       host: 'localhost',
       port: 3502,
-      open: false
+      open: false,
+      proxy: [
+        {
+          context: ['/prweb'],
+          target: pegaServerUrl,
+          changeOrigin: true,
+          secure: false,
+          on: {
+            proxyReq: (proxyReq, req) => {
+              console.log(`[proxy] ${req.method} ${req.url} -> ${pegaServerUrl}${req.url}`);
+            },
+            error: (err, req, res) => {
+              console.error(`[proxy] Error: ${err.message}`);
+            }
+          }
+        }
+      ]
     },
     devtool: argv.mode === 'production' ? false : 'inline-source-map',
     plugins: pluginsToAdd,
     output: {
       filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
+      clean: true
     },
     module: {
       rules: [
@@ -188,6 +203,7 @@ module.exports = (env, argv) => {
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'src/app'),
             path.resolve(__dirname, 'node_modules/react-datepicker'),
+            path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/node_modules/react-datepicker'),
             path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/lib') /* needed to resolve CSS files in new SDK packaging */
           ],
           use: ['style-loader', 'css-loader']
@@ -196,20 +212,24 @@ module.exports = (env, argv) => {
           test: /\.s[a|c]ss$/,
           use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
         },
-        { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
+        {
+          test: /\.(png|gif|jpg|cur)$/i,
+          type: 'asset',
+          parser: { dataUrlCondition: { maxSize: 8192 } }
+        },
         {
           test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-          loader: 'url-loader',
-          options: { limit: 10000, mimetype: 'application/font-woff2' }
+          type: 'asset',
+          parser: { dataUrlCondition: { maxSize: 10000 } }
         },
         {
           test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-          loader: 'url-loader',
-          options: { limit: 10000, mimetype: 'application/font-woff' }
+          type: 'asset',
+          parser: { dataUrlCondition: { maxSize: 10000 } }
         },
         {
           test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-          loader: 'file-loader'
+          type: 'asset/resource'
         },
         {
           test: /\.(d.ts)$/ /* latest react-sdk-components needs to ignore compiling .d.ts and .map files */,
@@ -218,18 +238,9 @@ module.exports = (env, argv) => {
         {
           test: /\.(map)$/ /* latest react-sdk-components needs to ignore compiling .d.ts and .map files */,
           loader: 'null-loader'
-        },
-        {
-          test: /\.mjs$/,
-          include: /node_modules/,
-          type: 'javascript/auto',
-          resolve: {
-            fullySpecified: false
-          }
         }
       ]
     },
-    /* optimization: { splitChunks: { chunks: "all", minSize: 600000,  maxSize: 200000} }, */
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
     }

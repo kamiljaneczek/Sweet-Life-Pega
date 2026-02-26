@@ -1,18 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-nested-ternary */
+
 import { useState, useEffect, useCallback } from 'react';
 
 import download from 'downloadjs';
 
-import {
-  buildFilePropsFromResponse,
-  getIconFromFileType,
-  validateMaxSize
-} from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/widget/Attachment/AttachmentUtils';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 // import { Button } from '../../../../design-system/ui/button';
@@ -25,6 +19,20 @@ interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
   allowMultiple: string;
   extensions: string;
 }
+
+// Local replacement for the removed SDK helper function
+const buildFilePropsFromResponse = (respFile: any) => {
+  return {
+    props: {
+      meta: `${respFile.pyCategoryName || ''} ${respFile.pyAttachName || ''}`.trim(),
+      name: respFile.pyAttachName || respFile.pyFileName || '',
+      icon: getIconFromFileType(respFile.pyMimeFileType || '')
+    },
+    responseProps: {
+      ...respFile
+    }
+  };
+};
 
 const getAttachmentKey = (name = '') => (name ? `attachmentsList.${name}` : 'attachmentsList');
 
@@ -71,7 +79,7 @@ export default function Attachment(props: AttachmentProps) {
   const [toggleUploadBegin, setToggleUploadBegin] = useState(false);
 
   const resetAttachmentStoredState = () => {
-    PCore.getStateUtils().updateState(pConn.getContextName(), getAttachmentKey(isInfinity23OrHigher() ? valueRef : ''), undefined, {
+    PCore.getStateUtils().updateState(pConn.getContextName(), getAttachmentKey(valueRef), undefined, {
       pageReference: 'context_data',
       isArrayDeepMerge: false
     });
@@ -102,7 +110,7 @@ export default function Attachment(props: AttachmentProps) {
 
       // If file to be deleted is the one added in previous stage i.e. for which a file instance is created in server
       // no need to filter currentAttachmentList as we will get another entry of file in redux with delete & label
-      // eslint-disable-next-line no-unsafe-optional-chaining
+
       if (value && value?.pxResults && +value?.pyCount > 0 && file.responseProps && file?.responseProps?.pzInsKey !== 'temp') {
         const updatedAttachments = files.map(f => {
           if (f.responseProps && f.responseProps.pzInsKey === file.responseProps.pzInsKey) {
@@ -313,7 +321,6 @@ export default function Attachment(props: AttachmentProps) {
         setToggleUploadBegin(false);
       })
       .catch(error => {
-        // eslint-disable-next-line no-console
         console.log(error);
         setToggleUploadBegin(false);
       });

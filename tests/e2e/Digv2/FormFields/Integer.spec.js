@@ -41,9 +41,13 @@ test.describe('E2E test', () => {
 
     /** Required tests */
     const requiredInteger = page.locator('input[data-test-id="0658481a174254dded4a0c1ffe6b8380"]');
-    requiredInteger.fill('10000');
+    await requiredInteger.fill('10000');
+    await requiredInteger.blur();
     attributes = await common.getAttributes(requiredInteger);
     await expect(attributes.includes('required')).toBeTruthy();
+    await expect(await requiredInteger.getAttribute('placeholder')).toBe('Integer Placeholder');
+    await expect(page.locator('div >> label').filter({ hasText: 'Required Integer *' })).toBeVisible();
+    await expect(page.locator('div >> p:has-text("Integer HelperText")')).toBeVisible();
 
     const notrequiredInteger = page.locator('input[data-test-id="898ba585340f471eecde6b5e798e4df9"]');
     attributes = await common.getAttributes(notrequiredInteger);

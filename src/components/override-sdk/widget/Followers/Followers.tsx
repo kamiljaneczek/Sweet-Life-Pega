@@ -1,45 +1,25 @@
 import { PropsWithChildren } from 'react';
-import { Card, CardContent, CardHeader, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface FollowersProps extends PConnProps {
   // If any, enter additional props that only exist on this component
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-    // borderLeft: "6px solid",
-    // borderLeftColor: green[300]
-  }
-}));
-
 export default function Followers(props: PropsWithChildren<FollowersProps>) {
   const componentName = 'Followers';
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { children } = props;
-  const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title={
-          <Typography variant='h6' component='div'>
-            {componentName} - <em>unsupported</em>
-          </Typography>
-        }
-      />
-      <CardContent>
-        <Typography>{componentName} content</Typography>
-      </CardContent>
-    </Card>
+    <div className='m-1 rounded-lg border bg-card p-1 text-card-foreground shadow-sm'>
+      <div className='p-4 pb-2'>
+        <h6 className='text-lg font-semibold'>
+          {componentName} - <em>unsupported</em>
+        </h6>
+      </div>
+      <div className='px-4 pb-4'>
+        <p>{componentName} content</p>
+      </div>
+    </div>
   );
 }

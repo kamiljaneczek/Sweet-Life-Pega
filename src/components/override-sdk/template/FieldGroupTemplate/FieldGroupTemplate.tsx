@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMemo } from 'react';
 
 import { getReferenceList, buildView } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';

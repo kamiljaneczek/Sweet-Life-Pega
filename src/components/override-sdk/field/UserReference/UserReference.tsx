@@ -1,5 +1,4 @@
 import { memo, useEffect, useState } from 'react';
-import { Typography } from '@material-ui/core';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
@@ -88,7 +87,6 @@ const UserReference = (props: UserReferenceProps) => {
           setDropDownDataSource(ddDataSource);
         })
         .catch(err => {
-          // eslint-disable-next-line no-console
           console.error(err);
         });
     }
@@ -104,8 +102,8 @@ const UserReference = (props: UserReferenceProps) => {
             TODO: This has to be replaced with Operator Component
           */}
           <div>
-            <Typography variant='caption'>{label}</Typography>
-            <Typography variant='body1'>{userName}</Typography>
+            <span className='text-xs text-muted-foreground'>{label}</span>
+            <p className='text-base'>{userName}</p>
           </div>
         </>
       );
