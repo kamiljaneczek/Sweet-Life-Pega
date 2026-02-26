@@ -1,5 +1,17 @@
 {
   "permissions": {
-    "allow": ["Bash(pnpm add:*)", "Bash(npm install:*)", "Bash(corepack:*)", "Bash(curl:*)", "Bash(source:*)", "Bash(git:*)", "Bash(npm run:*)"]
+    "allow": [
+      "Bash(pnpm add:*)",
+      "Bash(npm install:*)",
+      "Bash(corepack:*)",
+      "Bash(curl:*)",
+      "Bash(source:*)",
+      "Bash(git:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:docs.pega.com)",
+      "Bash(node:*)"
+    ]
   }
 }
