@@ -30,7 +30,6 @@ export default function CaseSummary(props: PropsWithChildren<CaseSummaryProps>) 
   let arPrimaryFields: any[] = [];
   let arSecondaryFields: any[] = [];
 
-  /* eslint-disable @typescript-eslint/no-shadow */
   function prepareComponentInCaseSummary(pConnectMeta, getPConnect) {
     const { config, children } = pConnectMeta;
     const pConnect = getPConnect();

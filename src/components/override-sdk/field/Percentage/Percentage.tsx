@@ -1,13 +1,13 @@
+import { useState } from 'react';
+
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { getCurrencyCharacters, getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
+import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
-/* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
-as per the locale.
-*/
+import { Input } from '../../../../design-system/ui/input';
+
 interface PercentageProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Percentage here
   currencyISOCode?: string;
@@ -42,9 +42,9 @@ export default function Percentage(props: PercentageProps) {
   const helperTextToDisplay = validatemessage || helperText;
 
   const theCurrencyOptions = getCurrencyOptions(currencyISOCode);
-  const formattedValue = format(value, pConn.getComponentName().toLowerCase(), theCurrencyOptions);
+  const formattedValue = format(value, (pConn.getComponentName() ?? '').toLowerCase(), theCurrencyOptions);
 
-  // console.log(`Percentage: label: ${label} value: ${value}`);
+  const [inputValue, setInputValue] = useState('');
 
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} />;
@@ -54,43 +54,34 @@ export default function Percentage(props: PercentageProps) {
     return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
   }
 
-  let testProp = {};
-
-  testProp = {
+  const testProp = {
     'data-test-id': testId
   };
 
-  const theSymbols = getCurrencyCharacters(currencyISOCode);
-  const theCurrDec = theSymbols.theDecimalIndicator;
-  const theCurrSep = theSymbols.theDigitGroupSeparator;
+  function handleBlur() {
+    const numValue = inputValue !== '' ? Number(inputValue) : inputValue;
+    handleEvent(actions, 'changeNblur', propName, numValue as unknown as string);
+  }
 
-  function PercentageOnBlur(_event, inValue) {
-    handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
+  function handleChange(event) {
+    setInputValue(event?.target?.value);
   }
 
   return (
-    <CurrencyTextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
+    <Input
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
       required={required}
       disabled={disabled}
       readOnly={!!readOnly}
       error={status === 'error'}
       label={label}
       value={value}
+      className='shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+      onChange={handleChange}
+      onBlur={!readOnly ? handleBlur : undefined}
       type='text'
-      outputFormat='number'
-      textAlign='left'
-      InputProps={{
-        inputProps: { ...testProp }
-      }}
-      currencySymbol=''
-      decimalCharacter={theCurrDec}
-      digitGroupSeparator={theCurrSep}
-      onBlur={!readOnly ? PercentageOnBlur : undefined}
+      InputProps={{ inputProps: { ...testProp } }}
     />
   );
 }

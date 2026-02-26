@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-restricted-properties */
-
 'use client';
 
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';

@@ -1,21 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-nested-ternary */
 
-import {
-  buildFilePropsFromResponse,
-  getIconFromFileType,
-  validateMaxSize
-} from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
-import { isInfinity23OrHigher } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
+import { useState, useEffect, useCallback } from 'react';
+
+import download from 'downloadjs';
+
+import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/widget/Attachment/AttachmentUtils';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import download from 'downloadjs';
-import { GripVertical, Loader } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+
 // import { Button } from '../../../../design-system/ui/button';
 import { Button } from '../../../../design-system/ui/button';
+import { GripVertical, Loader } from 'lucide-react';
 
 interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
   // If any, enter additional props that only exist on this component
@@ -23,6 +19,20 @@ interface AttachmentProps extends Omit<PConnFieldProps, 'value'> {
   allowMultiple: string;
   extensions: string;
 }
+
+// Local replacement for the removed SDK helper function
+const buildFilePropsFromResponse = (respFile: any) => {
+  return {
+    props: {
+      meta: `${respFile.pyCategoryName || ''} ${respFile.pyAttachName || ''}`.trim(),
+      name: respFile.pyAttachName || respFile.pyFileName || '',
+      icon: getIconFromFileType(respFile.pyMimeFileType || '')
+    },
+    responseProps: {
+      ...respFile
+    }
+  };
+};
 
 const getAttachmentKey = (name = '') => (name ? `attachmentsList.${name}` : 'attachmentsList');
 
@@ -41,7 +51,7 @@ export default function Attachment(props: AttachmentProps) {
   const { value, getPConnect, label, validatemessage, allowMultiple, extensions, displayMode } = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
   let { required, disabled } = props;
-  [required, disabled] = [required, disabled].map((prop) => prop === true || (typeof prop === 'string' && prop === 'true'));
+  [required, disabled] = [required, disabled].map(prop => prop === true || (typeof prop === 'string' && prop === 'true'));
   const pConn = getPConnect();
   const caseID = PCore.getStoreValue('.pyID', 'caseInfo.content', pConn.getContextName());
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
@@ -49,7 +59,7 @@ export default function Attachment(props: AttachmentProps) {
   const uploadMultipleFilesLabel = localizedVal('file_upload_text_multiple', localeCategory);
   const uploadSingleFileLabel = localizedVal('file_upload_text_one', localeCategory);
   let categoryName = '';
-  if (value?.pyCategoryName) {
+  if (value && value.pyCategoryName) {
     categoryName = value.pyCategoryName;
   }
   const deleteIcon = Utils.getImageSrc('trash', Utils.getSDKStaticConentUrl());
@@ -63,13 +73,13 @@ export default function Attachment(props: AttachmentProps) {
   const open = Boolean(anchorEl);
 
   const [files, setFiles] = useState<any[]>(() =>
-    value?.pxResults && +value.pyCount > 0 ? value.pxResults.map((f) => buildFilePropsFromResponse(f)) : []
+    value?.pxResults && +value.pyCount > 0 ? value.pxResults.map(f => buildFilePropsFromResponse(f)) : []
   );
   const [filesWithError, setFilesWithError] = useState<any[]>([]);
   const [toggleUploadBegin, setToggleUploadBegin] = useState(false);
 
   const resetAttachmentStoredState = () => {
-    PCore.getStateUtils().updateState(pConn.getContextName(), getAttachmentKey(isInfinity23OrHigher() ? valueRef : ''), undefined, {
+    PCore.getStateUtils().updateState(pConn.getContextName(), getAttachmentKey(valueRef), undefined, {
       pageReference: 'context_data',
       isArrayDeepMerge: false
     });
@@ -83,7 +93,7 @@ export default function Attachment(props: AttachmentProps) {
   const downloadFile = (fileObj: any) => {
     setAnchorEl(null);
     PCore.getAttachmentUtils()
-      // @ts-expect-error - 3rd parameter "responseEncoding" should be optional
+      // @ts-ignore - 3rd parameter "responseEncoding" should be optional
       .downloadAttachment(fileObj.pzInsKey, pConn.getContextName())
       .then((content: any) => {
         const extension = fileObj.pyAttachName.split('.').pop();
@@ -93,16 +103,16 @@ export default function Attachment(props: AttachmentProps) {
   };
 
   const deleteFile = useCallback(
-    (file) => {
+    file => {
       setAnchorEl(null);
       let attachmentsList: any[] = [];
       let currentAttachmentList = getCurrentAttachmentsList(getAttachmentKey(valueRef), pConn.getContextName());
 
       // If file to be deleted is the one added in previous stage i.e. for which a file instance is created in server
       // no need to filter currentAttachmentList as we will get another entry of file in redux with delete & label
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      if (value?.pxResults && +value?.pyCount > 0 && file.responseProps && file?.responseProps?.pzInsKey !== 'temp') {
-        const updatedAttachments = files.map((f) => {
+
+      if (value && value?.pxResults && +value?.pyCount > 0 && file.responseProps && file?.responseProps?.pzInsKey !== 'temp') {
+        const updatedAttachments = files.map(f => {
           if (f.responseProps && f.responseProps.pzInsKey === file.responseProps.pzInsKey) {
             return { ...f, delete: true, label: valueRef };
           }
@@ -111,10 +121,10 @@ export default function Attachment(props: AttachmentProps) {
 
         // updating the redux store to help form-handler in passing the data to delete the file from server
         updateAttachmentState(pConn, getAttachmentKey(valueRef), [...updatedAttachments]);
-        setFiles((current) => {
-          const newlyAddedFiles = current.filter((f) => !!f.ID);
+        setFiles(current => {
+          const newlyAddedFiles = current.filter(f => !!f.ID);
           const filesPostDelete = current.filter(
-            (f) => f.responseProps?.pzInsKey !== 'temp' && f.responseProps?.pzInsKey !== file.responseProps?.pzInsKey
+            f => f.responseProps?.pzInsKey !== 'temp' && f.responseProps?.pzInsKey !== file.responseProps?.pzInsKey
           );
           attachmentsList = [...filesPostDelete, ...newlyAddedFiles];
           return attachmentsList;
@@ -122,21 +132,21 @@ export default function Attachment(props: AttachmentProps) {
       } //  if the file being deleted is the added in this stage  i.e. whose data is not yet created in server
       else {
         // filter newly added files in this stage, later the updated current stage files will be added to redux once files state is updated in below setFiles()
-        currentAttachmentList = currentAttachmentList.filter((f) => f.label !== valueRef);
-        setFiles((current) => {
-          attachmentsList = current.filter((f) => f.ID !== file.ID);
+        currentAttachmentList = currentAttachmentList.filter(f => f.label !== valueRef);
+        setFiles(current => {
+          attachmentsList = current.filter(f => f.ID !== file.ID);
           return attachmentsList;
         });
         updateAttachmentState(pConn, getAttachmentKey(valueRef), [...currentAttachmentList, ...attachmentsList]);
         if (file.inProgress) {
-          // @ts-expect-error - 3rd parameter "responseEncoding" should be optional
+          // @ts-ignore - 3rd parameter "responseEncoding" should be optional
           PCore.getAttachmentUtils().cancelRequest(file.ID, pConn.getContextName());
         }
       }
 
       setToggleUploadBegin(false);
-      setFilesWithError((prevFilesWithError) => {
-        return prevFilesWithError.filter((f) => f.ID !== file.ID);
+      setFilesWithError(prevFilesWithError => {
+        return prevFilesWithError.filter(f => f.ID !== file.ID);
       });
     },
     [pConn, value, valueRef, filesWithError]
@@ -145,14 +155,14 @@ export default function Attachment(props: AttachmentProps) {
   const onUploadProgress = () => {};
 
   const errorHandler = (isFetchCanceled, attachedFile) => {
-    return (error) => {
+    return error => {
       if (!isFetchCanceled(error)) {
         let uploadFailMsg = pConn.getLocalizedValue('Something went wrong', '', '');
-        if (error.response?.data?.errorDetails) {
+        if (error.response && error.response.data && error.response.data.errorDetails) {
           uploadFailMsg = pConn.getLocalizedValue(error.response.data.errorDetails[0].localizedValue, '', '');
         }
-        setFiles((current) => {
-          return current.map((f) => {
+        setFiles(current => {
+          return current.map(f => {
             if (f.ID === attachedFile.ID) {
               f.props.meta = uploadFailMsg;
               f.props.error = true;
@@ -164,7 +174,7 @@ export default function Attachment(props: AttachmentProps) {
               const context = pConn.getContextName();
               // set errors to property to block submit even on errors in file upload
               PCore.getMessageManager().addMessages({
-                // @ts-expect-error
+                // @ts-ignore
                 messages: [
                   {
                     type: 'error',
@@ -192,7 +202,7 @@ export default function Attachment(props: AttachmentProps) {
     const allowedExtensionList = allowedExtensions
       .toLowerCase()
       .split(',')
-      .map((item) => item.replaceAll('.', '').trim());
+      .map(item => item.replaceAll('.', '').trim());
     const extension = fileObj.name.split('.').pop().toLowerCase();
     return allowedExtensionList.includes(extension);
   };
@@ -200,7 +210,7 @@ export default function Attachment(props: AttachmentProps) {
   const clearFieldErrorMessages = () => {
     const fieldName = (pConn.getStateProps() as any).value;
     const context = pConn.getContextName();
-    // @ts-expect-error
+    // @ts-ignore
     PCore.getMessageManager().clearMessages({
       type: PCore.getConstants().MESSAGES.MESSAGES_TYPE_ERROR,
       property: fieldName,
@@ -209,13 +219,13 @@ export default function Attachment(props: AttachmentProps) {
     });
   };
 
-  const onFileAdded = (event) => {
+  const onFileAdded = event => {
     let addedFiles = Array.from(event.target.files);
     addedFiles = allowMultiple === 'true' ? addedFiles : [addedFiles[0]];
     const maxAttachmentSize = PCore.getEnvironmentInfo().getMaxAttachmentSize() || '5';
     const tempFilesToBeUploaded = [
       ...addedFiles.map((f: any, index) => {
-        f.ID = `${Date.now()}I${index}`;
+        f.ID = `${new Date().getTime()}I${index}`;
         f.inProgress = true;
         f.props = {
           type: f.type,
@@ -237,7 +247,7 @@ export default function Attachment(props: AttachmentProps) {
           const fieldName = (pConn.getStateProps() as any).value;
           const context = pConn.getContextName();
           PCore.getMessageManager().addMessages({
-            // @ts-expect-error
+            // @ts-ignore
             messages: [
               {
                 type: 'error',
@@ -252,29 +262,29 @@ export default function Attachment(props: AttachmentProps) {
         return f;
       })
     ];
-    const tempFilesWithError = tempFilesToBeUploaded.filter((f) => f.props.error);
+    const tempFilesWithError = tempFilesToBeUploaded.filter(f => f.props.error);
     if (tempFilesWithError.length > 0) {
       setFilesWithError(tempFilesWithError);
     }
-    setFiles((current) => (allowMultiple !== 'true' ? [...tempFilesToBeUploaded] : [...current, ...tempFilesToBeUploaded]));
+    setFiles(current => (allowMultiple !== 'true' ? [...tempFilesToBeUploaded] : [...current, ...tempFilesToBeUploaded]));
     setToggleUploadBegin(true);
   };
 
   const uploadFiles = useCallback(() => {
     const filesToBeUploaded = files
-      .filter((e) => {
+      .filter(e => {
         const isFileUploaded = e.props && e.props.progress === 100;
-        const fileHasError = e.props?.error;
-        const isFileUploadedinLastStep = e.responseProps?.pzInsKey;
+        const fileHasError = e.props && e.props.error;
+        const isFileUploadedinLastStep = e.responseProps && e.responseProps.pzInsKey;
         return !isFileUploaded && !fileHasError && !isFileUploadedinLastStep;
       })
-      .map((f) =>
+      .map(f =>
         window.PCore.getAttachmentUtils().uploadAttachment(
           f,
           () => {
             onUploadProgress();
           },
-          (isFetchCanceled) => {
+          isFetchCanceled => {
             return errorHandler(isFetchCanceled, f);
           },
           pConn.getContextName()
@@ -282,11 +292,11 @@ export default function Attachment(props: AttachmentProps) {
       );
     Promise.allSettled(filesToBeUploaded)
       .then((fileResponses: any) => {
-        fileResponses = fileResponses.filter((fr) => fr.status !== 'rejected'); // in case of deleting an in progress file, promise gets cancelled but still enters then block
+        fileResponses = fileResponses.filter(fr => fr.status !== 'rejected'); // in case of deleting an in progress file, promise gets cancelled but still enters then block
         if (fileResponses.length > 0) {
-          setFiles((current) => {
+          setFiles(current => {
             const tempFilesUploaded = [...current];
-            tempFilesUploaded.forEach((f) => {
+            tempFilesUploaded.forEach(f => {
               const index = fileResponses.findIndex((fr: any) => fr.value.clientFileID === f.ID);
               if (index >= 0) {
                 f.props.meta = pConn.getLocalizedValue('Uploaded successfully', '', '');
@@ -310,8 +320,7 @@ export default function Attachment(props: AttachmentProps) {
         }
         setToggleUploadBegin(false);
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
+      .catch(error => {
         console.log(error);
         setToggleUploadBegin(false);
       });
@@ -327,7 +336,7 @@ export default function Attachment(props: AttachmentProps) {
     if (files.length > 0 && displayMode !== 'DISPLAY_ONLY') {
       const currentAttachmentList = getCurrentAttachmentsList(getAttachmentKey(valueRef), pConn.getContextName());
       // block duplicate files to redux store when added 1 after another to prevent multiple duplicates being added to the case on submit
-      const tempFiles = files.filter((f) => currentAttachmentList.findIndex((fr) => fr.ID === f.ID) === -1 && !f.inProgress && f.responseProps);
+      const tempFiles = files.filter(f => currentAttachmentList.findIndex(fr => fr.ID === f.ID) === -1 && !f.inProgress && f.responseProps);
 
       const updatedAttList = [...currentAttachmentList, ...tempFiles];
       updateAttachmentState(pConn, getAttachmentKey(valueRef), updatedAttList);
@@ -342,10 +351,10 @@ export default function Attachment(props: AttachmentProps) {
 
   useEffect(() => {
     let tempUploadedFiles = getCurrentAttachmentsList(getAttachmentKey(valueRef), pConn.getContextName());
-    tempUploadedFiles = tempUploadedFiles.filter((f) => f.label === valueRef);
-    setFiles((current) => {
+    tempUploadedFiles = tempUploadedFiles.filter(f => f.label === valueRef);
+    setFiles(current => {
       return [
-        ...current.map((f) => {
+        ...current.map(f => {
           return f.responseProps.pzInsKey && !f.responseProps.pzInsKey.includes('temp')
             ? {
                 ...f,
@@ -365,7 +374,7 @@ export default function Attachment(props: AttachmentProps) {
     };
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 

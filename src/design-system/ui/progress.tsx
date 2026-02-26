@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 'use client';
 
 import * as ProgressPrimitive from '@radix-ui/react-progress';

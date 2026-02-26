@@ -1,38 +1,28 @@
 /* eslint-disable react/no-array-index-key */
 import React, { createElement, isValidElement } from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters/index';
 
 import createPConnectComponent from './react_pconnect';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
+const styles = {
   fieldLabel: {
     display: 'block',
     fontWeight: 400,
-    color: theme.palette.text.secondary
+    color: 'rgba(0, 0, 0, 0.6)',
+    fontSize: '0.875rem',
+    lineHeight: 1.43
   },
   fieldValue: {
     fontWeight: 400,
-    color: theme.palette.text.primary
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: '0.875rem',
+    lineHeight: 1.43
   }
-}));
+};
 
 export default function DetailsFields(props) {
   // const componentName = "DetailsFields";
   const { fields = [] } = props;
-  const classes = useStyles();
   const fieldComponents = [];
 
   fields?.forEach((field, index) => {
@@ -55,11 +45,9 @@ export default function DetailsFields(props) {
     const dispValue = field.label;
 
     return (
-      <Grid item xs={6} key={keyVal}>
-        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
-          {dispValue}
-        </Typography>
-      </Grid>
+      <div style={{ flex: '0 0 50%', maxWidth: '50%' }} key={keyVal}>
+        <span style={styles.fieldLabel}>{dispValue}</span>
+      </div>
     );
   }
 
@@ -90,21 +78,17 @@ export default function DetailsFields(props) {
     const formattedValue = formatItemValue(field);
 
     return (
-      <Grid item xs={6} key={keyVal}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {formattedValue}
-        </Typography>
-      </Grid>
+      <div style={{ flex: '0 0 50%', maxWidth: '50%' }} key={keyVal}>
+        <span style={styles.fieldValue}>{formattedValue}</span>
+      </div>
     );
   }
 
   function getGridItem(field, keyVal) {
     return (
-      <Grid item xs={12} key={keyVal}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {field?.value}
-        </Typography>
-      </Grid>
+      <div style={{ flex: '0 0 100%', maxWidth: '100%' }} key={keyVal}>
+        <span style={styles.fieldValue}>{field?.value}</span>
+      </div>
     );
   }
 
@@ -115,16 +99,16 @@ export default function DetailsFields(props) {
       }
       if (isValidElement(field?.value)) {
         return (
-          <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px 0px' }} key={index}>
             {getGridItem(field, `${index}-item`)}
-          </Grid>
+          </div>
         );
       }
       return (
-        <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px 0px' }} key={index}>
           {getGridItemLabel(field, `${index}-label`)}
           {getGridItemValue(field, `${index}-value`)}
-        </Grid>
+        </div>
       );
     });
   }

@@ -1,6 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-restricted-properties */
-
 'use client';
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';

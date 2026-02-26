@@ -1,15 +1,18 @@
-import TextField from '@material-ui/core/TextField';
+import { useEffect, useRef, useState } from 'react';
+import { MoreVertical, Loader } from 'lucide-react';
+
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+
 import download from 'downloadjs';
-import { useEffect, useState } from 'react';
 // import SummaryList from '../../SummaryList';
 // import ActionButtonsForFileUtil from '../ActionButtonsForFileUtil';
 import './FileUtility.css';
-import { Button, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Button } from '../../../../design-system/ui/button';
+import { Label } from '../../../../design-system/ui/label';
 
 interface FileUtilityProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -73,15 +76,16 @@ export default function FileUtility(props: FileUtilityProps) {
     ] // 2nd and 3rd args empty string until typedef marked correctly
   };
   const [linkData, setLinkData] = useState(linkTemp);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [link, setLink] = useState({ title: '', url: '', disable: true });
   const [inProgress, setProgress] = useState(false);
   const [showViewAllModal, setViewAll] = useState(false);
   const [vaItems, setFullAttachments] = useState([]);
 
   function addAttachments(attsFromResp: any[] = []) {
-    attsFromResp = attsFromResp.map((respAtt) => {
+    attsFromResp = attsFromResp.map(respAtt => {
       const updatedAtt = {
         ...respAtt,
         meta: `${respAtt.category} . ${Utils.generateDateTime(respAtt.createTime, 'DateTime-Since')}, ${respAtt.createdBy}`
@@ -176,7 +180,7 @@ export default function FileUtility(props: FileUtilityProps) {
     const context = thePConn.getContextName();
 
     attachUtils
-      // @ts-expect-error - 3rd parameter "responseEncoding" is optional
+      // @ts-ignore - 3rd parameter "responseEncoding" is optional
       .downloadAttachment(ID, context)
       .then((content: any) => {
         if (type === 'FILE') {
@@ -200,7 +204,6 @@ export default function FileUtility(props: FileUtilityProps) {
     attachUtils
       .deleteAttachment(ID, context)
       .then(() => {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         getAttachments();
       })
       .catch();
@@ -216,7 +219,7 @@ export default function FileUtility(props: FileUtilityProps) {
       attPromise.then((resp: any) => {
         const arFullListAttachments = addAttachments(resp);
         const attachmentsCount = arFullListAttachments.length;
-        const arItems: any = arFullListAttachments.slice(0, 3).map((att) => {
+        const arItems: any = arFullListAttachments.slice(0, 3).map(att => {
           return getListUtilityItemProps({
             att,
             downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
@@ -225,7 +228,7 @@ export default function FileUtility(props: FileUtilityProps) {
             removeFile: null
           });
         });
-        const viewAllarItems: any = arFullListAttachments.map((att) => {
+        const viewAllarItems: any = arFullListAttachments.map(att => {
           return getListUtilityItemProps({
             att,
             downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
@@ -235,7 +238,7 @@ export default function FileUtility(props: FileUtilityProps) {
           });
         });
         setProgress(false);
-        setList((current) => {
+        setList(current => {
           return { ...current, count: attachmentsCount, data: arItems };
         });
         setFullAttachments(viewAllarItems);
@@ -271,7 +274,7 @@ export default function FileUtility(props: FileUtilityProps) {
       }
       file.mimeType = file.type;
       file.icon = Utils.getIconFromFileType(file.type);
-      file.ID = `${Date.now()}I${index}`;
+      file.ID = `${new Date().getTime()}I${index}`;
       index += 1;
     }
     return arFiles;
@@ -296,40 +299,56 @@ export default function FileUtility(props: FileUtilityProps) {
         removeFile: null
       });
     });
-    setFileData((current) => {
+    setFileData(current => {
       return { ...current, fileList: arFileList$, attachedFiles: myFiles };
     });
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClick = () => {
+    setMenuOpen(prev => !prev);
   };
 
   function onAddFilesClick() {
-    setFileData((current) => {
+    setFileData(current => {
       return { ...current, showfileModal: true };
     });
-    setAnchorEl(null);
+    setMenuOpen(false);
   }
 
   function removeFileFromList(item: any) {
     let attachedFiles: any = fileData.attachedFiles;
     let fileList: any = fileData.fileList;
     if (item !== null) {
-      attachedFiles = attachedFiles.filter((ele) => ele.ID !== item.id);
-      fileList = fileList.filter((ele) => ele.id !== item.id);
-      setFileData((current) => {
+      attachedFiles = attachedFiles.filter(ele => ele.ID !== item.id);
+      fileList = fileList.filter(ele => ele.id !== item.id);
+      setFileData(current => {
         return { ...current, fileList, attachedFiles };
       });
     }
   }
 
   function closeFilePopup() {
-    setFileData((current) => {
+    setFileData(current => {
       return { ...current, showfileModal: false };
     });
   }
@@ -345,11 +364,11 @@ export default function FileUtility(props: FileUtilityProps) {
     }
 
     Promise.allSettled(
-      fileData.attachedFiles.map((file) => attachmentUtils.uploadAttachment(file, onUploadProgress, errorHandler, thePConn.getContextName()))
+      fileData.attachedFiles.map(file => attachmentUtils.uploadAttachment(file, onUploadProgress, errorHandler, thePConn.getContextName()))
     )
       .then((fileResponses: any) => {
         const uploadedFiles: any = [];
-        fileResponses.forEach((fileResponse) => {
+        fileResponses.forEach(fileResponse => {
           if (fileResponse.status === 'fulfilled') {
             uploadedFiles.push(fileResponse.value);
           }
@@ -357,7 +376,7 @@ export default function FileUtility(props: FileUtilityProps) {
         if (uploadedFiles.length > 0) {
           (attachmentUtils.linkAttachmentsToCase(caseID, uploadedFiles, 'File', thePConn.getContextName()) as Promise<any>)
             .then(() => {
-              setFileData((current) => {
+              setFileData(current => {
                 return { ...current, fileList: [], attachedFiles: [] };
               });
               getAttachments();
@@ -369,21 +388,21 @@ export default function FileUtility(props: FileUtilityProps) {
   }
 
   function onAddLinksClick() {
-    setLinkData((current) => {
+    setLinkData(current => {
       return { ...current, showLinkModal: true };
     });
-    setAnchorEl(null);
+    setMenuOpen(false);
   }
 
   function closeAddLinksPopup() {
-    setLinkData((current) => {
+    setLinkData(current => {
       return { ...current, showLinkModal: false };
     });
   }
 
-  const fieldlinkOnChange = (event) => {
+  const fieldlinkOnChange = event => {
     const title = event.target.value;
-    setLink((current) => {
+    setLink(current => {
       const updatedData = { ...current, title };
       updatedData.disable = !(updatedData.title && updatedData.url);
       return updatedData;
@@ -392,7 +411,7 @@ export default function FileUtility(props: FileUtilityProps) {
 
   function fieldurlOnChange(event) {
     const url = event.target.value;
-    setLink((current) => {
+    setLink(current => {
       const updatedData = { ...current, url };
       updatedData.disable = !(updatedData.title && updatedData.url);
       return updatedData;
@@ -410,7 +429,7 @@ export default function FileUtility(props: FileUtilityProps) {
     // list for display
     let oLink: any = {};
     oLink.icon = 'chain';
-    oLink.ID = `${Date.now()}`;
+    oLink.ID = `${new Date().getTime()}`;
     oLink = getListUtilityItemProps({
       att: oLink,
       downloadFile: null,
@@ -436,7 +455,7 @@ export default function FileUtility(props: FileUtilityProps) {
     attachedLink.url = url;
 
     attachedListTemp.push(attachedLink);
-    setLinkData((current) => {
+    setLinkData(current => {
       return {
         ...current,
         linksList: localList,
@@ -451,9 +470,9 @@ export default function FileUtility(props: FileUtilityProps) {
     let attachedLinks: any = linkData.attachedLinks;
     let linksList: any = linkData.linksList;
     if (item !== null) {
-      attachedLinks = attachedLinks.filter((ele) => ele.id !== item.id);
-      linksList = linksList.filter((ele) => ele.id !== item.id);
-      setLinkData((current) => {
+      attachedLinks = attachedLinks.filter(ele => ele.id !== item.id);
+      linksList = linksList.filter(ele => ele.id !== item.id);
+      setLinkData(current => {
         return { ...current, linksList, attachedLinks };
       });
     }
@@ -475,7 +494,7 @@ export default function FileUtility(props: FileUtilityProps) {
       setProgress(true);
       (attachmentUtils.linkAttachmentsToCase(caseID, linksToAttach, 'URL', thePConn.getContextName()) as Promise<any>)
         .then(() => {
-          setLinkData((current) => {
+          setLinkData(current => {
             return { ...current, linksList: [], attachedLinks: [] };
           });
           getAttachments();
@@ -488,7 +507,7 @@ export default function FileUtility(props: FileUtilityProps) {
     <div className='psdk-utility'>
       {inProgress && (
         <div className='progress-div'>
-          <CircularProgress />
+          <Loader className='h-6 w-6 animate-spin text-primary' />
         </div>
       )}
       <div className='psdk-header'>
@@ -498,26 +517,43 @@ export default function FileUtility(props: FileUtilityProps) {
           {list.count}
         </div>
         <div style={{ flexGrow: 1 }} />
-        <div>
-          <IconButton
+        <div className='relative inline-block'>
+          <Button
+            ref={menuButtonRef}
+            variant='ghost'
+            size='icon'
             id='long-button'
-            aria-controls={open ? 'simple-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
+            aria-controls={menuOpen ? 'simple-menu' : undefined}
+            aria-expanded={menuOpen ? 'true' : undefined}
             aria-haspopup='true'
             onClick={handleClick}
           >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu style={{ marginTop: '3rem' }} id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem style={{ fontSize: '14px' }} onClick={onAddFilesClick}>
-              {thePConn.getLocalizedValue('Add files', '', '')}
-            </MenuItem>{' '}
-            {/* 2nd and 3rd args empty string until typedef marked correctly */}
-            <MenuItem style={{ fontSize: '14px' }} onClick={onAddLinksClick}>
-              {thePConn.getLocalizedValue('Add links', '', '')}
-            </MenuItem>{' '}
-            {/* 2nd and 3rd args empty string until typedef marked correctly */}
-          </Menu>
+            <MoreVertical className='h-5 w-5' />
+          </Button>
+          {menuOpen && (
+            <div
+              ref={menuRef}
+              id='simple-menu'
+              className='absolute right-0 top-full z-50 mt-1 min-w-[160px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md'
+            >
+              <button
+                type='button'
+                className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+                onClick={onAddFilesClick}
+              >
+                {thePConn.getLocalizedValue('Add files', '', '')}
+              </button>
+              {/* 2nd and 3rd args empty string until typedef marked correctly */}
+              <button
+                type='button'
+                className='flex w-full items-center px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+                onClick={onAddLinksClick}
+              >
+                {thePConn.getLocalizedValue('Add links', '', '')}
+              </button>
+              {/* 2nd and 3rd args empty string until typedef marked correctly */}
+            </div>
+          )}
         </div>
       </div>
       {list.data.length > 0 && (
@@ -527,7 +563,7 @@ export default function FileUtility(props: FileUtilityProps) {
       )}
       {list.count > 3 && (
         <div className='psdk-utility-view-all'>
-          <Button style={{ textTransform: 'none' }} color='primary' onClick={() => setViewAll(true)}>
+          <Button variant='link' onClick={() => setViewAll(true)}>
             View all
           </Button>
         </div>
@@ -540,9 +576,9 @@ export default function FileUtility(props: FileUtilityProps) {
               <div className='psdk-modal-file-selector'>
                 <label htmlFor='upload-files'>
                   <input style={{ display: 'none' }} id='upload-files' name='upload-files' type='file' multiple onChange={uploadMyFiles} />
-                  <Button variant='outlined' color='primary' component='span'>
-                    {thePConn.getLocalizedValue('Attach files', '', '')}
-                  </Button>{' '}
+                  <Button variant='outline' asChild>
+                    <span>{thePConn.getLocalizedValue('Attach files', '', '')}</span>
+                  </Button>
                   {/* 2nd and 3rd args empty string until typedef marked correctly */}
                 </label>
               </div>
@@ -570,22 +606,18 @@ export default function FileUtility(props: FileUtilityProps) {
               <div className='psdk-modal-links-row'>
                 <div className='psdk-links-two-column'>
                   <div className='psdk-modal-link-data'>
-                    <TextField
-                      fullWidth
-                      variant='outlined'
-                      label='Link title'
-                      size='small'
+                    <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>Link title *</Label>
+                    <input
+                      className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       required={required}
                       value={link.title}
                       onChange={fieldlinkOnChange}
                     />
                   </div>
                   <div className='psdk-modal-link-data'>
-                    <TextField
-                      fullWidth
-                      variant='outlined'
-                      label='URL'
-                      size='small'
+                    <Label className='block text-base font-normal text-gray-900 dark:text-gray-300'>URL *</Label>
+                    <input
+                      className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       required={required}
                       value={link.url}
                       onChange={fieldurlOnChange}
@@ -593,16 +625,9 @@ export default function FileUtility(props: FileUtilityProps) {
                   </div>
                 </div>
                 <div className='psdk-modal-link-add'>
-                  <Button
-                    className='psdk-add-link-action'
-                    color='primary'
-                    variant='contained'
-                    component='span'
-                    onClick={addLink}
-                    disabled={link.disable}
-                  >
+                  <Button variant='default' onClick={addLink} disabled={link.disable}>
                     {thePConn.getLocalizedValue('Add link', '', '')}
-                  </Button>{' '}
+                  </Button>
                   {/* 2nd and 3rd args empty string until typedef marked correctly */}
                 </div>
               </div>
@@ -626,7 +651,6 @@ export default function FileUtility(props: FileUtilityProps) {
           <div className='psdk-modal-file-top'>
             <div className='psdk-view-all-header'>
               <h3>{thePConn.getLocalizedValue('Attachments', '', '')}</h3> {/* 2nd and 3rd args empty string until typedef marked correctly */}
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button type='button' className='psdk-close-button' onClick={() => setViewAll(false)}>
                 <img className='psdk-utility-card-actions-svg-icon' src={closeSvgIcon} />
               </button>

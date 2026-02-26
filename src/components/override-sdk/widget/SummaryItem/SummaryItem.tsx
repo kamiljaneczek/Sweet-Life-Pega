@@ -1,8 +1,6 @@
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { useState, useRef, useEffect } from 'react';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { useState } from 'react';
 
 import './SummaryItem.css';
 
@@ -20,8 +18,8 @@ export default function SummaryItem(props: SummaryItemProps) {
   imagePath$ = Utils.getIconPath(Utils.getSDKStaticConentUrl());
   const item = props.arItems$;
   const srcImg = `${imagePath$}${item.visual.icon}.svg`;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   if (menuIconOverride$) {
     menuIconOverride$ = Utils.getImageSrc(menuIconOverride$, Utils.getSDKStaticConentUrl());
   }
@@ -30,13 +28,27 @@ export default function SummaryItem(props: SummaryItemProps) {
     props.menuIconOverrideAction$(item);
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setOpen(prev => !prev);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
 
   return (
     <div className='psdk-utility-card'>
@@ -62,23 +74,43 @@ export default function SummaryItem(props: SummaryItemProps) {
           </button>
         )}
         {!menuIconOverride$ && (
-          <div>
-            <IconButton
+          <div ref={menuRef} className='relative'>
+            <button
+              type='button'
               id='setting-button'
+              className='inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100'
               aria-controls={open ? 'file-menu' : undefined}
               aria-expanded={open ? 'true' : undefined}
               aria-haspopup='true'
               onClick={handleClick}
             >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu style={{ marginTop: '3rem' }} id='file-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-              {item.actions?.map((option) => (
-                <MenuItem style={{ fontSize: '14px' }} key={option.id || option.text} onClick={option.onClick}>
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Menu>
+              <svg className='h-5 w-5 fill-current text-gray-600' viewBox='0 0 24 24'>
+                <circle cx='12' cy='5' r='2' />
+                <circle cx='12' cy='12' r='2' />
+                <circle cx='12' cy='19' r='2' />
+              </svg>
+            </button>
+            {open && (
+              <div
+                id='file-menu'
+                className='absolute right-0 top-full z-50 mt-1 min-w-[150px] rounded border border-gray-200 bg-white py-1 shadow-lg'
+              >
+                {item.actions &&
+                  item.actions.map(option => (
+                    <button
+                      type='button'
+                      key={option.id || option.text}
+                      className='block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-100'
+                      onClick={() => {
+                        option.onClick();
+                        handleClose();
+                      }}
+                    >
+                      {option.text}
+                    </button>
+                  ))}
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,10 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-
-import { buildView, getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { useMemo } from 'react';
+
+import { getReferenceList, buildView } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface FieldGroupTemplateProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -60,7 +58,7 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
     const addFieldGroupItem = () => {
       addRecord();
     };
-    const deleteFieldGroupItem = (index) => {
+    const deleteFieldGroupItem = index => {
       if (PCore.getPCoreVersion()?.includes('8.7')) {
         pConn.getListActions().deleteEntry(index, pageReference);
       } else {
@@ -71,7 +69,6 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
       addFieldGroupItem();
     }
 
-    // biome-ignore lint/correctness/useHookAtTopLevel: hooks are used in conditional branches intentionally for this Pega SDK component pattern
     const MemoisedChildren = useMemo(() => {
       return referenceList.map((item, index) => ({
         id: index,
@@ -90,7 +87,6 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
   }
 
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
-  // biome-ignore lint/correctness/useHookAtTopLevel: hooks are used in conditional branches intentionally for this Pega SDK component pattern
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => {
       const key = item[heading] || `field-group-row-${index}`;

@@ -1,7 +1,6 @@
-import { Grid } from '@material-ui/core';
+import { ReactElement, useMemo } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { ReactElement, useMemo } from 'react';
 
 interface GroupProps extends PConnFieldProps {
   children: ReactElement[];
@@ -19,13 +18,11 @@ export default function Group(props: GroupProps) {
   const FieldGroup = getComponentFromMap('FieldGroup');
   const content = useMemo(() => {
     return (
-      <Grid container spacing={2}>
-        {children?.map((child) => (
-          <Grid item xs={12} key={child.key}>
-            {child}
-          </Grid>
+      <div className='grid grid-cols-1 gap-2'>
+        {children?.map(child => (
+          <div key={child.key}>{child}</div>
         ))}
-      </Grid>
+      </div>
     );
   }, [children, type, isReadOnly]);
 

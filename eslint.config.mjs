@@ -6,6 +6,7 @@ import sonarjs from 'eslint-plugin-sonarjs';
 import importPlugin from 'eslint-plugin-import';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import storybook from 'eslint-plugin-storybook';
 // eslint.config.js
 import { defineConfig } from 'eslint/config';
 
@@ -16,6 +17,7 @@ export default defineConfig([
   ...tseslint.configs.recommended,
   globalIgnores([
     '**/node_modules',
+    'packages/*/lib',
     '!**/.storybook',
     '.storybook/public',
     '**/demo.stories.*',
@@ -36,7 +38,8 @@ export default defineConfig([
     '**/*.mjs',
     'dist/*',
     'lib/*',
-    'scripts/*.*'
+    'scripts/*.*',
+    'src/samples/**'
   ]),
   {
     languageOptions: {
@@ -103,7 +106,7 @@ export default defineConfig([
       'import/order': 'off',
 
       'no-underscore-dangle': 'off', // TODO : adhere to standard naming
-      'no-restricted-syntax': 'warn', // TODO : fix for-in loops
+      'no-restricted-syntax': 'off', // TODO : fix for-in loops
 
       'jsx-a11y/alt-text': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
@@ -147,8 +150,7 @@ export default defineConfig([
       'import/no-relative-packages': 'off',
       'react/jsx-fragments': 'off',
       'react/react-in-jsx-scope': 'off',
-      'react-hooks/exhaustive-deps': 'off',
-      'sonarjs/cognitive-complexity': ['warn', 45]
+      'react-hooks/exhaustive-deps': 'off'
     }
   },
   {
@@ -161,6 +163,59 @@ export default defineConfig([
 
     rules: {
       'import/prefer-default-export': ['off']
+    }
+  },
+
+  // DXCB: custom-constellation JS/JSX overrides
+  {
+    files: ['**/custom-constellation/**/*.@(js|jsx)'],
+    rules: {
+      'import/no-relative-packages': 'off',
+      'import/prefer-default-export': 'off',
+      '@typescript-eslint/no-shadow': 'error',
+      'react/jsx-fragments': 'off',
+      'no-undef': 'error',
+      'no-console': 'error',
+      'prefer-regex-literals': 'off',
+      'sonarjs/cognitive-complexity': ['warn', 50]
+    }
+  },
+
+  // DXCB: custom-constellation TS/TSX overrides
+  {
+    files: ['**/custom-constellation/**/*.@(ts|tsx)'],
+    rules: {
+      eqeqeq: 'off',
+      'no-alert': 'off',
+      'no-console': 'off',
+      'no-fallthrough': 'error',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      'no-var': 'off',
+      yoda: 'error',
+      'no-irregular-whitespace': 'off',
+      'no-empty': 'off',
+      'no-new-object': 'off',
+      'react/jsx-fragments': 'off',
+      'import/prefer-default-export': 'off',
+      '@typescript-eslint/no-inferrable-types': 'error',
+      '@typescript-eslint/array-type': 'off',
+      'sonarjs/cognitive-complexity': ['warn', 45],
+      'react-hooks/exhaustive-deps': [
+        'error',
+        {
+          additionalHooks: 'useAfterInitialEffect'
+        }
+      ]
+    }
+  },
+
+  // custom-sdk storybook override
+  {
+    files: ['**/custom-sdk/**/**/mock.stories.js'],
+    plugins: { storybook },
+    rules: {
+      'storybook/default-exports': 'off'
     }
   }
 ]);

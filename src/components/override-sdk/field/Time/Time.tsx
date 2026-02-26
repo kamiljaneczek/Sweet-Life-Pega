@@ -1,8 +1,7 @@
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { KeyboardTimePicker } from '@material-ui/pickers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import dayjs from 'dayjs';
+
+import { Input } from '../../../../design-system/ui/input';
 
 interface TimeProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Time here
@@ -28,48 +27,31 @@ export default function Time(props: TimeProps) {
     return <TextInput {...props} />;
   }
 
-  let testProp = {};
-
-  testProp = {
-    'data-test-id': testId
-  };
-
-  const handleChange = (date) => {
-    const theValue = date?.isValid() ? date.format('HH:mm') : null;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const theValue = event.target.value || null;
     onChange({ value: theValue });
   };
 
-  let timeValue: any = null;
+  // Convert HH:mm value to input format
+  let timeValue = '';
   if (value) {
-    const timeArray = value.split(':').map((itm) => Number(itm));
-    timeValue = dayjs().hour(timeArray[0]).minute(timeArray[1]);
+    // Value comes in as HH:mm format, which is already compatible with input type="time"
+    timeValue = value;
   }
 
-  //
-  // TODO: Keyboard doesn't work in the minute field, it updates one digit then jump to am/pm field
-  //       try an older version of the lib or use DateTimePicker
-  //
-
   return (
-    <KeyboardTimePicker
-      variant='inline'
-      inputVariant='outlined'
-      placeholder='hh:mm am'
-      keyboardIcon={<AccessTimeIcon />}
-      fullWidth
-      required={required}
-      disabled={disabled}
-      error={status === 'error'}
-      helperText={helperTextToDisplay}
-      minutesStep={5}
-      size='small'
-      label={label}
-      autoOk
-      mask='__:__ _m'
-      format='hh:mm a'
-      value={timeValue}
-      onChange={handleChange}
-      InputProps={{ inputProps: { ...testProp } }}
-    />
+    <div data-test-id={testId}>
+      <Input
+        type='time'
+        label={label}
+        required={required}
+        disabled={disabled}
+        error={status === 'error'}
+        helperText={helperTextToDisplay}
+        InputProps={{}}
+        value={timeValue}
+        onChange={handleChange}
+      />
+    </div>
   );
 }

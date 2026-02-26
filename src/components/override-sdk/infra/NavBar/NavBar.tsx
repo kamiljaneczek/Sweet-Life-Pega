@@ -1,42 +1,16 @@
-import {
-  Collapse,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Typography
-} from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import AddIcon from '@material-ui/icons/Add';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutlineOutlined';
-import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
+import { useEffect, useRef, useState } from 'react';
+import { User, ChevronLeft, ChevronRight, Flag, Home, ChevronUp, ChevronDown, Plus, Briefcase, X, ArrowLeft } from 'lucide-react';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
+
 import { useNavBar } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 
 import './NavBar.css';
 
 interface NavBarProps extends PConnProps {
   // If any, enter additional props that only exist on this component
-  // eslint-disable-next-line react/no-unused-prop-types
+
   appName?: string;
   pages?: any[];
   caseTypes: any[];
@@ -44,76 +18,26 @@ interface NavBarProps extends PConnProps {
 }
 
 const iconMap = {
-  'pi pi-headline': <HomeOutlinedIcon fontSize='large' />,
-  'pi pi-flag-solid': <FlagOutlinedIcon fontSize='large' />,
-  'pi pi-home-solid': <HomeOutlinedIcon fontSize='large' />
+  'pi pi-headline': <Home size={28} />,
+  'pi pi-flag-solid': <Flag size={28} />,
+  'pi pi-home-solid': <Home size={28} />
 };
 
-const drawerWidth = 300;
-
-const useStyles = makeStyles((theme) => ({
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    height: '100vh'
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('md')]: {
-      width: theme.spacing(9)
-    },
-    height: '100vh'
-  },
-  nested: {
-    paddingLeft: theme.spacing(4)
-  },
-  appListItem: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.getContrastText(theme.palette.primary.light)
-  },
-  appListLogo: {
-    marginRight: theme.spacing(2),
-    width: '3.6rem'
-  },
-  appListIcon: {
-    color: theme.palette.getContrastText(theme.palette.primary.light)
-  },
-  appListDiv: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.getContrastText(theme.palette.primary.light),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  applicationLabel: {
-    whiteSpace: 'initial'
-  }
-}));
+const DRAWER_WIDTH_OPEN = '300px';
+const DRAWER_WIDTH_CLOSED_MD = '72px';
+const DRAWER_WIDTH_CLOSED = '56px';
 
 export default function NavBar(props: NavBarProps) {
   const { pConn, pages = [], caseTypes = [] } = props;
 
-  const classes = useStyles();
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [isDesktop, setIsDesktop] = useState(window.matchMedia('(min-width: 768px)').matches);
 
   const { open, setOpen } = useNavBar();
   const [navPages, setNavPages] = useState(JSON.parse(JSON.stringify(pages)));
   const [bShowCaseTypes, setBShowCaseTypes] = useState(true);
   const [bShowOperatorButtons, setBShowOperatorButtons] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const operatorButtonRef = useRef<HTMLLIElement>(null);
   const localeUtils = PCore.getLocaleUtils();
   const localeReference = pConn.getValue('.pyLocaleReference');
 
@@ -128,6 +52,31 @@ export default function NavBar(props: NavBarProps) {
     setNavPages(JSON.parse(JSON.stringify(pages)));
   }, [pages]);
 
+  // Replace useMediaQuery with window.matchMedia listener
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (!bShowOperatorButtons) return undefined;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        operatorButtonRef.current &&
+        !operatorButtonRef.current.contains(e.target as Node)
+      ) {
+        setBShowOperatorButtons(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [bShowOperatorButtons]);
+
   function navPanelButtonClick(oPageData: any) {
     const { pyClassName, pyRuleName } = oPageData;
 
@@ -135,7 +84,6 @@ export default function NavBar(props: NavBarProps) {
       .getActionsApi()
       .showPage(pyRuleName, pyClassName)
       .then(() => {
-        // eslint-disable-next-line no-console
         console.log(`${localizedVal('showPage completed', localeCategory)}`);
       });
   }
@@ -151,16 +99,13 @@ export default function NavBar(props: NavBarProps) {
       .getActionsApi()
       .createWork(sCaseType, actionInfo)
       .then(() => {
-        // eslint-disable-next-line no-console
         console.log(`${localizedVal('createWork completed', localeCategory)}`);
       });
   }
 
   // Toggle showing the Operator buttons
-  function navPanelOperatorButtonClick(evt) {
+  function navPanelOperatorButtonClick() {
     setBShowOperatorButtons(!bShowOperatorButtons);
-    if (!bShowOperatorButtons) setAnchorEl(evt.currentTarget);
-    else setAnchorEl(null);
   }
 
   const handleDrawerOpen = () => {
@@ -179,108 +124,106 @@ export default function NavBar(props: NavBarProps) {
     else setOpen(true);
   }, [isDesktop]);
 
+  const drawerWidth = open ? DRAWER_WIDTH_OPEN : isDesktop ? DRAWER_WIDTH_CLOSED_MD : DRAWER_WIDTH_CLOSED;
+
   return (
-    <Drawer
-      variant='permanent'
-      classes={{
-        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-      }}
-      open={open && isDesktop}
+    <aside
+      className='relative flex flex-col h-screen whitespace-nowrap transition-[width] duration-200 ease-in-out bg-white border-r border-gray-200'
+      style={{ width: drawerWidth, overflow: open ? undefined : 'hidden' }}
     >
       {open ? (
-        <List className={classes.appListItem}>
-          <ListItem onClick={handleDrawerOpen}>
-            <ListItemIcon>
-              <img src={portalLogoImage} className={classes.appListLogo} />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography variant='h6' className={classes.applicationLabel}>
-                  {portalApp}
-                </Typography>
-              }
-            />
-            <ListItemSecondaryAction>
-              <IconButton edge='end' onClick={handleDrawerOpen}>
-                <ChevronLeftIcon className={classes.appListIcon} />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
+        <ul className='m-0 p-0 list-none bg-primary text-primary-foreground'>
+          <li className='flex items-center px-4 py-2 cursor-pointer' onClick={handleDrawerOpen}>
+            <span className='flex-shrink-0 mr-2'>
+              <img src={portalLogoImage} className='w-[3.6rem]' alt='logo' />
+            </span>
+            <span className='flex-grow min-w-0'>
+              <h6 className='text-base font-medium whitespace-normal m-0'>{portalApp}</h6>
+            </span>
+            <span className='flex-shrink-0 ml-auto'>
+              <button type='button' className='p-1 rounded-full hover:bg-primary-foreground/20 text-primary-foreground' onClick={handleDrawerOpen}>
+                <ChevronLeft size={24} />
+              </button>
+            </span>
+          </li>
+        </ul>
       ) : (
-        <div className={classes.appListDiv} onClick={handleDrawerOpen}>
-          <ChevronRightIcon className={classes.appListIcon} id='chevron-right-icon' fontSize='large' />
+        <div className='bg-primary text-primary-foreground py-4 flex items-center justify-center cursor-pointer' onClick={handleDrawerOpen}>
+          <ChevronRight size={28} id='chevron-right-icon' />
         </div>
       )}
-      <List>
-        <ListItem button onClick={handleCaseItemClick}>
-          <ListItemIcon>{bShowCaseTypes && open ? <ClearOutlinedIcon fontSize='large' /> : <AddIcon fontSize='large' />}</ListItemIcon>
-          <ListItemText primary='Create' />
-          {bShowCaseTypes ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-      </List>
-      <Collapse in={bShowCaseTypes && open} timeout='auto' unmountOnExit className='scrollable'>
-        <List component='div' disablePadding>
-          {caseTypes.map((caseType) => (
-            <ListItem
-              button
-              className={classes.nested}
-              onClick={() => navPanelCreateCaseType(caseType.pyClassName, caseType.pyFlowType)}
-              key={caseType.pyLabel}
-            >
-              <ListItemIcon>
-                <WorkOutlineIcon fontSize='large' />
-              </ListItemIcon>
-              <ListItemText primary={localeUtils.getLocaleValue(caseType.pyLabel, '', localeReference)} />
-            </ListItem>
-          ))}
-        </List>
-      </Collapse>
-      <List>
-        {navPages.map((page) => (
-          <ListItem button onClick={() => navPanelButtonClick(page)} key={page.pyLabel}>
-            <ListItemIcon>{iconMap[page.pxPageViewIcon]}</ListItemIcon>
-            <ListItemText primary={localeUtils.getLocaleValue(page.pyLabel, '', localeReference)} />
-          </ListItem>
+      <ul className='m-0 p-0 list-none'>
+        <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={handleCaseItemClick}>
+          <span className='flex-shrink-0 min-w-[40px]'>{bShowCaseTypes && open ? <X size={28} /> : <Plus size={28} />}</span>
+          <span className='flex-grow'>Create</span>
+          {bShowCaseTypes ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        </li>
+      </ul>
+      {bShowCaseTypes && open && (
+        <div className='scrollable transition-all duration-200'>
+          <ul className='m-0 p-0 list-none'>
+            {caseTypes.map(caseType => (
+              <li
+                className='flex items-center pl-8 pr-4 py-2 cursor-pointer hover:bg-gray-100'
+                onClick={() => navPanelCreateCaseType(caseType.pyClassName, caseType.pyFlowType)}
+                key={caseType.pyLabel}
+              >
+                <span className='flex-shrink-0 min-w-[40px]'>
+                  <Briefcase size={28} />
+                </span>
+                <span className='flex-grow'>{localeUtils.getLocaleValue(caseType.pyLabel, '', localeReference)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <ul className='m-0 p-0 list-none'>
+        {navPages.map(page => (
+          <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={() => navPanelButtonClick(page)} key={page.pyLabel}>
+            <span className='flex-shrink-0 min-w-[40px]'>{iconMap[page.pxPageViewIcon]}</span>
+            <span className='flex-grow'>{localeUtils.getLocaleValue(page.pyLabel, '', localeReference)}</span>
+          </li>
         ))}
-      </List>
-      <Divider />
-      <List className='marginTopAuto'>
-        <ListItem onClick={navPanelOperatorButtonClick}>
-          <ListItemIcon>
-            <PersonOutlineIcon fontSize='large' />
-          </ListItemIcon>
-          <ListItemText primary={portalOperator} />
-          {open && (
-            <ListItemSecondaryAction>
-              <IconButton edge='end' onClick={navPanelOperatorButtonClick}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          )}
-        </ListItem>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted={bShowOperatorButtons}
-          open={bShowOperatorButtons}
+      </ul>
+      <hr className='border-gray-200 my-0' />
+      <ul className='m-0 p-0 list-none marginTopAuto'>
+        <li
+          ref={operatorButtonRef}
+          className='relative flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100'
           onClick={navPanelOperatorButtonClick}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left'
+        >
+          <span className='flex-shrink-0 min-w-[40px]'>
+            <User size={28} />
+          </span>
+          <span className='flex-grow'>{portalOperator}</span>
+          {open && (
+            <span className='flex-shrink-0 ml-auto'>
+              <button type='button' className='p-1 rounded-full hover:bg-gray-200' onClick={navPanelOperatorButtonClick}>
+                <ChevronRight size={20} />
+              </button>
+            </span>
+          )}
+        </li>
+      </ul>
+      {bShowOperatorButtons && (
+        <div
+          ref={menuRef}
+          className='fixed z-50 bg-white rounded shadow-lg border border-gray-200 py-1 min-w-[160px]'
+          style={{
+            left: operatorButtonRef.current ? operatorButtonRef.current.getBoundingClientRect().right + 4 : 0,
+            top: operatorButtonRef.current ? operatorButtonRef.current.getBoundingClientRect().top : 0
           }}
         >
-          <MenuItem onClick={logout}>
-            <ListItemIcon>
-              <ArrowBackIcon fontSize='large' />
-            </ListItemIcon>
-            <Typography variant='inherit'>{localizedVal('Log off', localeCategory)}</Typography>
-          </MenuItem>
-        </Menu>
-      </List>
-    </Drawer>
+          <ul className='m-0 p-0 list-none'>
+            <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={logout}>
+              <span className='flex-shrink-0 min-w-[40px]'>
+                <ArrowLeft size={28} />
+              </span>
+              <span>{localizedVal('Log off', localeCategory)}</span>
+            </li>
+          </ul>
+        </div>
+      )}
+    </aside>
   );
 }

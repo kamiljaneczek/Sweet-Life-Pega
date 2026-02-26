@@ -54,10 +54,10 @@ export default function SingleReferenceReadOnly(props: SingleReferenceReadOnlyPr
         dataRelationshipContext
       }
     },
-    '',
-    '',
+    undefined,
+    undefined,
     {}
-  ); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional
+  ); // 2nd, 3rd, and 4th args now properly typed as optional
 
   return <>{component}</>;
 }

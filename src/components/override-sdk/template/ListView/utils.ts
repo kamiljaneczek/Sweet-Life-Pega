@@ -653,7 +653,7 @@ export function updatePageFieldsConfig(configFields, parentClassID) {
 export const readContextResponse = async (context, params) => {
   const { getPConnect, apiContext, setListContext, children, showDynamicFields, referenceList, isDataObject } = params;
   const { promisesResponseArray, apiContext: otherContext } = context;
-  // eslint-disable-next-line sonarjs/no-unused-collection
+
   const listOfComponents: any[] = [];
   const {
     data: { fields: metaFields, classID, isQueryable }

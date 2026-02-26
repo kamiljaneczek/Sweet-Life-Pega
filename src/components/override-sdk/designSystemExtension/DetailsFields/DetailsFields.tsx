@@ -1,11 +1,7 @@
-/* eslint-disable react/no-array-index-key */
+import React, { createElement, isValidElement } from 'react';
 
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import React, { createElement, isValidElement } from 'react';
 
 // DetailsFields is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -14,32 +10,9 @@ interface DetailsFieldsProps {
   fields: any[];
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  fieldLabel: {
-    display: 'block',
-    fontWeight: 400,
-    color: theme.palette.text.secondary
-  },
-  fieldValue: {
-    fontWeight: 400,
-    color: theme.palette.text.primary
-  }
-}));
-
 export default function DetailsFields(props: DetailsFieldsProps) {
   // const componentName = "DetailsFields";
   const { fields = [] } = props;
-  const classes = useStyles();
   const fieldComponents: any[] = [];
 
   fields?.forEach((field, index) => {
@@ -62,11 +35,9 @@ export default function DetailsFields(props: DetailsFieldsProps) {
     const dispValue = field.label;
 
     return (
-      <Grid item xs={6} key={keyVal}>
-        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
-          {dispValue}
-        </Typography>
-      </Grid>
+      <div className='w-1/2' key={keyVal}>
+        <span className='block text-sm font-normal text-muted-foreground'>{dispValue}</span>
+      </div>
     );
   }
 
@@ -74,7 +45,6 @@ export default function DetailsFields(props: DetailsFieldsProps) {
     const { type, value } = inField;
     let formattedVal = value;
 
-    // eslint-disable-next-line sonarjs/no-small-switch
     switch (type) {
       case 'date':
         formattedVal = format(value, type);
@@ -97,21 +67,17 @@ export default function DetailsFields(props: DetailsFieldsProps) {
     const formattedValue = formatItemValue(field);
 
     return (
-      <Grid item xs={6} key={keyVal}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {formattedValue}
-        </Typography>
-      </Grid>
+      <div className='w-1/2' key={keyVal}>
+        <span className='text-sm font-normal text-foreground'>{formattedValue}</span>
+      </div>
     );
   }
 
   function getGridItem(field: any, keyVal: string) {
     return (
-      <Grid item xs={12} key={keyVal}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {field?.value}
-        </Typography>
-      </Grid>
+      <div className='w-full' key={keyVal}>
+        <span className='text-sm font-normal text-foreground'>{field?.value}</span>
+      </div>
     );
   }
 
@@ -122,16 +88,16 @@ export default function DetailsFields(props: DetailsFieldsProps) {
       }
       if (isValidElement(field?.value)) {
         return (
-          <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
+          <div className='flex gap-1 py-1' key={index}>
             {getGridItem(field, `${index}-item`)}
-          </Grid>
+          </div>
         );
       }
       return (
-        <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
+        <div className='flex gap-1 py-1' key={index}>
           {getGridItemLabel(field, `${index}-label`)}
           {getGridItemValue(field, `${index}-value`)}
-        </Grid>
+        </div>
       );
     });
     return gridItems;

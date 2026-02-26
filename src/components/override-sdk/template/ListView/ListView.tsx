@@ -1,48 +1,19 @@
-/* eslint-disable no-plusplus */
+import React, { useState, useEffect, useRef } from 'react';
+import { MoreVertical, Filter, FileText, Search, X, ChevronUp, ChevronDown } from 'lucide-react';
 
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable @typescript-eslint/no-shadow */
-
-import { Radio } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Snackbar from '@material-ui/core/Snackbar';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchIcon from '@material-ui/icons/Search';
-import SubjectIcon from '@material-ui/icons/Subject';
 import { filterData } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
-import React, { useEffect, useRef, useState } from 'react';
 
 import './ListView.css';
-import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
+import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
 import useInit from './hooks';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+
+import { Button } from '../../../../design-system/ui/button';
+import { Checkbox } from '../../../../design-system/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../design-system/ui/select';
 
 interface ListViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -93,7 +64,8 @@ export default function ListView(props: ListViewProps) {
   // List component context
   const [listContext, setListContext] = useState<any>({});
   const { meta } = listContext;
-  const xRayApis = PCore.getDebugger().getXRayRuntime();
+  // getXRayRuntime was removed in SDK 25.1 - using no-op fallback
+  const xRayApis = (PCore.getDebugger() as any).getXRayRuntime?.() ?? { startXRay: () => '' };
   const xRayUid = xRayApis.startXRay();
 
   useInit({
@@ -106,7 +78,7 @@ export default function ListView(props: ListViewProps) {
   });
 
   const thePConn = getPConnect();
-  // @ts-expect-error - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
+  // @ts-ignore - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps: any = thePConn.getConfigProps() as ListViewProps;
 
@@ -123,11 +95,12 @@ export default function ListView(props: ListViewProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof any>('');
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuAnchor, setMenuAnchor] = useState<{ top: number; left: number } | null>(null);
   const [open, setOpen] = useState(false);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const snackbarTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [selectedValue, setSelectedValue] = useState(value);
 
@@ -144,58 +117,38 @@ export default function ListView(props: ListViewProps) {
   // This constant will also be used for parameters coming from from other components/utility functions in future
   const dataViewParameters = parameters;
 
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        width: '100%'
-      },
-      paper: {
-        width: '100%',
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
-        display: 'grid'
-      },
-      search: {
-        padding: '5px 5px'
-      },
-      table: {
-        minWidth: 750
-      },
-      tableInForm: {
-        minWidth: 750,
-        maxHeight: 550,
-        overflow: 'auto'
-      },
-      moreIcon: {
-        verticalAlign: 'bottom'
-      },
-      filteredIcon: {
-        verticalAlign: 'bottom'
-      },
-      cell: {
-        whiteSpace: 'nowrap'
-      },
-      visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1
-      },
-      title: {
-        marginTop: theme.spacing(1),
-        marginLeft: theme.spacing(1)
+  // Ref for menu click-outside detection
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showSnackbar) {
+      snackbarTimerRef.current = setTimeout(() => {
+        setShowSnackbar(false);
+      }, 3000);
+    }
+    return () => {
+      if (snackbarTimerRef.current) {
+        clearTimeout(snackbarTimerRef.current);
       }
-    })
-  );
+    };
+  }, [showSnackbar]);
 
-  const classes = useStyles();
+  // Click-outside handler for the column menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuAnchor(null);
+      }
+    }
+    if (menuAnchor) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuAnchor]);
 
-  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof any) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -232,18 +185,18 @@ export default function ListView(props: ListViewProps) {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis.map(el => el[0]);
   }
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
+  const handleChangePage = (newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (value: string) => {
+    setRowsPerPage(+value);
     setPage(0);
   };
 
@@ -254,7 +207,7 @@ export default function ListView(props: ListViewProps) {
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
-      const colIndex = fields.findIndex((ele) => ele.name === theField);
+      const colIndex = fields.findIndex(ele => ele.name === theField);
       const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = fields[index].id;
@@ -280,7 +233,6 @@ export default function ListView(props: ListViewProps) {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
-        // eslint-disable-next-line no-console
         console.error('pyGUID or pyID values are mandatory to select the required row from the list');
       }
     }
@@ -292,7 +244,7 @@ export default function ListView(props: ListViewProps) {
   function getMyColumnList(arCols: any[]): string[] {
     const myColList: string[] = [];
 
-    arCols.forEach((col) => {
+    arCols.forEach(col => {
       myColList.push(col.id);
     });
 
@@ -328,7 +280,7 @@ export default function ListView(props: ListViewProps) {
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
     // Constructing the select parameters list (will be sent in dashboardFilterPayload)
-    columnList.current.forEach((col) => {
+    columnList.current.forEach(col => {
       selectParam.push({
         field: col
       });
@@ -347,7 +299,6 @@ export default function ListView(props: ListViewProps) {
       const filter = filters.current[filterExp];
       // If the filter is null then we can skip this iteration
       if (filter === null) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 
@@ -356,7 +307,6 @@ export default function ListView(props: ListViewProps) {
       field = getFieldFromFilter(filter, isDateRange);
 
       if (!(columnList.current.length && columnList.current.includes(field))) {
-        // eslint-disable-next-line no-continue
         continue;
       }
       // If we reach here that implies we've at least one valid filter, hence setting the flag
@@ -445,15 +395,15 @@ export default function ListView(props: ListViewProps) {
     } else {
       // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields
       //  corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
-      fieldDefs.forEach((field) => {
-        if (!listFields.find((f) => f.field === field.name)) {
+      fieldDefs.forEach(field => {
+        if (!listFields.find(f => f.field === field.name)) {
           listFields.push({
             field: field.name
           });
         }
       });
-      patchQueryFields.forEach((k) => {
-        if (!listFields.find((f) => f.field === k)) {
+      patchQueryFields.forEach(k => {
+        if (!listFields.find(f => f.field === k)) {
           listFields.push({
             field: k
           });
@@ -461,8 +411,8 @@ export default function ListView(props: ListViewProps) {
       });
     }
 
-    compositeKeys.forEach((k) => {
-      if (!listFields.find((f) => f.field === k)) {
+    compositeKeys.forEach(k => {
+      if (!listFields.find(f => f.field === k)) {
         listFields.push({
           field: k
         });
@@ -474,7 +424,13 @@ export default function ListView(props: ListViewProps) {
   const addItemKeyInSelect = (fieldDefs, itemKey, select, compositeKeys) => {
     const elementFound = getField(fieldDefs, itemKey);
 
-    if (itemKey && !elementFound && Array.isArray(select) && !compositeKeys?.length && !select.find((sel) => sel.field === itemKey)) {
+    if (
+      itemKey &&
+      !elementFound &&
+      Array.isArray(select) &&
+      !(compositeKeys !== null && compositeKeys?.length) &&
+      !select.find(sel => sel.field === itemKey)
+    ) {
       return [
         ...select,
         {
@@ -491,9 +447,9 @@ export default function ListView(props: ListViewProps) {
     return fieldsMap.get(columnId);
   };
 
-  const getFieldsMap = (fieldDefs) => {
+  const getFieldsMap = fieldDefs => {
     const fieldsMap = new Map();
-    fieldDefs.forEach((element) => {
+    fieldDefs.forEach(element => {
       fieldsMap.set(element.id, element);
     });
     return fieldsMap;
@@ -515,7 +471,7 @@ export default function ListView(props: ListViewProps) {
 
     const selectParams: any = [];
 
-    myColumns.forEach((column) => {
+    myColumns.forEach(column => {
       selectParams.push({
         field: column.id
       });
@@ -523,7 +479,7 @@ export default function ListView(props: ListViewProps) {
 
     const colList: any = [];
 
-    selectParams.forEach((col) => {
+    selectParams.forEach(col => {
       colList.push(col.field);
     });
 
@@ -561,7 +517,7 @@ export default function ListView(props: ListViewProps) {
       setTimeout(() => {
         PCore.getPubSubUtils().subscribe(
           PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CHANGE,
-          (data) => {
+          data => {
             processFilterChange(data);
           },
           `dashboard-component-${'id'}`,
@@ -631,7 +587,7 @@ export default function ListView(props: ListViewProps) {
 
   function showToast(message: string) {
     const theMessage = `Assignment: ${message}`;
-    // eslint-disable-next-line no-console
+
     console.error(theMessage);
     setSnackbarMessage(message);
     setShowSnackbar(true);
@@ -674,23 +630,17 @@ export default function ListView(props: ListViewProps) {
     }
   }
 
-  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
+  function handleSnackbarClose() {
     setShowSnackbar(false);
   }
 
-  function _menuClick(event, columnId: string, columnType: string, label: string) {
+  function _menuClick(event: React.MouseEvent, columnId: string, columnType: string, label: string) {
     menuColumnId = columnId;
     menuColumnType = columnType;
     menuColumnLabel = label;
 
-    setAnchorEl(event.currentTarget);
-  }
-
-  function _menuClose() {
-    setAnchorEl(null);
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    setMenuAnchor({ top: rect.bottom, left: rect.left });
   }
 
   const [filterBy, setFilterBy] = useState<string>();
@@ -704,7 +654,7 @@ export default function ListView(props: ListViewProps) {
   const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
 
   function _filterMenu() {
-    setAnchorEl(null);
+    setMenuAnchor(null);
 
     let bFound = false;
 
@@ -751,7 +701,7 @@ export default function ListView(props: ListViewProps) {
   }
 
   function _groupMenu() {
-    setAnchorEl(null);
+    setMenuAnchor(null);
   }
 
   function _closeDialog() {
@@ -761,7 +711,6 @@ export default function ListView(props: ListViewProps) {
   function _showFilteredIcon(columnId) {
     for (const filterObj of filterByColumns) {
       if (filterObj.ref === columnId) {
-        // eslint-disable-next-line sonarjs/prefer-single-boolean-return
         if (filterObj.containsFilterValue !== '') {
           return true;
         }
@@ -818,19 +767,16 @@ export default function ListView(props: ListViewProps) {
     createSortHandler(sortColumnId);
   }
 
-  function _dialogContainsFilter(event) {
-    // dialogContainsFilter = event.target.value;
-    setDisplayDialogContainsFilter(event.target.value);
+  function _dialogContainsFilter(value: string) {
+    setDisplayDialogContainsFilter(value);
   }
 
   function _dialogContainsValue(event) {
-    // dialogContainsValue = event.target.value;
     setDisplayDialogContainsValue(event.target.value);
   }
 
-  function _dialogDateFilter(event) {
-    // dialogDateFilter = event.target.value;
-    setDisplayDialogDateFilter(event.target.value);
+  function _dialogDateFilter(value: string) {
+    setDisplayDialogDateFilter(value);
   }
 
   function _dialogDateValue(event) {
@@ -923,9 +869,9 @@ export default function ListView(props: ListViewProps) {
     const value = event.target.value;
     const reqObj = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex((element) => element[rowID] === value);
+      const index = response.findIndex(element => element[rowID] === value);
       const selectedRow = response[index];
-      compositeKeys.forEach((element) => {
+      compositeKeys.forEach(element => {
         reqObj[element] = selectedRow[element];
       });
     } else {
@@ -935,19 +881,17 @@ export default function ListView(props: ListViewProps) {
     setSelectedValue(value);
   };
 
-  const onCheckboxClick = (event) => {
-    const value = event?.target?.value;
-    const checked = event?.target?.checked;
+  const onCheckboxClick = (rowValue: string, checked: boolean) => {
     const reqObj: any = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex((element) => element[rowID] === value);
+      const index = response.findIndex(element => element[rowID] === rowValue);
       const selectedRow = response[index];
-      compositeKeys.forEach((element) => {
+      compositeKeys.forEach(element => {
         reqObj[element] = selectedRow[element];
       });
       reqObj.$selected = checked;
     } else {
-      reqObj[rowID] = value;
+      reqObj[rowID] = rowValue;
       reqObj.$selected = checked;
     }
     getPConnect()?.getListActions()?.setSelectedRows([reqObj]);
@@ -978,270 +922,363 @@ export default function ListView(props: ListViewProps) {
     return val;
   };
 
+  // Pagination helper values
+  const totalRows = arRows ? arRows.length : 0;
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
+  const startRow = totalRows > 0 ? page * rowsPerPage + 1 : 0;
+  const endRow = Math.min((page + 1) * rowsPerPage, totalRows);
+
   return (
     <>
       {arColumns && arColumns.length > 0 && (
-        <Paper className={classes.paper}>
-          <Typography className={classes.title} variant='h6' color='textPrimary' gutterBottom>
-            {_listTitle()}
-          </Typography>
+        <div className='mt-4 mb-4 grid w-full rounded-md border bg-background shadow-sm'>
+          <h6 className='mt-2 ml-2 text-lg font-medium text-foreground'>{_listTitle()}</h6>
           {globalSearch && (
-            <Grid container spacing={1} alignItems='flex-end' className={classes.search}>
-              <Grid item>
-                <SearchIcon />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label={PCore.getLocaleUtils().getLocaleValue('Search', 'Search')}
-                  fullWidth
-                  variant='outlined'
-                  placeholder=''
-                  size='small'
-                  id='search'
-                  onChange={_onSearch}
-                />
-              </Grid>
-            </Grid>
+            <div className='flex items-end gap-2 p-1'>
+              <Search className='h-5 w-5 text-muted-foreground' />
+              <input
+                type='text'
+                placeholder={PCore.getLocaleUtils().getLocaleValue('Search', 'Search')}
+                id='search'
+                onChange={_onSearch}
+                className='flex h-9 w-full max-w-xs rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+              />
+            </div>
           )}
-          {!bInForm ? (
-            <TableContainer id='list-view' className={classes.tableInForm}>
-              <Table stickyHeader aria-label='sticky table'>
-                <TableHead>
-                  <TableRow>
-                    {arColumns.map((column) => {
-                      return (
-                        <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                          <TableSortLabel
-                            active={orderBy === column.id}
-                            direction={orderBy === column.id ? order : 'asc'}
-                            onClick={createSortHandler(column.id)}
-                          >
-                            {column.label}
-                            {_showFilteredIcon(column.id) && <FilterListIcon className={classes.filteredIcon} />}
-                            {orderBy === column.id ? (
-                              <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
-                            ) : null}
-                          </TableSortLabel>
-                          <MoreIcon
-                            className={classes.moreIcon}
-                            onClick={(event) => {
-                              _menuClick(event, column.id, column.type, column.label);
-                            }}
-                          />
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {stableSort(arRows, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      return (
-                        <TableRow key={row.pxRefObjectInsName || row.pyID}>
-                          {arColumns.map((column) => {
-                            const value = row[column.id];
-                            return (
-                              <TableCell key={column.id} align={column.align} className={classes.cell}>
-                                {_showButton(column.id, row) || column.displayAsLink ? (
-                                  <Link
-                                    component='button'
-                                    onClick={() => {
-                                      _listViewClick(row, column);
-                                    }}
-                                  >
-                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                  </Link>
-                                ) : column.format && typeof value === 'number' ? (
-                                  column.format(value)
-                                ) : (
-                                  value
-                                )}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <TableContainer id='list-view'>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell />}
-                    {arColumns.map((column) => {
-                      return (
-                        <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                          <TableSortLabel
-                            active={orderBy === column.id}
-                            direction={orderBy === column.id ? order : 'asc'}
-                            onClick={createSortHandler(column.id)}
-                          >
-                            {column.label}
-                            {orderBy === column.id ? (
-                              <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
-                            ) : null}
-                          </TableSortLabel>
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {arRows &&
-                    arRows.length > 0 &&
-                    stableSort(arRows, getComparator(order, orderBy))
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row) => {
+          <>
+            {!bInForm ? (
+              <div id='list-view' className='min-w-[750px] max-h-[550px] overflow-auto'>
+                <table className='w-full border-collapse'>
+                  <thead className='sticky top-0 bg-muted'>
+                    <tr>
+                      {arColumns.map(column => {
                         return (
-                          <TableRow key={row[rowID]}>
-                            {selectionMode === SELECTION_MODE.SINGLE && (
-                              <TableCell>
-                                <Radio
-                                  onChange={handleChange}
-                                  value={row[rowID]}
-                                  name='radio-buttons'
-                                  inputProps={{ 'aria-label': 'A' }}
-                                  checked={selectedValue === row[rowID]}
-                                />
-                              </TableCell>
-                            )}
-                            {selectionMode === SELECTION_MODE.MULTI && (
-                              <TableCell>
-                                <Checkbox
-                                  onChange={onCheckboxClick}
-                                  checked={selectedValues.some((selectedValue) => selectedValue[rowID] === row[rowID])}
-                                  value={row[rowID]}
-                                />
-                              </TableCell>
-                            )}
-                            {arColumns.map((column) => {
-                              const value = row[column.id];
-                              return (
-                                <TableCell className={classes.cell} key={column.id} align={column.align}>
-                                  {processColumnValue(column, value)}
-                                </TableCell>
-                              );
-                            })}
-                          </TableRow>
+                          <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
+                            <span
+                              className='inline-flex cursor-pointer items-center gap-1 select-none'
+                              onClick={createSortHandler(column.id)}
+                              role='button'
+                              tabIndex={0}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
+                              }}
+                            >
+                              {column.label}
+                              {orderBy === column.id ? (
+                                order === 'desc' ? (
+                                  <ChevronDown className='h-4 w-4' />
+                                ) : (
+                                  <ChevronUp className='h-4 w-4' />
+                                )
+                              ) : (
+                                <span className='inline-block h-4 w-4' />
+                              )}
+                              {_showFilteredIcon(column.id) && <Filter className='h-4 w-4 text-primary' />}
+                              <span className='sr-only'>
+                                {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
+                              </span>
+                            </span>
+                            <button
+                              type='button'
+                              className='ml-1 inline-flex items-center align-bottom text-muted-foreground hover:text-foreground'
+                              onClick={event => {
+                                _menuClick(event, column.id, column.type, column.label);
+                              }}
+                            >
+                              <MoreVertical className='h-4 w-4' />
+                            </button>
+                          </th>
                         );
                       })}
-                </TableBody>
-              </Table>
-              {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
-            </TableContainer>
-          )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stableSort(arRows, getComparator(order, orderBy))
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map(row => {
+                        return (
+                          <tr key={row.pxRefObjectInsName || row.pyID} className='border-b hover:bg-muted/50'>
+                            {arColumns.map(column => {
+                              const value = row[column.id];
+                              return (
+                                <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
+                                  {_showButton(column.id, row) || column.displayAsLink ? (
+                                    <button
+                                      type='button'
+                                      className='text-primary underline-offset-4 hover:underline'
+                                      onClick={() => {
+                                        _listViewClick(row, column);
+                                      }}
+                                    >
+                                      {column.format && typeof value === 'number' ? column.format(value) : value}
+                                    </button>
+                                  ) : (
+                                    <>{column.format && typeof value === 'number' ? column.format(value) : value}</>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div id='list-view'>
+                <table className='w-full min-w-[750px] border-collapse'>
+                  <thead className='bg-muted'>
+                    <tr>
+                      {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && (
+                        <th className='w-12 border-b px-4 py-3' />
+                      )}
+                      {arColumns.map(column => {
+                        return (
+                          <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
+                            <span
+                              className='inline-flex cursor-pointer items-center gap-1 select-none'
+                              onClick={createSortHandler(column.id)}
+                              role='button'
+                              tabIndex={0}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
+                              }}
+                            >
+                              {column.label}
+                              {orderBy === column.id ? (
+                                order === 'desc' ? (
+                                  <ChevronDown className='h-4 w-4' />
+                                ) : (
+                                  <ChevronUp className='h-4 w-4' />
+                                )
+                              ) : (
+                                <span className='inline-block h-4 w-4' />
+                              )}
+                              <span className='sr-only'>
+                                {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
+                              </span>
+                            </span>
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {arRows &&
+                      arRows.length > 0 &&
+                      stableSort(arRows, getComparator(order, orderBy))
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map(row => {
+                          return (
+                            <tr key={row[rowID]} className='border-b hover:bg-muted/50'>
+                              {selectionMode === SELECTION_MODE.SINGLE && (
+                                <td className='px-4 py-2'>
+                                  <input
+                                    type='radio'
+                                    onChange={handleChange}
+                                    value={row[rowID]}
+                                    name='radio-buttons'
+                                    aria-label='A'
+                                    checked={selectedValue === row[rowID]}
+                                    className='h-4 w-4 border-gray-300 text-primary focus:ring-primary'
+                                  />
+                                </td>
+                              )}
+                              {selectionMode === SELECTION_MODE.MULTI && (
+                                <td className='px-4 py-2'>
+                                  <Checkbox
+                                    onCheckedChange={(checked: boolean | 'indeterminate') => onCheckboxClick(String(row[rowID]), checked === true)}
+                                    checked={selectedValues.some(sv => sv[rowID] === row[rowID])}
+                                    value={row[rowID]}
+                                  />
+                                </td>
+                              )}
+                              {arColumns.map(column => {
+                                const value = row[column.id];
+                                return (
+                                  <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
+                                    {processColumnValue(column, value)}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                  </tbody>
+                </table>
+                {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
+              </div>
+            )}
+          </>
           {arRows && arRows.length > 0 && (
-            <TablePagination
-              id='pagination'
-              rowsPerPageOptions={[10, 25, 100]}
-              component='div'
-              count={arRows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            <div id='pagination' className='flex items-center justify-end gap-4 border-t px-4 py-2 text-sm text-muted-foreground'>
+              <div className='flex items-center gap-2'>
+                <span>Rows per page:</span>
+                <select
+                  value={rowsPerPage}
+                  onChange={e => handleChangeRowsPerPage(e.target.value)}
+                  className='rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
+              <span>
+                {startRow}-{endRow} of {totalRows}
+              </span>
+              <div className='flex items-center gap-1'>
+                <button
+                  type='button'
+                  disabled={page === 0}
+                  onClick={() => handleChangePage(page - 1)}
+                  className='inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background text-sm hover:bg-muted disabled:pointer-events-none disabled:opacity-50'
+                  aria-label='Previous page'
+                >
+                  <ChevronUp className='h-4 w-4 -rotate-90' />
+                </button>
+                <button
+                  type='button'
+                  disabled={page >= totalPages - 1}
+                  onClick={() => handleChangePage(page + 1)}
+                  className='inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background text-sm hover:bg-muted disabled:pointer-events-none disabled:opacity-50'
+                  aria-label='Next page'
+                >
+                  <ChevronDown className='h-4 w-4 -rotate-90' />
+                </button>
+              </div>
+            </div>
           )}
-        </Paper>
+        </div>
       )}
-      <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={_menuClose}>
-        <MenuItem onClick={_filterMenu}>
-          <FilterListIcon /> Filter
-        </MenuItem>
-        <MenuItem onClick={_groupMenu}>
-          <SubjectIcon /> Group
-        </MenuItem>
-      </Menu>
-      <Dialog open={open} onClose={_closeDialog} aria-labelledby='form-dialog-title'>
-        <DialogTitle id='form-dialog-title'>Filter: {filterBy}</DialogTitle>
-        <DialogContent>
-          {containsDateOrTime ? (
-            <>
-              <Select value={displayDialogDateFilter} onChange={_dialogDateFilter} fullWidth>
-                <MenuItem value='notequal'>is not equal to</MenuItem>
-                <MenuItem value='after'>after</MenuItem>
-                <MenuItem value='before'>before</MenuItem>
-                <MenuItem value='null'>is null</MenuItem>
-                <MenuItem value='notnull'>is not null</MenuItem>
-              </Select>
-              {filterType === 'Date' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='date'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
-              )}
-              {filterType === 'DateTime' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='datetime-local'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
-              )}
-              {filterType === 'Time' && (
-                <TextField
-                  autoFocus
-                  margin='dense'
-                  id='containsFilter'
-                  type='time'
-                  fullWidth
-                  value={displayDialogDateValue}
-                  onChange={_dialogDateValue}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <Select fullWidth onChange={_dialogContainsFilter} value={displayDialogContainsFilter}>
-                <MenuItem value='contains'>Contains</MenuItem>
-                <MenuItem value='equals'>Equals</MenuItem>
-                <MenuItem value='startswith'>Starts with</MenuItem>
-              </Select>
-              <TextField
-                autoFocus
-                margin='dense'
-                id='containsFilter'
-                type='text'
-                fullWidth
-                value={displayDialogContainsValue}
-                onChange={_dialogContainsValue}
-              />
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={_closeDialog} color='secondary'>
-            Cancel
-          </Button>
-          <Button onClick={_submitFilter} color='primary'>
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
 
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        action={
-          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
-            <CloseIcon fontSize='small' />
-          </IconButton>
-        }
-      />
+      {/* Column context menu */}
+      {menuAnchor && (
+        <div
+          ref={menuRef}
+          className='fixed z-50 min-w-[160px] rounded-md border bg-popover py-1 text-popover-foreground shadow-md'
+          style={{ top: menuAnchor.top, left: menuAnchor.left }}
+        >
+          <button
+            type='button'
+            className='flex w-full items-center gap-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+            onClick={_filterMenu}
+          >
+            <Filter className='h-4 w-4' /> Filter
+          </button>
+          <button
+            type='button'
+            className='flex w-full items-center gap-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground'
+            onClick={_groupMenu}
+          >
+            <FileText className='h-4 w-4' /> Group
+          </button>
+        </div>
+      )}
+
+      {/* Filter dialog */}
+      {open && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50' onClick={_closeDialog}>
+          <div className='w-full max-w-md rounded-lg border bg-background p-0 shadow-lg' onClick={e => e.stopPropagation()}>
+            <div className='border-b px-6 py-4'>
+              <h3 className='text-lg font-semibold text-foreground'>Filter: {filterBy}</h3>
+            </div>
+            <div className='px-6 py-4'>
+              {containsDateOrTime ? (
+                <>
+                  <Select value={displayDialogDateFilter} onValueChange={_dialogDateFilter}>
+                    <SelectTrigger label='' className='w-full'>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='notequal'>is not equal to</SelectItem>
+                      <SelectItem value='after'>after</SelectItem>
+                      <SelectItem value='before'>before</SelectItem>
+                      <SelectItem value='null'>is null</SelectItem>
+                      <SelectItem value='notnull'>is not null</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {filterType === 'Date' && (
+                    <input
+                      autoFocus
+                      id='containsFilter'
+                      type='date'
+                      className='mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                  {filterType === 'DateTime' && (
+                    <input
+                      autoFocus
+                      id='containsFilter'
+                      type='datetime-local'
+                      className='mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                  {filterType === 'Time' && (
+                    <input
+                      autoFocus
+                      id='containsFilter'
+                      type='time'
+                      className='mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      value={displayDialogDateValue}
+                      onChange={_dialogDateValue}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <Select value={displayDialogContainsFilter} onValueChange={_dialogContainsFilter}>
+                    <SelectTrigger label='' className='w-full'>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='contains'>Contains</SelectItem>
+                      <SelectItem value='equals'>Equals</SelectItem>
+                      <SelectItem value='startswith'>Starts with</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <input
+                    autoFocus
+                    id='containsFilter'
+                    type='text'
+                    className='mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                    value={displayDialogContainsValue}
+                    onChange={_dialogContainsValue}
+                  />
+                </>
+              )}
+            </div>
+            <div className='flex justify-end gap-2 border-t px-6 py-4'>
+              <Button variant='secondary' onClick={_closeDialog}>
+                Cancel
+              </Button>
+              <Button onClick={_submitFilter}>Submit</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast notification (replaces MUI Snackbar) */}
+      {showSnackbar && (
+        <div
+          className='fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-md bg-gray-800 px-4 py-3 text-sm text-white shadow-lg transition-opacity duration-300'
+          role='alert'
+        >
+          <span>{snackbarMessage}</span>
+          <button
+            type='button'
+            aria-label='close'
+            className='ml-2 inline-flex items-center rounded p-1 hover:bg-gray-700'
+            onClick={handleSnackbarClose}
+          >
+            <X className='h-4 w-4' />
+          </button>
+        </div>
+      )}
     </>
   );
 }

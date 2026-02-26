@@ -1,7 +1,7 @@
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { useEffect, useState } from 'react';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface QuickCreateProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -16,12 +16,11 @@ export default function QuickCreate(props: QuickCreateProps) {
 
   const { getPConnect, heading, showCaseIcons, classFilter } = props;
   const pConn = getPConnect();
-  const createCase = (className) => {
+  const createCase = className => {
     pConn
       .getActionsApi()
       .createWork(className, {} as any)
-      .catch((error) => {
-        // eslint-disable-next-line no-console
+      .catch(error => {
         console.log('Error in case creation: ', error?.message);
       });
   };
@@ -35,7 +34,7 @@ export default function QuickCreate(props: QuickCreateProps) {
     const defaultCases: any = [];
     const envInfo = PCore.getEnvironmentInfo();
     if (envInfo?.environmentInfoObject?.pyCaseTypeList) {
-      envInfo.environmentInfoObject.pyCaseTypeList.forEach((casetype) => {
+      envInfo.environmentInfoObject.pyCaseTypeList.forEach(casetype => {
         if (casetype.pyWorkTypeName && casetype.pyWorkTypeImplementationClassName) {
           defaultCases.push({
             classname: casetype.pyWorkTypeImplementationClassName,
@@ -52,7 +51,7 @@ export default function QuickCreate(props: QuickCreateProps) {
         options: { context: PCore.getConstants().APP.APP }
       }).getPConnect();
       const pyPortalInAppContext = pConnectInAppContext.getValue('pyPortal') as any;
-      pyPortalInAppContext?.pyCaseTypesAvailableToCreate?.forEach((casetype) => {
+      pyPortalInAppContext?.pyCaseTypesAvailableToCreate?.forEach(casetype => {
         if (casetype.pyClassName && casetype.pyLabel) {
           defaultCases.push({
             classname: casetype.pyClassName,
@@ -68,8 +67,8 @@ export default function QuickCreate(props: QuickCreateProps) {
 
     /* If classFilter is not empty - filter from the list of defaultCases */
     if (classFilter?.length > 0) {
-      classFilter.forEach((item) => {
-        defaultCases.forEach((casetype) => {
+      classFilter.forEach(item => {
+        defaultCases.forEach(casetype => {
           if (casetype.classname === item) {
             cases.push(casetype);
           }

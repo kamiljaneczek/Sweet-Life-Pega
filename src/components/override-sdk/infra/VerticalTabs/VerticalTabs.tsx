@@ -1,24 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
+import React, { useState, useEffect } from 'react';
+
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import React, { useEffect, useState } from 'react';
 
 // VerticalTabs does NOT have getPConnect. So, no need to extend from PConnProps
 interface VerticalTabsProps {
   // If any, enter additional props that only exist on this component
   tabconfig: any[];
 }
-
-// The MuiTabs-indicator class is in a span whose parent is div (under the Tabs root component)
-//  So, we're going to make the selected vertical tab indicator use a color from our theme.
-const useStyles = makeStyles((theme) => ({
-  tabs: {
-    '& div > span': {
-      backgroundColor: theme.palette.info.dark,
-      width: '3px'
-    }
-  }
-}));
 
 // Implementation of custom event inspired by:
 //  https://betterprogramming.pub/master-your-react-skills-with-event-listeners-ebc01dde4fad
@@ -38,7 +26,6 @@ export default function VerticalTabs(props: VerticalTabsProps) {
 
   // Get a React warning when we use tabConfig as mixed case. So all lowercase tabconfig
   const { tabconfig = [] } = props;
-  const classes = useStyles();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -50,18 +37,18 @@ export default function VerticalTabs(props: VerticalTabsProps) {
     }
   }, [value]);
 
-  const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const handleTabClick = (index: number) => {
+    setValue(index);
   };
 
   return (
     <div id='VerticalTabs'>
       {/* VerticalTabs: {JSON.stringify(tabconfig)} */}
-      <Tabs className={classes.tabs} orientation='vertical' value={value} onChange={handleChange}>
-        {tabconfig.map((tab) => (
-          <LeftAlignVerticalTab {...props} label={tab.name} key={tab.name} />
+      <div className='flex flex-col' role='tablist' aria-orientation='vertical'>
+        {tabconfig.map((tab, index) => (
+          <LeftAlignVerticalTab {...props} label={tab.name} key={tab.name} selected={value === index} onClick={() => handleTabClick(index)} />
         ))}
-      </Tabs>
+      </div>
     </div>
   );
 }

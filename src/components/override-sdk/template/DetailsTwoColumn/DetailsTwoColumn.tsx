@@ -1,9 +1,8 @@
-import Grid from '@material-ui/core/Grid';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { createElement } from 'react';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { createElement } from 'react';
 
 interface DetailsTwoColumnProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -28,7 +27,7 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
   const children = (getPConnect().getChildren() as any[]).map((configObject, index) =>
     createElement(createPConnectComponent(), {
       ...configObject,
-      // eslint-disable-next-line react/no-array-index-key
+
       key: index.toString()
     })
   );
@@ -37,7 +36,7 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
   let highlightedDataArr = [];
   if (showHighlightedData) {
     const { highlightedData = [] } = (getPConnect().getRawMetadata() as any).config;
-    highlightedDataArr = highlightedData.map((field) => {
+    highlightedDataArr = highlightedData.map(field => {
       field.config.displayMode = 'STACKED_LARGE_VAL';
 
       // Mark as status display when using pyStatusWork
@@ -46,28 +45,24 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
         field.config.displayAsStatus = true;
       }
 
-      return getPConnect().createComponent(field, '', '', {}); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional
+      return getPConnect().createComponent(field, undefined, undefined, {}); // 2nd, 3rd, and 4th args now properly typed as optional
     });
   }
 
   return (
     <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
       {showHighlightedData && highlightedDataArr.length > 0 && (
-        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+        <div className='grid grid-cols-2 gap-2 pb-4'>
           {highlightedDataArr.map((child, i) => (
-            <Grid item xs={6} key={`hf-${i + 1}`}>
-              {child}
-            </Grid>
+            <div key={`hf-${i + 1}`}>{child}</div>
           ))}
-        </Grid>
+        </div>
       )}
-      <Grid container spacing={1}>
+      <div className='grid grid-cols-2 gap-2'>
         {children.map((child, i) => (
-          <Grid item xs={6} key={`r-${i + 1}`}>
-            {child}
-          </Grid>
+          <div key={`r-${i + 1}`}>{child}</div>
         ))}
-      </Grid>
+      </div>
     </FieldGroup>
   );
 }

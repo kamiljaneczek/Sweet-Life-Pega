@@ -1,14 +1,11 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 // @ts-nocheck
-import { withKnobs } from '@storybook/addon-knobs';
-
 import SweetLifeDeligthLibraryFeaturedProducts from './index';
 
 import configProps from './mock';
 
 export default {
   title: 'SweetLifeDeligthLibraryFeaturedProducts',
-  decorators: [withKnobs],
   component: SweetLifeDeligthLibraryFeaturedProducts
 };
 

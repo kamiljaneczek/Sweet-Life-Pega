@@ -1,8 +1,9 @@
-import { Box, Card, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useState, useEffect, createElement } from 'react';
+import { Loader2 } from 'lucide-react';
+
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { createElement, useEffect, useState } from 'react';
 
 interface DeferLoadProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -18,26 +19,11 @@ interface DeferLoadProps extends PConnProps {
 // is totally at your own risk.
 //
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
-}));
-
 export default function DeferLoad(props: DeferLoadProps) {
   const { getPConnect, name, deferLoadId, isTab } = props;
   const [content, setContent] = useState<any>(null);
   const [isLoading, setLoading] = useState(true);
   const [currentLoadedAssignment, setCurrentLoadedAssignment] = useState('');
-
-  const classes = useStyles();
 
   const pConnect = getPConnect();
   const constants = PCore.getConstants();
@@ -64,15 +50,16 @@ export default function DeferLoad(props: DeferLoadProps) {
   };
   const isContainerPreview = /preview_[0-9]*/g.test(pConnect.getContextName());
 
-  const getViewOptions = () => ({
-    viewContext: resourceType,
-    pageClass: loadViewCaseID ? '' : (pConnect.getDataObject('') as any).pyPortal.classID, // 2nd arg empty string until typedef allows optional
-    container: isContainerPreview ? 'preview' : null,
-    containerName: isContainerPreview ? 'preview' : null,
-    updateData: isContainerPreview
-  });
+  const getViewOptions = () =>
+    ({
+      viewContext: resourceType,
+      pageClass: loadViewCaseID ? '' : (pConnect.getDataObject('') as any).pyPortal.classID, // 2nd arg empty string until typedef allows optional
+      container: isContainerPreview ? 'preview' : undefined,
+      containerName: isContainerPreview ? 'preview' : undefined,
+      updateData: isContainerPreview
+    }) as any;
 
-  const onResponse = (data) => {
+  const onResponse = data => {
     setLoading(false);
     if (deferLoadId) {
       PCore.getDeferLoadManager().start(
@@ -111,16 +98,15 @@ export default function DeferLoad(props: DeferLoadProps) {
         getPConnect()
           .getActionsApi()
           .showData(name, dataContext, dataContextParameters, {
-            // @ts-expect-error - Type 'boolean' is not assignable to type 'string'
+            // @ts-ignore - Type 'boolean' is not assignable to type 'string'
             skipSemanticUrl: true,
-            // @ts-expect-error
+            // @ts-ignore
             isDeferLoaded: true
           })
-          .then((data) => {
+          .then(data => {
             onResponse(data);
           });
       } else {
-        // eslint-disable-next-line no-console
         console.error('Cannot load the defer loaded view without container information');
       }
     } else if (resourceType === PAGE) {
@@ -128,14 +114,14 @@ export default function DeferLoad(props: DeferLoadProps) {
       getPConnect()
         .getActionsApi()
         .loadView(encodeURI(loadViewCaseID), name, getViewOptions())
-        .then((data) => {
+        .then(data => {
           onResponse(data);
         });
     } else {
       getPConnect()
         .getActionsApi()
         .refreshCaseView(encodeURI(loadViewCaseID), name, '') // 3rd arg empty string until typedef allows optional
-        .then((data) => {
+        .then(data => {
           onResponse(data.root);
         });
     }
@@ -144,19 +130,19 @@ export default function DeferLoad(props: DeferLoadProps) {
   let deferLoadContent;
   if (isLoading) {
     deferLoadContent = (
-      <div style={{ position: 'relative', height: '100px' }}>
-        <Box textAlign='center'>
-          <CircularProgress />
-        </Box>
+      <div className='relative h-[100px]'>
+        <div className='text-center'>
+          <Loader2 className='mx-auto mt-8 h-8 w-8 animate-spin text-muted-foreground' />
+        </div>
       </div>
     );
   } else {
     deferLoadContent = !isTab ? (
-      <div className={classes.root}>{content}</div>
+      <div className='m-1 p-1'>{content}</div>
     ) : (
-      <Card id='DeferLoad' className={classes.root}>
-        {content}
-      </Card>
+      <div id='DeferLoad' className='m-1 rounded-lg border bg-card p-1 shadow-sm'>
+        <>{content}</>
+      </div>
     );
   }
 

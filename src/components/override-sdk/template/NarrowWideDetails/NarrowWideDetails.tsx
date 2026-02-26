@@ -1,9 +1,9 @@
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { createElement } from 'react';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { createElement } from 'react';
 
 interface NarrowWideDetailsProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -11,8 +11,6 @@ interface NarrowWideDetailsProps extends PConnProps {
   label: string;
   showHighlightedData?: boolean;
 }
-
-const COLUMN_WIDTHS = [4, 8];
 
 export default function NarrowWideDetails(props: NarrowWideDetailsProps) {
   // Get emitted components from map (so we can get any override that may exist)
@@ -30,7 +28,7 @@ export default function NarrowWideDetails(props: NarrowWideDetailsProps) {
   const children = (getPConnect().getChildren() as any[]).map((configObject, index) =>
     createElement(createPConnectComponent(), {
       ...configObject,
-      // eslint-disable-next-line react/no-array-index-key
+
       key: index.toString()
     })
   );
@@ -39,7 +37,7 @@ export default function NarrowWideDetails(props: NarrowWideDetailsProps) {
   let highlightedDataArr = [];
   if (showHighlightedData) {
     const { highlightedData = [] } = (getPConnect().getRawMetadata() as any).config;
-    highlightedDataArr = highlightedData.map((field) => {
+    highlightedDataArr = highlightedData.map(field => {
       field.config.displayMode = 'STACKED_LARGE_VAL';
 
       // Mark as status display when using pyStatusWork
@@ -48,28 +46,25 @@ export default function NarrowWideDetails(props: NarrowWideDetailsProps) {
         field.config.displayAsStatus = true;
       }
 
-      return getPConnect().createComponent(field, '', '', {}); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional
+      return getPConnect().createComponent(field, undefined, undefined, {}); // 2nd, 3rd, and 4th args now properly typed as optional
     });
   }
 
+  // Narrow-wide layout: 1fr 2fr (equivalent to MUI xs={4} xs={8} in 12-column grid)
   return (
     <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
       {showHighlightedData && highlightedDataArr.length > 0 && (
-        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+        <div className='grid gap-2 pb-4' style={{ gridTemplateColumns: '1fr 2fr' }}>
           {highlightedDataArr.map((child, i) => (
-            <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`hf-${i + 1}`}>
-              {child}
-            </Grid>
+            <div key={`hf-${i + 1}`}>{child}</div>
           ))}
-        </Grid>
+        </div>
       )}
-      <Grid container spacing={1}>
+      <div className='grid gap-2' style={{ gridTemplateColumns: '1fr 2fr' }}>
         {children.map((child, i) => (
-          <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`r-${i + 1}`}>
-            {child}
-          </Grid>
+          <div key={`r-${i + 1}`}>{child}</div>
         ))}
-      </Grid>
+      </div>
     </FieldGroup>
   );
 }

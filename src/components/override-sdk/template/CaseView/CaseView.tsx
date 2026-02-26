@@ -1,15 +1,12 @@
-/* eslint-disable react/jsx-boolean-value */
+import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 
-import { Avatar, Card, CardHeader, Divider, Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
+
+import { Card, CardHeader } from '../../../../design-system/ui/card';
+import { Button } from '../../../../design-system/ui/button';
 
 interface CaseViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -19,33 +16,6 @@ interface CaseViewProps extends PConnProps {
   showIconInHeader: boolean;
   caseInfo: any;
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  caseViewHeader: {
-    backgroundColor: theme.palette.info.light,
-    color: theme.palette.getContrastText(theme.palette.info.light),
-    borderRadius: 'inherit'
-  },
-  caseViewIconBox: {
-    backgroundColor: theme.palette.info.dark,
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    padding: theme.spacing(1)
-  },
-  caseViewIconImage: {
-    filter: 'invert(100%)'
-  }
-}));
 
 export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
   // Get emitted components from map (so we can get any override that may exist)
@@ -71,9 +41,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   const thePConn = getPConnect();
 
-  const classes = useStyles();
-
-  const editAction = availableActions.find((action) => action.ID === 'pyUpdateCaseDetails');
+  const editAction = availableActions.find(action => action.ID === 'pyUpdateCaseDetails');
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'CaseView';
@@ -113,7 +81,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
   const theTabsRegionChildren = theTabsRegion.props.getPConnect().getChildren();
 
   // vertTabInfo is sent to VerticalTabs component
-  const vertTabInfo: Object[] = [];
+  const vertTabInfo: object[] = [];
 
   // deferLoadInfo is sent to DeferLoad component (currently selected entry)
   const deferLoadInfo: any[] = [];
@@ -126,7 +94,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
       let { label, inheritedProps } = theTabCompConfig;
       // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
       if (!label) {
-        inheritedProps.forEach((inheritedProp) => {
+        inheritedProps.forEach(inheritedProp => {
           if (inheritedProp.prop === 'label') {
             label = inheritedProp.value;
           }
@@ -168,7 +136,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   useEffect(() => {
     if (hasNewAttachments) {
-      // @ts-expect-error - Argument of type 'boolean' is not assignable to parameter of type 'object'
+      // @ts-ignore - Argument of type 'boolean' is not assignable to parameter of type 'object'
       PCore.getPubSubUtils().publish((PCore.getEvents().getCaseEvent() as any).CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW, true);
     }
   }, [hasNewAttachments]);
@@ -182,9 +150,10 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   function getActionButtonsHtml(): any {
     return (
-      <Box>
+      <div className='flex items-center gap-2 p-2'>
         {editAction && (
           <Button
+            variant='ghost'
             onClick={() => {
               _editClick();
             }}
@@ -199,7 +168,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
           caseTypeName={caseTypeName}
           caseTypeID={caseTypeID}
         />
-      </Box>
+      </div>
     );
   }
 
@@ -207,57 +176,48 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
     if (!displayOnlyFA) {
       // show full portal
       return (
-        <Grid container>
-          <Grid item xs={3}>
+        <div className='grid grid-cols-12 gap-4'>
+          <div className='col-span-3'>
             <div hidden={true} id='current-caseID'>
               {currentCaseID}
             </div>
-            <Card className={classes.root}>
-              <CardHeader
-                className={classes.caseViewHeader}
-                title={
-                  <Typography variant='h6' component='div'>
-                    {PCore.getLocaleUtils().getLocaleValue(header, '', localeKey)}
-                  </Typography>
-                }
-                subheader={
-                  <Typography variant='body1' component='div' id='caseId'>
-                    {subheader}
-                  </Typography>
-                }
-                avatar={
-                  <Avatar className={classes.caseViewIconBox} variant='square'>
-                    <img src={svgCase} className={classes.caseViewIconImage} />
-                  </Avatar>
-                }
-              />
+            <Card className='p-2 m-2'>
+              <CardHeader className='bg-blue-100 text-blue-900 rounded-[inherit]'>
+                <div className='flex items-center gap-4'>
+                  <div className='flex h-16 w-16 items-center justify-center bg-blue-800 p-2'>
+                    <img src={svgCase} className='invert' />
+                  </div>
+                  <div>
+                    <h6 className='text-base font-semibold'>{PCore.getLocaleUtils().getLocaleValue(header, '', localeKey)}</h6>
+                    <p className='text-sm' id='caseId'>
+                      {subheader}
+                    </p>
+                  </div>
+                </div>
+              </CardHeader>
               {getActionButtonsHtml()}
-              <Divider />
+              <hr className='border-t border-gray-200' />
               {theSummaryRegion}
-              <Divider />
+              <hr className='border-t border-gray-200' />
               {vertTabInfo.length > 1 && <VerticalTabs tabconfig={vertTabInfo} />}
             </Card>
-          </Grid>
+          </div>
 
-          <Grid item xs={6}>
+          <div className='col-span-6'>
             {theStagesRegion}
             {theTodoRegion}
             {deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} name={deferLoadInfo[activeVertTab].config.name} isTab />}
-          </Grid>
+          </div>
 
-          <Grid item xs={3}>
-            {theUtilitiesRegion}
-          </Grid>
-        </Grid>
+          <div className='col-span-3'>{theUtilitiesRegion}</div>
+        </div>
       );
     }
     // displayOnlyFA - only show the "todo" region
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          {theTodoRegion}
-        </Grid>
-      </Grid>
+      <div className='grid grid-cols-12'>
+        <div className='col-span-12'>{theTodoRegion}</div>
+      </div>
     );
   }
 

@@ -1,7 +1,4 @@
-/* eslint-disable prefer-template */
 /** This file contains various utility methods to generate filter components, regionLayout data, filter expressions, etc.  */
-
-import { Grid, Link } from '@material-ui/core';
 
 import DashboardFilter from './DashboardFilter';
 
@@ -20,7 +17,7 @@ export const createFilter = (value, fieldId, comparator = 'EQ') => {
 };
 
 export const combineFilters = (filterList, existingFilters) => {
-  if (filterList?.length) {
+  if (filterList && filterList.length) {
     // Need to combine them
     if (existingFilters) {
       return { AND: [existingFilters, ...filterList] };
@@ -46,7 +43,7 @@ export const createFilterComponent = (getPConnect, filterMeta, index) => {
   }
   let propInfo: any = PCore.getMetadataUtils().getPropertyMetadata(cleanedName, filterMeta.config.ruleClass);
   if (!propInfo) {
-    // @ts-expect-error - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
+    // @ts-ignore - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
     propInfo = PCore.getMetadataUtils().getPropertyMetadata(cleanedName);
   }
   const { type: propertyType } = propInfo || { type: 'Text' };
@@ -58,7 +55,7 @@ export const createFilterComponent = (getPConnect, filterMeta, index) => {
   if (type === 'DateTime') {
     return <DashboardFilter key={name} getPConnect={getPConnect} name={name} filterProp={filterProp} metadata={filterMeta} type={filterMeta.type} />;
   }
-  if (datasource?.fields) {
+  if (datasource && datasource.fields) {
     datasource.fields.key = datasource.fields.value;
   }
   if (filterMeta.config.listType === 'associated' && propInfo && propInfo.datasource) {
@@ -78,23 +75,24 @@ export const buildFilterComponents = (getPConnect, allFilters) => {
   const filterComponents = allFilters.children.map((filter, index) => createFilterComponent(getPConnect, filter, index));
   if (filterComponents && filterComponents.length > 0) {
     filterComponents.push(
-      <Grid>
-        <Link
-          style={{ cursor: 'pointer' }}
+      <div>
+        <button
+          type='button'
+          className='cursor-pointer text-sm font-medium text-primary underline-offset-4 hover:underline'
           onClick={() => {
-            // @ts-expect-error - second parameter “payload” for publish method should be optional
+            // @ts-ignore - second parameter "payload" for publish method should be optional
             PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CLEAR_ALL);
           }}
         >
           Clear All
-        </Link>
-      </Grid>
+        </button>
+      </div>
     );
   }
   return filterComponents;
 };
 
-export const convertDateToGMT = (value) => {
+export const convertDateToGMT = value => {
   const { valueAsISOString: date } = value;
   return date ? date.substring(0, date.indexOf('T')) : date;
 };
@@ -109,7 +107,7 @@ export const getFilterExpression = (filterValue, name, metadata) => {
   }
 
   if (metadata.config.filterType && metadata.config.filterType === 'RelativeDates') {
-    const fieldSource = metadata.config.datasource.filter((source) => source.key === filterValue)[0];
+    const fieldSource = metadata.config.datasource.filter(source => source.key === filterValue)[0];
     const relativeDateExpression = JSON.parse(fieldSource.json);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const fields = [
@@ -152,9 +150,9 @@ export function getLayoutDataFromRegion(regionData) {
     });
 }
 
-export const getFormattedDate = (date) => {
+export const getFormattedDate = date => {
   if (!date) {
     return date;
   }
-  return `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`;
+  return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
 };
