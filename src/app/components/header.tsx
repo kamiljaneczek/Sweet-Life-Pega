@@ -53,7 +53,9 @@ const Header = () => {
                 <Link
                   to='/'
                   className='block py-2 pr-4 pl-3 text-gray-700 rounded lg:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white'
-                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                  activeProps={{
+                    className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                  }}
                 >
                   Home
                 </Link>
@@ -62,7 +64,9 @@ const Header = () => {
                 <Link
                   to='/company'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
-                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                  activeProps={{
+                    className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                  }}
                 >
                   Company
                 </Link>
@@ -71,7 +75,9 @@ const Header = () => {
                 <Link
                   to='/products'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
-                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                  activeProps={{
+                    className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                  }}
                 >
                   Products
                 </Link>
@@ -80,7 +86,9 @@ const Header = () => {
                 <Link
                   to='/support'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
-                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                  activeProps={{
+                    className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                  }}
                 >
                   Support
                 </Link>
@@ -89,7 +97,9 @@ const Header = () => {
                 <Link
                   to='/contact'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-10 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
-                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                  activeProps={{
+                    className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                  }}
                 >
                   Contact
                 </Link>
@@ -104,7 +114,9 @@ const Header = () => {
                   <Link
                     to='/'
                     className='block py-2 pr-4 pl-3 text-gray-700 rounded lg:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white'
-                    activeProps={{ className: 'block py-2 pr-4 pl-3 text-white rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
+                    activeProps={{
+                      className: 'block py-2 pr-4 pl-3 text-white rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
+                    }}
                   >
                     Home
                   </Link>

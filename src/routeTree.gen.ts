@@ -8,144 +8,131 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as SupportRouteImport } from './routes/support'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as DesingsystemRouteImport } from './routes/desingsystem'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CompanyRouteImport } from './routes/company'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as SupportRouteImport } from './routes/support';
+import { Route as ProductsRouteImport } from './routes/products';
+import { Route as DesingsystemRouteImport } from './routes/desingsystem';
+import { Route as ContactRouteImport } from './routes/contact';
+import { Route as CompanyRouteImport } from './routes/company';
+import { Route as IndexRouteImport } from './routes/index';
 
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 const DesingsystemRoute = DesingsystemRouteImport.update({
   id: '/desingsystem',
   path: '/desingsystem',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 const CompanyRoute = CompanyRouteImport.update({
   id: '/company',
   path: '/company',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+  getParentRoute: () => rootRouteImport
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/company': typeof CompanyRoute
-  '/contact': typeof ContactRoute
-  '/desingsystem': typeof DesingsystemRoute
-  '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  '/': typeof IndexRoute;
+  '/company': typeof CompanyRoute;
+  '/contact': typeof ContactRoute;
+  '/desingsystem': typeof DesingsystemRoute;
+  '/products': typeof ProductsRoute;
+  '/support': typeof SupportRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/company': typeof CompanyRoute
-  '/contact': typeof ContactRoute
-  '/desingsystem': typeof DesingsystemRoute
-  '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  '/': typeof IndexRoute;
+  '/company': typeof CompanyRoute;
+  '/contact': typeof ContactRoute;
+  '/desingsystem': typeof DesingsystemRoute;
+  '/products': typeof ProductsRoute;
+  '/support': typeof SupportRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/company': typeof CompanyRoute
-  '/contact': typeof ContactRoute
-  '/desingsystem': typeof DesingsystemRoute
-  '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/company': typeof CompanyRoute;
+  '/contact': typeof ContactRoute;
+  '/desingsystem': typeof DesingsystemRoute;
+  '/products': typeof ProductsRoute;
+  '/support': typeof SupportRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/company'
-    | '/contact'
-    | '/desingsystem'
-    | '/products'
-    | '/support'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/company' | '/contact' | '/desingsystem' | '/products' | '/support'
-  id:
-    | '__root__'
-    | '/'
-    | '/company'
-    | '/contact'
-    | '/desingsystem'
-    | '/products'
-    | '/support'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/' | '/company' | '/contact' | '/desingsystem' | '/products' | '/support';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/company' | '/contact' | '/desingsystem' | '/products' | '/support';
+  id: '__root__' | '/' | '/company' | '/contact' | '/desingsystem' | '/products' | '/support';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CompanyRoute: typeof CompanyRoute
-  ContactRoute: typeof ContactRoute
-  DesingsystemRoute: typeof DesingsystemRoute
-  ProductsRoute: typeof ProductsRoute
-  SupportRoute: typeof SupportRoute
+  IndexRoute: typeof IndexRoute;
+  CompanyRoute: typeof CompanyRoute;
+  ContactRoute: typeof ContactRoute;
+  DesingsystemRoute: typeof DesingsystemRoute;
+  ProductsRoute: typeof ProductsRoute;
+  SupportRoute: typeof SupportRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/support': {
-      id: '/support'
-      path: '/support'
-      fullPath: '/support'
-      preLoaderRoute: typeof SupportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/support';
+      path: '/support';
+      fullPath: '/support';
+      preLoaderRoute: typeof SupportRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/products';
+      path: '/products';
+      fullPath: '/products';
+      preLoaderRoute: typeof ProductsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/desingsystem': {
-      id: '/desingsystem'
-      path: '/desingsystem'
-      fullPath: '/desingsystem'
-      preLoaderRoute: typeof DesingsystemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/desingsystem';
+      path: '/desingsystem';
+      fullPath: '/desingsystem';
+      preLoaderRoute: typeof DesingsystemRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/contact';
+      path: '/contact';
+      fullPath: '/contact';
+      preLoaderRoute: typeof ContactRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/company': {
-      id: '/company'
-      path: '/company'
-      fullPath: '/company'
-      preLoaderRoute: typeof CompanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/company';
+      path: '/company';
+      fullPath: '/company';
+      preLoaderRoute: typeof CompanyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -155,8 +142,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DesingsystemRoute: DesingsystemRoute,
   ProductsRoute: ProductsRoute,
-  SupportRoute: SupportRoute,
-}
-export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  SupportRoute: SupportRoute
+};
+export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
