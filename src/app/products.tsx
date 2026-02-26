@@ -1,13 +1,11 @@
 /* eslint-disable no-console */
 
 /* import { SelectTrigger } from '@radix-ui/react-select'; */
-import Header from './components/header';
 /* import { Label } from '../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select'; */
 import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
 import { IProduct } from '../types/types';
-import Footer from './components/footer';
 import Loading from './components/loading';
 import { Button } from '../design-system/ui/button';
 
@@ -59,7 +57,6 @@ const Products = () => {
 
   return (
     <>
-      <Header />
       {isPegaReady ? (
         <div className='flex-grow py-12 px-6 dark:bg-gray-900'>
           <div className='container mx-auto'>
@@ -127,8 +124,6 @@ const Products = () => {
       ) : (
         <Loading />
       )}
-
-      <Footer />
     </>
   );
 };

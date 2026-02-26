@@ -1,6 +1,7 @@
 import { Button } from '../../design-system/ui/button';
 import { useState } from 'react';
 import ThemeSwitch from '../../design-system/theme';
+import { Link } from '@tanstack/react-router';
 
 const Header = () => {
   const [isMobleMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -8,9 +9,9 @@ const Header = () => {
     <header>
       <nav className='bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800'>
         <div className='flex flex-wrap justify-between items-center mx-auto max-w-screen-xl'>
-          <a href='/' className='flex items-center'>
+          <Link to='/' className='flex items-center'>
             <h1 className='text-2xl lg:text-4xl font-bold lg:font-extrabold tracking-tight leading-none text-gray-900 dark:text-white'>Sweet Life</h1>
-          </a>
+          </Link>
           <div className='flex items-center gap-4 lg:order-2'>
             <ThemeSwitch />
 
@@ -49,45 +50,49 @@ const Header = () => {
           <div className='hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1' id='mobile-menu-2'>
             <ul className='flex flex-col mt-4 font-bold text-lg lg:flex-row lg:space-x-8 lg:mt-0'>
               <li>
-                <a
-                  href='/'
-                  className='block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
-                  aria-current='page'
+                <Link
+                  to='/'
+                  className='block py-2 pr-4 pl-3 text-gray-700 rounded lg:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white'
+                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href='/company'
+                <Link
+                  to='/company'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
+                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                 >
                   Company
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href='/products'
+                <Link
+                  to='/products'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
+                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                 >
                   Products
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href='/support'
+                <Link
+                  to='/support'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-100 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
+                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                 >
                   Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href='/contact'
+                <Link
+                  to='/contact'
                   className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-10 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
+                  activeProps={{ className: 'block py-2 pr-4 pl-3 text-primary rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -96,45 +101,45 @@ const Header = () => {
             <div className='justify-between items-center w-full lg:hidden lg:w-auto lg:order-1' id='mobile-menu-2'>
               <ul className='flex flex-col mt-4 text-lg font-mendium lg:flex-row lg:space-x-8 lg:mt-0'>
                 <li>
-                  <a
-                    href='/'
-                    className='block py-2 pr-4 pl-3 text-white rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white'
-                    aria-current='page'
+                  <Link
+                    to='/'
+                    className='block py-2 pr-4 pl-3 text-gray-700 rounded lg:bg-transparent lg:p-0 dark:text-gray-400 lg:dark:hover:text-white'
+                    activeProps={{ className: 'block py-2 pr-4 pl-3 text-white rounded bg-primary lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white' }}
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='/company'
+                  <Link
+                    to='/company'
                     className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
                   >
                     Company
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='/products'
+                  <Link
+                    to='/products'
                     className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
                   >
                     Products
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='/support'
+                  <Link
+                    to='/support'
                     className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
                   >
                     Support
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='/contact'
+                  <Link
+                    to='/contact'
                     className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-accent- lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a

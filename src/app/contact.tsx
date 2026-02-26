@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-import Header from './components/header';
 import { Input } from '../design-system/ui/input';
 import { Textarea } from '../design-system/ui/textarea';
-import Footer from './components/footer';
 import { Button } from '../design-system/ui/button';
 import useConstellation from '../hooks/useConstellation';
 import { useState } from 'react';
@@ -60,7 +58,6 @@ const Contact = () => {
 
   return (
     <>
-      <Header />
       {isPegaReady ? (
         <div className='flex-grow bg-white dark:bg-gray-900'>
           <section className=''>
@@ -146,8 +143,6 @@ const Contact = () => {
       ) : (
         <Loading />
       )}
-
-      <Footer />
     </>
   );
 };

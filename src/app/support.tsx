@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../design-system/ui/hover-card';
 
 import { Button } from '../design-system/ui/button';
-import Header from './components/header';
-import Footer from './components/footer';
 
 import classNames from 'classnames';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
@@ -51,10 +49,7 @@ export default function Support() {
   }
 
   return (
-    <>
-      <Header />
-
-      <div className='flex-grow'>
+    <div className='flex-grow'>
         <section className='dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl 6 lg:px-6'>
             <div className='max-w-screen-md'>
@@ -178,9 +173,6 @@ export default function Support() {
             </div>
           </div>
         </section>
-      </div>
-
-      <Footer />
-    </>
+    </div>
   );
 }

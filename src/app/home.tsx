@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/no-unescaped-entities */
 
-import Header from './components/header';
-import Footer from './components/footer';
 import { Button } from '../design-system/ui/button';
 import Loading from './components/loading';
 import useConstellation from '../hooks/useConstellation';
@@ -21,10 +19,7 @@ export default function Home() {
   }, [isPegaReady]);
 
   return (
-    <>
-      <Header />
-
-      <div className='flex-grow bg-white text-black'>
+    <div className='flex-grow bg-white text-black'>
         <section className='bg-white dark:bg-gray-900'>
           <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12'>
             <a
@@ -289,9 +284,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </div>
-
-      <Footer />
-    </>
+    </div>
   );
 }

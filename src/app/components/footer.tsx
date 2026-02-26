@@ -1,46 +1,48 @@
+import { Link } from '@tanstack/react-router';
+
 const Footer = () => {
   return (
     <footer className='p-4 mb-auto bg-white md:p-8 lg:p-10 dark:bg-gray-800'>
       <div className='mx-auto max-w-screen-xl text-center'>
-        <a href='/' className='flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white'>
+        <Link to='/' className='flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white'>
           Sweet Life Inc.
-        </a>
+        </Link>
         <p className='my-6 text-gray-500 dark:text-gray-400'>Indulge in the Sweet Life: Where Every Treat is a Moment of Bliss!</p>
         <ul className='flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white'>
           <li>
-            <a href='/company' className='mr-4 hover:underline md:mr-6 '>
+            <Link to='/company' className='mr-4 hover:underline md:mr-6 '>
               Comapny
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/products' className='mr-4 hover:underline md:mr-6'>
+            <Link to='/products' className='mr-4 hover:underline md:mr-6'>
               Products
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/support' className='mr-4 hover:underline md:mr-6 '>
+            <Link to='/support' className='mr-4 hover:underline md:mr-6 '>
               Support
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/' className='mr-4 hover:underline md:mr-6'>
+            <Link to='/' className='mr-4 hover:underline md:mr-6'>
               Blog
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/' className='mr-4 hover:underline md:mr-6'>
+            <Link to='/' className='mr-4 hover:underline md:mr-6'>
               Affiliate Program
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/' className='mr-4 hover:underline md:mr-6'>
+            <Link to='/' className='mr-4 hover:underline md:mr-6'>
               FAQs
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/contact' className='mr-4 hover:underline md:mr-6'>
+            <Link to='/contact' className='mr-4 hover:underline md:mr-6'>
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
         <span className='text-sm text-gray-500 sm:text-center dark:text-gray-400'>

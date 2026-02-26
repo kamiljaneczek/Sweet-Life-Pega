@@ -49,3 +49,6 @@ tests/playwright-report
 
 
 /keys
+
+# Generated public directory (Vite static assets)
+/public
