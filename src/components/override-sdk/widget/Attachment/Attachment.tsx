@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
-import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/widget/Attachment/AttachmentUtils';
+import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import download from 'downloadjs';
 import { GripVertical, Loader } from 'lucide-react';

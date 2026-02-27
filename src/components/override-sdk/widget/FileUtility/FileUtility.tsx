@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import './FileUtility.css';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { Button } from '../../../../design-system/ui/button';
 import { Label } from '../../../../design-system/ui/label';
