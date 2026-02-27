@@ -161,13 +161,11 @@ export default function Operator(props: OperatorProps) {
   return (
     <>
       <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-        <PopoverTrigger asChild>
-          <button type='button' onClick={showOperatorDetails} className='text-left cursor-pointer bg-transparent border-0 p-0'>
-            <div className='flex flex-col'>
-              <span className='text-xs text-muted-foreground'>{caseOpLabel}</span>
-              <span className='text-sm text-foreground'>{caseOpName}</span>
-            </div>
-          </button>
+        <PopoverTrigger onClick={showOperatorDetails} className='text-left cursor-pointer bg-transparent border-0 p-0'>
+          <div className='flex flex-col'>
+            <span className='text-xs text-muted-foreground'>{caseOpLabel}</span>
+            <span className='text-sm text-foreground'>{caseOpName}</span>
+          </div>
         </PopoverTrigger>
         <PopoverContent align='center' side='bottom'>
           {getPopoverGrid()}
