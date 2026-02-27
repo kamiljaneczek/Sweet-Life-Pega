@@ -32,7 +32,7 @@ export default function AlertBanner(props: AlertBannerProps) {
 
   return (
     <div id={id}>
-      {messages.map(message => (
+      {messages.map((message) => (
         <div key={message} className={`flex items-center gap-2 rounded border px-4 py-3 mb-2 ${variantStyle}`}>
           <Icon className='h-5 w-5 flex-shrink-0' />
           <span className='flex-1'>{message}</span>

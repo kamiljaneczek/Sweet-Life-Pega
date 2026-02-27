@@ -1,7 +1,6 @@
-import React, { createElement, isValidElement } from 'react';
-
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+import React, { createElement, isValidElement } from 'react';
 
 // DetailsFields is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps

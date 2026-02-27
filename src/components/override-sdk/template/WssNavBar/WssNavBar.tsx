@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { Menu as MenuIcon } from 'lucide-react';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Menu as MenuIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import './WssNavBar.css';
 
 interface WssNavBarProps extends PConnProps {
@@ -77,7 +77,7 @@ export default function WssNavBar(props: WssNavBarProps) {
 
   const navLinksContent = (
     <div id='nav-links' className='hidden md:flex flex-grow' style={{ justifyContent: alignment }}>
-      {navLinks.map(link => (
+      {navLinks.map((link) => (
         <button type='button' className='link-style' key={link.text} onClick={link.onClick}>
           {link.text}
         </button>
@@ -120,7 +120,7 @@ export default function WssNavBar(props: WssNavBarProps) {
                   className='absolute top-full left-0 z-50 bg-white rounded shadow-lg border border-gray-200 py-1 min-w-[160px]'
                 >
                   <ul className='m-0 p-0 list-none'>
-                    {navLinks.map(link => (
+                    {navLinks.map((link) => (
                       <li
                         key={link.text}
                         className='px-4 py-2 cursor-pointer hover:bg-gray-100 text-gray-900'

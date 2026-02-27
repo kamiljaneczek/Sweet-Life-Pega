@@ -1,12 +1,10 @@
-import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
-
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-
-import { Card, CardHeader } from '../../../../design-system/ui/card';
+import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 import { Button } from '../../../../design-system/ui/button';
+import { Card, CardHeader } from '../../../../design-system/ui/card';
 
 interface CaseViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -41,7 +39,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   const thePConn = getPConnect();
 
-  const editAction = availableActions.find(action => action.ID === 'pyUpdateCaseDetails');
+  const editAction = availableActions.find((action) => action.ID === 'pyUpdateCaseDetails');
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'CaseView';
@@ -94,7 +92,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
       let { label, inheritedProps } = theTabCompConfig;
       // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
       if (!label) {
-        inheritedProps.forEach(inheritedProp => {
+        inheritedProps.forEach((inheritedProp) => {
           if (inheritedProp.prop === 'label') {
             label = inheritedProp.value;
           }
@@ -136,7 +134,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   useEffect(() => {
     if (hasNewAttachments) {
-      // @ts-ignore - Argument of type 'boolean' is not assignable to parameter of type 'object'
+      // @ts-expect-error - Argument of type 'boolean' is not assignable to parameter of type 'object'
       PCore.getPubSubUtils().publish((PCore.getEvents().getCaseEvent() as any).CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW, true);
     }
   }, [hasNewAttachments]);

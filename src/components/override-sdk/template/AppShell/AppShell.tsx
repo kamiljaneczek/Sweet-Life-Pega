@@ -1,9 +1,8 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
-
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { NavContext } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { NavContext } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import './AppShell.css';
 
@@ -88,8 +87,8 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
     else {
       PCore.getAssetLoader()
         .getSvcImage(portalLogo)
-        .then(blob => window.URL.createObjectURL(blob))
-        .then(data => {
+        .then((blob) => window.URL.createObjectURL(blob))
+        .then((data) => {
           setIconURL(data);
           setFullIconURL(data);
         })
@@ -103,8 +102,8 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
     if (imageKey && portalTemplate === 'wss') {
       PCore.getAssetLoader()
         .getSvcImage(imageKey)
-        .then(blob => window.URL.createObjectURL(blob))
-        .then(imagePath => setImageBlobUrl(imagePath));
+        .then((blob) => window.URL.createObjectURL(blob))
+        .then((imagePath) => setImageBlobUrl(imagePath));
     }
   }, []);
 
@@ -131,7 +130,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   const links = !pages
     ? []
-    : pages.map(page => {
+    : pages.map((page) => {
         const name = localizedVal(page.pyLabel, '', localeReference);
         return {
           text: name,

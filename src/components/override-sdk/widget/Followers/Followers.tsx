@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren } from 'react';
 
 interface FollowersProps extends PConnProps {
   // If any, enter additional props that only exist on this component

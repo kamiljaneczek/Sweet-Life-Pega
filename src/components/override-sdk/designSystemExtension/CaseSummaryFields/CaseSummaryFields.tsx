@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import isDeepEqual from 'fast-deep-equal/react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 
 import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
-import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useState } from 'react';
 
 import './CaseSummaryFields.css';
 

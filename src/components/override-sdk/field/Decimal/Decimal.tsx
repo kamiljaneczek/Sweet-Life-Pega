@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useState } from 'react';
 
 import { Input } from '../../../../design-system/ui/input';
 

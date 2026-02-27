@@ -3,9 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../../../design-sys
 
 // Pulse is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
-interface PulseProps {
-  // If any, enter additional props that only exist on this component
-}
+type PulseProps = {};
 
 export default function Pulse(props: PropsWithChildren<PulseProps>) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

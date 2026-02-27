@@ -1,7 +1,6 @@
-import React, { forwardRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-
 import { useAfterInitialEffect, useConsolidatedRef, useUID } from '@pega/react-sdk-components/lib/hooks';
+import { Editor } from '@tinymce/tinymce-react';
+import React, { forwardRef } from 'react';
 
 interface RichTextEditorProps {
   id?: string;
@@ -30,7 +29,7 @@ const RichTextEditor = forwardRef(function RichTextEditor(props: RichTextEditorP
     editorRef?.current.mode.set(readOnly || disabled ? 'readonly' : 'design');
   }, [readOnly, disabled]);
 
-  const filePickerCallback = cb => {
+  const filePickerCallback = (cb) => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');

@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   planCard: {
     backgroundColor: 'var(--utility-background-color)',
     padding: '2rem',

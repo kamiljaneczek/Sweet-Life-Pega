@@ -1,10 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import type { CaseOptions } from '@pega/pcore-pconnect-typedefs/mashup/types';
-
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 
@@ -55,7 +54,7 @@ export const PegaReadyProvider: React.FC<React.PropsWithChildren<PegaReadyProvid
 
   const startMashup = async () => {
     try {
-      PCore.onPCoreReady(async renderObj => {
+      PCore.onPCoreReady(async (renderObj) => {
         console.log(`PCore ready!`);
 
         const theComponentMap = await getSdkComponentMap(localSdkComponentMap);
@@ -114,7 +113,7 @@ export const PegaReadyProvider: React.FC<React.PropsWithChildren<PegaReadyProvid
         .then(() => {
           resolve();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error creating case:', error);
           reject(error);
         })

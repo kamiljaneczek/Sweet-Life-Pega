@@ -1,6 +1,6 @@
-import { ReactElement, useMemo } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { ReactElement, useMemo } from 'react';
 
 interface GroupProps extends PConnFieldProps {
   children: ReactElement[];
@@ -19,7 +19,7 @@ export default function Group(props: GroupProps) {
   const content = useMemo(() => {
     return (
       <div className='grid grid-cols-1 gap-2'>
-        {children?.map(child => (
+        {children?.map((child) => (
           <div key={child.key}>{child}</div>
         ))}
       </div>

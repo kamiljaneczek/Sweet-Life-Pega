@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../../design-system/ui/popover';
 
@@ -139,7 +138,7 @@ export default function Operator(props: OperatorProps) {
         <div className='mb-2'>
           <h6 className='text-lg font-medium'>{caseOpName}</h6>
         </div>
-        {popoverFields.map(field => {
+        {popoverFields.map((field) => {
           return (
             <React.Fragment key={field.id}>
               <div className='flex gap-1 py-0.5'>

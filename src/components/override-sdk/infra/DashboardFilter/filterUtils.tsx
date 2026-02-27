@@ -43,7 +43,7 @@ export const createFilterComponent = (getPConnect, filterMeta, index) => {
   }
   let propInfo: any = PCore.getMetadataUtils().getPropertyMetadata(cleanedName, filterMeta.config.ruleClass);
   if (!propInfo) {
-    // @ts-ignore - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
+    // @ts-expect-error - PCore.getMetadataUtils().getPropertyMetadata - An argument for 'currentClassID' was not provided.
     propInfo = PCore.getMetadataUtils().getPropertyMetadata(cleanedName);
   }
   const { type: propertyType } = propInfo || { type: 'Text' };
@@ -80,7 +80,7 @@ export const buildFilterComponents = (getPConnect, allFilters) => {
           type='button'
           className='cursor-pointer text-sm font-medium text-primary underline-offset-4 hover:underline'
           onClick={() => {
-            // @ts-ignore - second parameter "payload" for publish method should be optional
+            // @ts-expect-error - second parameter "payload" for publish method should be optional
             PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CLEAR_ALL);
           }}
         >
@@ -92,7 +92,7 @@ export const buildFilterComponents = (getPConnect, allFilters) => {
   return filterComponents;
 };
 
-export const convertDateToGMT = value => {
+export const convertDateToGMT = (value) => {
   const { valueAsISOString: date } = value;
   return date ? date.substring(0, date.indexOf('T')) : date;
 };
@@ -107,7 +107,7 @@ export const getFilterExpression = (filterValue, name, metadata) => {
   }
 
   if (metadata.config.filterType && metadata.config.filterType === 'RelativeDates') {
-    const fieldSource = metadata.config.datasource.filter(source => source.key === filterValue)[0];
+    const fieldSource = metadata.config.datasource.filter((source) => source.key === filterValue)[0];
     const relativeDateExpression = JSON.parse(fieldSource.json);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const fields = [
@@ -150,7 +150,7 @@ export function getLayoutDataFromRegion(regionData) {
     });
 }
 
-export const getFormattedDate = date => {
+export const getFormattedDate = (date) => {
   if (!date) {
     return date;
   }

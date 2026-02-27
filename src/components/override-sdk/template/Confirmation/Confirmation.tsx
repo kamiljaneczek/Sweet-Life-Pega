@@ -1,8 +1,8 @@
-import { PropsWithChildren, useState } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { getToDoAssignments } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, useState } from 'react';
 import { Button } from '../../../../design-system/ui/button';
 import { Card } from '../../../../design-system/ui/card';
 

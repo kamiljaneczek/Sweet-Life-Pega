@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-
-import { getReferenceList, buildView } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+
+import { buildView, getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useMemo } from 'react';
 
 interface FieldGroupTemplateProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -58,7 +58,7 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
     const addFieldGroupItem = () => {
       addRecord();
     };
-    const deleteFieldGroupItem = index => {
+    const deleteFieldGroupItem = (index) => {
       if (PCore.getPCoreVersion()?.includes('8.7')) {
         pConn.getListActions().deleteEntry(index, pageReference);
       } else {

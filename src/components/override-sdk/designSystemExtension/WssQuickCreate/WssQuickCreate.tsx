@@ -18,7 +18,7 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
       </h1>
       <ul id='quick-links' className='quick-link-ul-list'>
         {actions &&
-          actions.map(element => {
+          actions.map((element) => {
             return (
               <li className='quick-link-list' key={element.label}>
                 <button type='button' className='quick-link-button' onClick={element.onClick}>

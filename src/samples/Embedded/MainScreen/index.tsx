@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { makeStyles } from '@mui/styles';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import { useEffect, useState } from 'react';
 
 import { usePegaAuth } from '../context/PegaAuthProvider';
 import { usePega } from '../context/PegaReadyContext';
-
-import ShoppingOptionCard from '../ShoppingOptionCard';
 import ResolutionScreen from '../ResolutionScreen';
+import ShoppingOptionCard from '../ShoppingOptionCard';
 import { shoppingOptions } from '../utils';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appContainer: {
     backgroundColor: 'var(--app-background-color)',
     fontFamily: "'Poppins', sans-serif",
@@ -145,7 +144,7 @@ export default function MainScreen() {
     setShowPega(false);
   };
 
-  const onShopNow = async optionClicked => {
+  const onShopNow = async (optionClicked) => {
     setShowLandingPage(false);
     setShowPega(true);
     const sdkConfig = await getSdkConfig();
@@ -212,7 +211,7 @@ export default function MainScreen() {
               </h2>
             </div>
             <div className={classes.plansContainer}>
-              {shoppingOptions.map(option => (
+              {shoppingOptions.map((option) => (
                 <ShoppingOptionCard key={option.level} {...option} onClick={() => onShopNow(option.name)} />
               ))}
             </div>
