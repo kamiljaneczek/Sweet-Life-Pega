@@ -5,6 +5,13 @@ import { startMashup } from '../lib/constellation';
 function useConstellation() {
   const [isPegaReady, setIsPegaReady] = useState(false);
   useEffect(() => {
+    // SPA navigation case: PCore already initialized from a previous page
+    if (typeof PCore !== 'undefined' && PCore) {
+      setIsPegaReady(true);
+      return;
+    }
+
+    // First load: configure auth and wait for SdkConstellationReady
     getSdkConfig().then((sdkConfig: any) => {
       const sdkConfigAuth = sdkConfig.authConfig;
 
@@ -40,19 +47,17 @@ function useConstellation() {
       return { userIdentifier: 'bCustomAuth' };
     });
 
-    document.addEventListener('SdkConstellationReady', () => {
-      // start the portal
+    const handleConstellationReady = () => {
       startMashup();
       setIsPegaReady(true);
-    });
+    };
+
+    document.addEventListener('SdkConstellationReady', handleConstellationReady);
     loginIfNecessary({ appName: 'embedded', mainRedirect: false });
-    // Subscriptions can't be done until onPCoreReady.
-    //  So we subscribe there. But unsubscribe when this
-    //  component is unmounted (in function returned from this effect)
 
     return function cleanupSubscriptions() {
+      document.removeEventListener('SdkConstellationReady', handleConstellationReady);
       PCore?.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
-
       PCore?.getPubSubUtils().unsubscribe('assignmentFinished', 'assignmentFinished');
     };
   }, []);
