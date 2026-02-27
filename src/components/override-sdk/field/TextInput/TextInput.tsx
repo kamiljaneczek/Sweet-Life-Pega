@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Input } from '../../../../design-system/ui/input';
-import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useState } from 'react';
+import { Input } from '../../../../design-system/ui/input';
 
 interface TextInputProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextInput here

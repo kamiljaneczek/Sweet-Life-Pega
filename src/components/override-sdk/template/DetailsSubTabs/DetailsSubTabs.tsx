@@ -1,9 +1,8 @@
-import { Children, PropsWithChildren, useEffect, useState } from 'react';
 import { Tab, Tabs, TextField } from '@material-ui/core';
 import { TabContext, TabPanel } from '@material-ui/lab';
-
 import { getTransientTabs, getVisibleTabs, tabClick } from '@pega/react-sdk-components/lib/components/template/SubTabs/tabUtils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Children, PropsWithChildren, useEffect, useState } from 'react';
 
 interface DetailsSubTabsProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -32,7 +31,7 @@ export default function DetailsSubTabs(props: PropsWithChildren<DetailsSubTabsPr
     setTabitem(tempTabItems);
   }, [currentTabId]);
 
-  const handleTabClick = (id, index: string) => {
+  const handleTabClick = (_id, index: string) => {
     setCurrentTabId(index);
     tabClick(index, availableTabs, currentTabId, setCurrentTabId, tabItems);
   };

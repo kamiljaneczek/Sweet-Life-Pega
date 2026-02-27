@@ -1,24 +1,22 @@
 /* eslint-disable no-nested-ternary */
 
-import { useState, useEffect, useContext } from 'react';
-import { Card } from '../../../../design-system/ui/card';
-import Typography from '../../../../design-system/ui/typography';
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/helpers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { withSimpleViewContainerRenderer } from '@pega/react-sdk-components/lib/components/infra/Containers/SimpleView/SimpleView';
-
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import {
   addContainerItem,
   getToDoAssignments,
-  showBanner,
-  hasContainerItems
+  hasContainerItems,
+  showBanner
 } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
+import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/helpers';
+import { withSimpleViewContainerRenderer } from '@pega/react-sdk-components/lib/components/infra/Containers/SimpleView/SimpleView';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useContext, useEffect, useState } from 'react';
+import { Card } from '../../../../design-system/ui/card';
+import Typography from '../../../../design-system/ui/typography';
 
 interface FlowContainerProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -134,7 +132,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
   }, []);
 
   useEffect(() => {
-    // @ts-ignore - Property 'getMetadata' is private and only accessible within class 'C11nEnv'
+    // @ts-expect-error - Property 'getMetadata' is private and only accessible within class 'C11nEnv'
     if (isInitialized && pConnectOfFlowContainer.getMetadata().children && !hasItems) {
       // ensuring not to add container items, if container already has items
       // because during multi doc mode, we will have container items already in store
@@ -149,7 +147,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     const caseActions = ourPConn.getValue(pCoreConstants.CASE_INFO.AVAILABLEACTIONS, ''); // 2nd arg empty string until typedefs properly allow optional
     let bCaseWideAction = false;
     if (caseActions && actionID) {
-      const actionObj = caseActions.find(caseAction => caseAction.ID === actionID);
+      const actionObj = caseActions.find((caseAction) => caseAction.ID === actionID);
       if (actionObj) {
         bCaseWideAction = actionObj.type === 'Case';
       }
@@ -255,7 +253,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
       setShowConfirm(true);
 
       // publish this "assignmentFinished" for mashup, need to get approved as a standard
-      // @ts-ignore - second parameter “payload” for publish method should be optional
+      // @ts-expect-error - second parameter “payload” for publish method should be optional
       PCore.getPubSubUtils().publish('assignmentFinished');
 
       // debugger;
@@ -275,7 +273,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
 
   const displayPageMessages = () => {
     let hasBanner = false;
-    const messages = pageMessages ? pageMessages.map(msg => localizedVal(msg.message, 'Messages')) : pageMessages;
+    const messages = pageMessages ? pageMessages.map((msg) => localizedVal(msg.message, 'Messages')) : pageMessages;
     hasBanner = messages && messages.length > 0;
     return hasBanner && <AlertBanner id='flowContainerBanner' variant='urgent' messages={messages} />;
   };

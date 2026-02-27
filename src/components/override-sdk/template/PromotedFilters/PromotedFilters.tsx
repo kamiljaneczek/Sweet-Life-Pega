@@ -1,11 +1,9 @@
-import React, { useCallback, useMemo, useState, createElement } from 'react';
-import { Button } from '../../../../design-system/ui/button';
-
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { isEmptyObject } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { createElement, useCallback, useMemo, useState } from 'react';
+import { Button } from '../../../../design-system/ui/button';
 
 // Can't use PromotedFilterProps until getContainerManager() knows about addTransientItem
 //  Currently just expects "object"
@@ -62,7 +60,7 @@ function Filters({ filters, transientItemID, localeReference }) {
 }
 
 function isValidInput(input) {
-  return Object.values(input).findIndex(v => v) >= 0;
+  return Object.values(input).findIndex((v) => v) >= 0;
 }
 
 export default function PromotedFilters(props: PromotedFilterProps) {
@@ -75,7 +73,7 @@ export default function PromotedFilters(props: PromotedFilterProps) {
   const [payload, setPayload] = useState({});
   const filtersProperties = {};
 
-  filters.forEach(filter => {
+  filters.forEach((filter) => {
     filtersProperties[PCore.getAnnotationUtils().getPropertyName(filter.config.value)] = '';
   });
 
@@ -108,12 +106,12 @@ export default function PromotedFilters(props: PromotedFilterProps) {
   }
 
   const getFilterData = useCallback(
-    e => {
+    (e) => {
       e.preventDefault(); // to prevent un-intended forms submission.
 
       const changes = PCore.getFormUtils().getChanges(transientItemID);
       const formValues = {};
-      Object.keys(changes).forEach(key => {
+      Object.keys(changes).forEach((key) => {
         if (!['context_data', 'pageInstructions'].includes(key)) {
           formValues[key] = changes[key];
         }

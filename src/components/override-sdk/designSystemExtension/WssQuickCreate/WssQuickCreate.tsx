@@ -18,19 +18,18 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
         {heading}
       </h1>
       <ul id='quick-links' className='quick-link-ul-list'>
-        {actions &&
-          actions.map(element => {
-            return (
-              <li className='quick-link-list' key={element.label}>
-                <Button className='quick-link-button' onClick={element.onClick}>
-                  <span className='quick-link-button-span'>
-                    {element.icon && <img className='quick-link-icon' src={element.icon} />}
-                    <span>{element.label}</span>
-                  </span>
-                </Button>
-              </li>
-            );
-          })}
+        {actions?.map((element) => {
+          return (
+            <li className='quick-link-list' key={element.label}>
+              <Button className='quick-link-button' onClick={element.onClick}>
+                <span className='quick-link-button-span'>
+                  {element.icon && <img className='quick-link-icon' src={element.icon} />}
+                  <span>{element.label}</span>
+                </span>
+              </Button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

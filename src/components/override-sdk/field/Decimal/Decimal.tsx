@@ -1,10 +1,10 @@
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { getCurrencyCharacters, getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 /* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
 as per the locale.
@@ -65,7 +65,7 @@ export default function Decimal(props: DecimalProps) {
     'data-test-id': testId
   };
 
-  function decimalOnBlur(event, inValue) {
+  function decimalOnBlur(_event, inValue) {
     handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
   }
 

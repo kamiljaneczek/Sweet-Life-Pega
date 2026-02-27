@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { useState } from 'react';
+
 import {
+  Avatar,
+  Badge,
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
-  Avatar,
-  Typography,
-  Badge,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
-  ListItemSecondaryAction
+  Typography
 } from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
+import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
+import CloseIcon from '@material-ui/icons/Close';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 
 import './ToDo.css';
 
@@ -42,7 +42,7 @@ interface ToDoProps extends PConnProps {
   isConfirm?: boolean;
 }
 
-const isChildCase = assignment => {
+const isChildCase = (assignment) => {
   return assignment.isChild;
 };
 
@@ -60,7 +60,7 @@ function getID(assignment: any) {
   return arKeys[2];
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -117,15 +117,15 @@ export default function ToDo(props: ToDoProps) {
     return [];
   }
 
-  const getAssignmentId = assignment => {
+  const getAssignmentId = (assignment) => {
     return type === CONSTS.TODO ? assignment.ID : assignment.id;
   };
 
-  const getPriority = assignment => {
+  const getPriority = (assignment) => {
     return type === CONSTS.TODO ? assignment.urgency : assignment.priority;
   };
 
-  const getAssignmentName = assignment => {
+  const getAssignmentName = (assignment) => {
     return type === CONSTS.TODO ? assignment.name : assignment.stepName;
   };
 
@@ -137,7 +137,7 @@ export default function ToDo(props: ToDoProps) {
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
+  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
@@ -193,7 +193,7 @@ export default function ToDo(props: ToDoProps) {
       });
   }
 
-  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
+  const renderTaskId = (type, _getPConnect, showTodoList, assignment) => {
     const displayID = getID(assignment);
 
     if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {
@@ -203,7 +203,7 @@ export default function ToDo(props: ToDoProps) {
     return displayID;
   };
 
-  const getListItemComponent = assignment => {
+  const getListItemComponent = (assignment) => {
     if (isDesktop) {
       return (
         <>
@@ -235,7 +235,7 @@ export default function ToDo(props: ToDoProps) {
         />
       )}
       <List>
-        {assignments.map(assignment => (
+        {assignments.map((assignment) => (
           <div className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
             <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
               {currentUserInitials}
@@ -276,7 +276,7 @@ export default function ToDo(props: ToDoProps) {
           )}
           <CardContent>
             <List>
-              {assignments.map(assignment => (
+              {assignments.map((assignment) => (
                 <ListItem key={getAssignmentId(assignment)} dense divider onClick={() => clickGo(assignment)}>
                   <ListItemText primary={getAssignmentName(assignment)} secondary={getListItemComponent(assignment)} />
                   <ListItemSecondaryAction>

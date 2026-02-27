@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import { Button, Grid, IconButton, Snackbar } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 import './CancelAlert.css';
 
 interface CancelAlertProps extends PConnFieldProps {
@@ -41,14 +40,14 @@ export default function CancelAlert(props: CancelAlertProps) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   function disableButton(id) {
-    setButtonsState(prevState => ({
+    setButtonsState((prevState) => ({
       ...prevState,
       [id]: true
     }));
   }
 
   function enableButton(id) {
-    setButtonsState(prevState => ({
+    setButtonsState((prevState) => ({
       ...prevState,
       [id]: false
     }));
@@ -57,14 +56,14 @@ export default function CancelAlert(props: CancelAlertProps) {
   function cancelHandler() {
     if (isReverseCoexistence) {
       dismiss(true);
-      // @ts-ignore - An argument for 'payload' was not provided.
+      // @ts-expect-error - An argument for 'payload' was not provided.
       PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.REVERSE_COEXISTENCE_EVENTS.HANDLE_DISCARD);
     } else if (!isDataObject && !isLocalAction && !isBulkAction) {
       disableButton(btnIds.DELETE);
       actionsAPI
         .deleteCaseInCreateStage(containerItemID, hideDelete)
         .then(() => {
-          // @ts-ignore - An argument for 'payload' was not provided.
+          // @ts-expect-error - An argument for 'payload' was not provided.
           PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
         })
         .catch(() => {
@@ -87,7 +86,7 @@ export default function CancelAlert(props: CancelAlertProps) {
     }
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
+  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }

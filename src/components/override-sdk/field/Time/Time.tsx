@@ -1,9 +1,8 @@
-import { KeyboardTimePicker } from '@material-ui/pickers';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import dayjs from 'dayjs';
-
+import { KeyboardTimePicker } from '@material-ui/pickers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import dayjs from 'dayjs';
 
 interface TimeProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Time here
@@ -35,14 +34,14 @@ export default function Time(props: TimeProps) {
     'data-test-id': testId
   };
 
-  const handleChange = date => {
-    const theValue = date && date.isValid() ? date.format('HH:mm') : null;
+  const handleChange = (date) => {
+    const theValue = date?.isValid() ? date.format('HH:mm') : null;
     onChange({ value: theValue });
   };
 
   let timeValue: any = null;
   if (value) {
-    const timeArray = value.split(':').map(itm => Number(itm));
+    const timeArray = value.split(':').map((itm) => Number(itm));
     timeValue = dayjs().hour(timeArray[0]).minute(timeArray[1]);
   }
 

@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 // FieldValueList is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -11,7 +11,7 @@ interface FieldValueListProps {
   variant?: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),

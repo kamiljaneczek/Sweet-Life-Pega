@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface CaseSummaryProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -51,7 +51,7 @@ export default function CaseSummary(props: PropsWithChildren<CaseSummaryProps>) 
   }
 
   function prepareCaseSummaryData(summaryFieldChildren) {
-    const convertChildrenToSummaryData = kid => {
+    const convertChildrenToSummaryData = (kid) => {
       return kid?.map((childItem, index) => {
         const childMeta = childItem.getPConnect().meta;
         const caseSummaryComponentObject = prepareComponentInCaseSummary(childMeta, childItem.getPConnect);
@@ -67,7 +67,7 @@ export default function CaseSummary(props: PropsWithChildren<CaseSummaryProps>) 
     const childPConnData = childPConn.resolveConfigProps(childPConn.getRawMetadata());
     if (childPConnData.name.toLowerCase() === 'primary fields') {
       arPrimaryFields = childPConnData.children;
-      arPrimaryFields.forEach(field => {
+      arPrimaryFields.forEach((field) => {
         if (field.config?.value && typeof field.config?.value === 'string') {
           field.config.value = localizedVal(field.config.value, localeCategory);
         }

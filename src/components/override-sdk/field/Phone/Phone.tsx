@@ -69,17 +69,17 @@ export default function Phone(props: PhoneProps) {
     );
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setInputValue(event?.target?.value);
     const val = event?.target?.value;
-    let phoneValue = val && val.replace(/\D+/g, '');
+    let phoneValue = val?.replace(/\D+/g, '');
     phoneValue = `+${phoneValue}`;
     onChange({ value: phoneValue });
   };
 
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     const phoneValue = event?.target?.value;
-    event.target.value = `+${phoneValue && phoneValue.replace(/\D+/g, '')}`;
+    event.target.value = `+${phoneValue?.replace(/\D+/g, '')}`;
     onBlur(event);
   };
 

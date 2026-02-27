@@ -1,9 +1,9 @@
-import { createElement } from 'react';
 import Grid from '@material-ui/core/Grid';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { createElement } from 'react';
 
 interface DetailsTwoColumnProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -37,7 +37,7 @@ export default function DetailsTwoColumn(props: DetailsTwoColumnProps) {
   let highlightedDataArr = [];
   if (showHighlightedData) {
     const { highlightedData = [] } = (getPConnect().getRawMetadata() as any).config;
-    highlightedDataArr = highlightedData.map(field => {
+    highlightedDataArr = highlightedData.map((field) => {
       field.config.displayMode = 'STACKED_LARGE_VAL';
 
       // Mark as status display when using pyStatusWork

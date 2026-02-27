@@ -37,7 +37,7 @@ export default function ErrorBoundary(props: ErrorBoundaryProps) {
 
   if (pConn.getContainerName() === WORK_AREA || pConn.isInsideList() === true || pConn.getContainerName() === 'modal') {
     const { publish } = PCore.getPubSubUtils();
-    // @ts-ignore - second parameter “payload” for publish method should be optional
+    // @ts-expect-error - second parameter “payload” for publish method should be optional
     publish(ERROR_WHILE_RENDERING);
     return null;
   }

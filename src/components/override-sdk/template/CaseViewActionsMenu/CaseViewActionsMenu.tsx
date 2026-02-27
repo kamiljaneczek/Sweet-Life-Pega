@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 
 interface CaseViewActionsMenuProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -44,7 +43,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
+  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
@@ -77,7 +76,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
     handleClose();
   }
 
-  availableActions.forEach(action => {
+  availableActions.forEach((action) => {
     arMenuItems.push(
       <MenuItem key={action.ID} onClick={() => _actionMenuActionsClick(action)}>
         {localizedVal(action.name, '', localeKey)}
@@ -85,7 +84,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
     );
   });
 
-  availableProcesses.forEach(process => {
+  availableProcesses.forEach((process) => {
     arMenuItems.push(
       <MenuItem key={process.ID} onClick={() => _actionMenuProcessClick(process)}>
         {localizedVal(process.name, '', localeKey)}

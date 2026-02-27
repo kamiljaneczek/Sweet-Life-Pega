@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Typography, CardActions, Button } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
@@ -10,7 +10,7 @@ interface AppAnnouncementProps extends PConnProps {
   whatsnewlink?: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 export default function AppAnnouncement(props: AppAnnouncementProps) {
   const { header = '', description = '', datasource = [], whatsnewlink = '' } = props;
   let details = [];
-  if (datasource && datasource.source) {
-    details = datasource.source.map(item => {
+  if (datasource?.source) {
+    details = datasource.source.map((item) => {
       return item.name;
     });
   }

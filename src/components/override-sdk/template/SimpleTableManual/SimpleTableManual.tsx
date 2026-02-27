@@ -1,36 +1,35 @@
 /* eslint-disable no-nested-ternary */
-import React, { PropsWithChildren, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Link from '@material-ui/core/Link';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import { createElement } from 'react';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import SubjectIcon from '@material-ui/icons/Subject';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import FilterListIcon from '@material-ui/icons/FilterList';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import SubjectIcon from '@material-ui/icons/Subject';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
-import { buildFieldsForTable, filterData, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+import { buildFieldsForTable, filterData, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { createElement, PropsWithChildren, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 interface SimpleTableManualProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -203,20 +202,20 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
         .getListActions()
         .initDefaultPageInstructions(
           getPConnect().getReferenceList(),
-          fieldDefs.filter(item => item.name).map(item => item.name)
+          fieldDefs.filter((item) => item.name).map((item) => item.name)
         );
     } else {
-      // @ts-ignore - An argument for 'fields' was not provided
+      // @ts-expect-error - An argument for 'fields' was not provided
       getPConnect().getListActions().initDefaultPageInstructions(getPConnect().getReferenceList());
     }
   }, []);
 
-  const displayedColumns = fieldDefs.map(field => {
+  const displayedColumns = fieldDefs.map((field) => {
     return field.name ? field.name : field.cellRenderer;
   });
 
   const getFormattedValue = (val, key) => {
-    const rawField = fieldsWithPropNames.find(item => item.propName === key);
+    const rawField = fieldsWithPropNames.find((item) => item.propName === key);
     let options = {};
     if (rawField && ['Boolean', 'Checkbox'].includes(rawField.type)) {
       const { trueLabel, falseLabel } = rawField.config;
@@ -243,10 +242,10 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     return getFormattedValue(valBuilder, inColKey);
   }
 
-  const formatRowsData = data => {
+  const formatRowsData = (data) => {
     if (!data) return {};
 
-    return data.map(item => {
+    return data.map((item) => {
       return displayedColumns.reduce((dataForRow, colKey) => {
         dataForRow[colKey] = getRowValue(item, colKey);
         return dataForRow;
@@ -257,7 +256,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   function generateRowsData() {
     // if referenceList is empty and dataPageName property value exists then make a datapage fetch call and get the list of data.
     if (!referenceList.length && dataPageName) {
-      getDataPage(dataPageName, parameters, context).then(listData => {
+      getDataPage(dataPageName, parameters, context).then((listData) => {
         const data = formatRowsData(listData);
         myRows = data;
         setRowData(data);
@@ -336,9 +335,9 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   function buildElementsForTable() {
     const eleData: any = [];
-    referenceList.forEach((element, index) => {
+    referenceList.forEach((_element, index) => {
       const data: any = [];
-      rawFields.forEach(item => {
+      rawFields.forEach((item) => {
         // removing label field from config to hide title in the table cell
         item = { ...item, config: { ...item.config, label: '' } };
         const referenceListData = getReferenceList(pConn);
@@ -363,7 +362,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     setElementsData(eleData);
   }
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
+  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof any) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -401,7 +400,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
       return a[1] - b[1];
     });
 
-    return stabilizedThis.map(el => el[0]);
+    return stabilizedThis.map((el) => el[0]);
   }
 
   function _menuClick(event, columnId: string, columnType: string, labelValue: string) {
@@ -597,7 +596,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                         <MoreIcon
                           id='menu-icon'
                           className={classes.moreIcon}
-                          onClick={event => {
+                          onClick={(event) => {
                             _menuClick(event, field.name, field.meta.type, field.label);
                           }}
                         />
@@ -649,7 +648,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                   return (
                     // eslint-disable-next-line react/no-array-index-key
                     <TableRow key={index}>
-                      {displayedColumns.map(colKey => {
+                      {displayedColumns.map((colKey) => {
                         return (
                           <TableCell key={colKey} className={classes.tableCell}>
                             {showDeleteButton && colKey === 'DeleteIcon' ? (
@@ -657,7 +656,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                                 <MoreIcon
                                   id='table-edit-menu-icon'
                                   className={classes.moreIcon}
-                                  onClick={event => {
+                                  onClick={(event) => {
                                     editMenuClick(event, index);
                                   }}
                                 />

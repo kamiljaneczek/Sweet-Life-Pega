@@ -1,7 +1,7 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { Grid, GridSize } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface TwoColumnProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -36,7 +36,7 @@ export default function TwoColumn(props: PropsWithChildren<TwoColumnProps>) {
   const colAArray = templateCol
     .replaceAll(/[a-z]+/g, '')
     .split(/\s/)
-    .map(itm => Number(itm));
+    .map((itm) => Number(itm));
   const totalCols = colAArray.reduce((v, itm) => itm + v, 0);
   const ratio = 12 / totalCols;
   aSize = (ratio * colAArray[0]) as GridSize;

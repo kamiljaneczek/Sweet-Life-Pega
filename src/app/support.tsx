@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
+
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { useState } from 'react';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '../design-system/ui/hover-card';
 
 import { Button } from '../design-system/ui/button';
-
-import classNames from 'classnames';
-import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../design-system/ui/hover-card';
 import useConstellation from '../hooks/useConstellation';
-import Loading from './components/loading';
+import { cn } from '../lib/utils';
+import { SupportIncidentSkeleton } from './components/skeletons';
 
 export default function Support() {
   const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
   const [caseId, setCaseId] = useState('');
   const isPegaReady = useConstellation();
 
-  const handleCaseComplete = eventPayload => {
+  const handleCaseComplete = (eventPayload) => {
     setShowPega('Confirmation');
     setCaseId(eventPayload.caseID.split(' ')[1]);
   };
@@ -26,7 +26,7 @@ export default function Support() {
 
   function handleCreateCase() {
     setShowPega('Pega');
-    getSdkConfig().then(sdkConfig => {
+    getSdkConfig().then((sdkConfig) => {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
         const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
@@ -130,12 +130,9 @@ export default function Support() {
             </p>
             <div
               id='incident-info'
-              className={classNames(
-                'flex flex-col flex-wrap mb-8 md:mb-16 space-y-4 md:flex-row md:justify-start justify-center md:space-y-0 md:space-x-4',
-                {
-                  hidden: showPega === 'Confirmation' || showPega === 'Pega'
-                }
-              )}
+              className={cn('flex flex-col flex-wrap mb-8 md:mb-16 space-y-4 md:flex-row md:justify-start justify-center md:space-y-0 md:space-x-4', {
+                hidden: showPega === 'Confirmation' || showPega === 'Pega'
+              })}
             >
               <HoverCard openDelay={200}>
                 <HoverCardTrigger>
@@ -149,18 +146,15 @@ export default function Support() {
               </HoverCard>
             </div>
             <div className='flex flex-row align-middle items-center justify-center'>
-              {isPegaReady ? (
-                <div
-                  id='pega-root'
-                  className={classNames('flex-grow w-full max-w-3xl', { hidden: showPega === 'Confirmation' || showPega === 'Info' })}
-                />
-              ) : (
-                <Loading />
-              )}
+              {!isPegaReady && <SupportIncidentSkeleton />}
+              <div
+                id='pega-root'
+                className={cn('flex-grow w-full max-w-3xl', { hidden: !isPegaReady || showPega === 'Confirmation' || showPega === 'Info' })}
+              />
             </div>
             <div
               id='incident-confirmation'
-              className={classNames('flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4', {
+              className={cn('flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4', {
                 hidden: showPega === 'Info' || showPega === 'Pega'
               })}
             >

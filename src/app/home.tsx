@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/no-unescaped-entities */
 
-import { Button } from '../design-system/ui/button';
-import Loading from './components/loading';
-import useConstellation from '../hooks/useConstellation';
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
+import { Button } from '../design-system/ui/button';
+import useConstellation from '../hooks/useConstellation';
+import { cn } from '../lib/utils';
+import { HomeFeaturedProductsSkeleton } from './components/skeletons';
 
 export default function Home() {
   const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
@@ -119,7 +119,8 @@ export default function Home() {
       </section>
       <section className='bg-white dark:bg-gray-900'>
         <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12'>
-          {isPegaReady ? <div id='pega-root' className={classNames('', { hidden: showPega !== 'Pega' })} /> : <Loading />}
+          {!isPegaReady && <HomeFeaturedProductsSkeleton />}
+          <div id='pega-root' className={cn('', { hidden: !isPegaReady || showPega !== 'Pega' })} />
         </div>
       </section>
       <section

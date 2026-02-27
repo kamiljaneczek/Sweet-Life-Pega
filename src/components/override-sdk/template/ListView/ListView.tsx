@@ -3,7 +3,21 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-shadow */
 
-import React, { useState, useEffect, useRef } from 'react';
+import { Radio } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,38 +27,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Paper from '@material-ui/core/Paper';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import SubjectIcon from '@material-ui/icons/Subject';
-import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Radio } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
-
+import FilterListIcon from '@material-ui/icons/FilterList';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import SearchIcon from '@material-ui/icons/Search';
+import SubjectIcon from '@material-ui/icons/Subject';
 import { filterData } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
+import React, { useEffect, useRef, useState } from 'react';
 
 import './ListView.css';
-import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
+import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-
-import useInit from './hooks';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import useInit from './hooks';
 
 interface ListViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -108,7 +106,7 @@ export default function ListView(props: ListViewProps) {
   });
 
   const thePConn = getPConnect();
-  // @ts-ignore - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
+  // @ts-expect-error - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps: any = thePConn.getConfigProps() as ListViewProps;
 
@@ -197,7 +195,7 @@ export default function ListView(props: ListViewProps) {
 
   const classes = useStyles();
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
+  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof any) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -234,13 +232,13 @@ export default function ListView(props: ListViewProps) {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map(el => el[0]);
+    return stabilizedThis.map((el) => el[0]);
   }
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -256,7 +254,7 @@ export default function ListView(props: ListViewProps) {
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
-      const colIndex = fields.findIndex(ele => ele.name === theField);
+      const colIndex = fields.findIndex((ele) => ele.name === theField);
       const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = fields[index].id;
@@ -294,7 +292,7 @@ export default function ListView(props: ListViewProps) {
   function getMyColumnList(arCols: any[]): string[] {
     const myColList: string[] = [];
 
-    arCols.forEach(col => {
+    arCols.forEach((col) => {
       myColList.push(col.id);
     });
 
@@ -330,7 +328,7 @@ export default function ListView(props: ListViewProps) {
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
     // Constructing the select parameters list (will be sent in dashboardFilterPayload)
-    columnList.current.forEach(col => {
+    columnList.current.forEach((col) => {
       selectParam.push({
         field: col
       });
@@ -447,15 +445,15 @@ export default function ListView(props: ListViewProps) {
     } else {
       // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields
       //  corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
-      fieldDefs.forEach(field => {
-        if (!listFields.find(f => f.field === field.name)) {
+      fieldDefs.forEach((field) => {
+        if (!listFields.find((f) => f.field === field.name)) {
           listFields.push({
             field: field.name
           });
         }
       });
-      patchQueryFields.forEach(k => {
-        if (!listFields.find(f => f.field === k)) {
+      patchQueryFields.forEach((k) => {
+        if (!listFields.find((f) => f.field === k)) {
           listFields.push({
             field: k
           });
@@ -463,8 +461,8 @@ export default function ListView(props: ListViewProps) {
       });
     }
 
-    compositeKeys.forEach(k => {
-      if (!listFields.find(f => f.field === k)) {
+    compositeKeys.forEach((k) => {
+      if (!listFields.find((f) => f.field === k)) {
         listFields.push({
           field: k
         });
@@ -476,13 +474,7 @@ export default function ListView(props: ListViewProps) {
   const addItemKeyInSelect = (fieldDefs, itemKey, select, compositeKeys) => {
     const elementFound = getField(fieldDefs, itemKey);
 
-    if (
-      itemKey &&
-      !elementFound &&
-      Array.isArray(select) &&
-      !(compositeKeys !== null && compositeKeys?.length) &&
-      !select.find(sel => sel.field === itemKey)
-    ) {
+    if (itemKey && !elementFound && Array.isArray(select) && !compositeKeys?.length && !select.find((sel) => sel.field === itemKey)) {
       return [
         ...select,
         {
@@ -499,9 +491,9 @@ export default function ListView(props: ListViewProps) {
     return fieldsMap.get(columnId);
   };
 
-  const getFieldsMap = fieldDefs => {
+  const getFieldsMap = (fieldDefs) => {
     const fieldsMap = new Map();
-    fieldDefs.forEach(element => {
+    fieldDefs.forEach((element) => {
       fieldsMap.set(element.id, element);
     });
     return fieldsMap;
@@ -523,7 +515,7 @@ export default function ListView(props: ListViewProps) {
 
     const selectParams: any = [];
 
-    myColumns.forEach(column => {
+    myColumns.forEach((column) => {
       selectParams.push({
         field: column.id
       });
@@ -531,7 +523,7 @@ export default function ListView(props: ListViewProps) {
 
     const colList: any = [];
 
-    selectParams.forEach(col => {
+    selectParams.forEach((col) => {
       colList.push(col.field);
     });
 
@@ -569,7 +561,7 @@ export default function ListView(props: ListViewProps) {
       setTimeout(() => {
         PCore.getPubSubUtils().subscribe(
           PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CHANGE,
-          data => {
+          (data) => {
             processFilterChange(data);
           },
           `dashboard-component-${'id'}`,
@@ -682,7 +674,7 @@ export default function ListView(props: ListViewProps) {
     }
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
+  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
@@ -931,9 +923,9 @@ export default function ListView(props: ListViewProps) {
     const value = event.target.value;
     const reqObj = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex(element => element[rowID] === value);
+      const index = response.findIndex((element) => element[rowID] === value);
       const selectedRow = response[index];
-      compositeKeys.forEach(element => {
+      compositeKeys.forEach((element) => {
         reqObj[element] = selectedRow[element];
       });
     } else {
@@ -943,14 +935,14 @@ export default function ListView(props: ListViewProps) {
     setSelectedValue(value);
   };
 
-  const onCheckboxClick = event => {
+  const onCheckboxClick = (event) => {
     const value = event?.target?.value;
     const checked = event?.target?.checked;
     const reqObj: any = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex(element => element[rowID] === value);
+      const index = response.findIndex((element) => element[rowID] === value);
       const selectedRow = response[index];
-      compositeKeys.forEach(element => {
+      compositeKeys.forEach((element) => {
         reqObj[element] = selectedRow[element];
       });
       reqObj.$selected = checked;
@@ -1011,137 +1003,137 @@ export default function ListView(props: ListViewProps) {
               </Grid>
             </Grid>
           )}
-          <>
-            {!bInForm ? (
-              <TableContainer id='list-view' className={classes.tableInForm}>
-                <Table stickyHeader aria-label='sticky table'>
-                  <TableHead>
-                    <TableRow>
-                      {arColumns.map(column => {
-                        return (
-                          <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                            <TableSortLabel
-                              active={orderBy === column.id}
-                              direction={orderBy === column.id ? order : 'asc'}
-                              onClick={createSortHandler(column.id)}
-                            >
-                              {column.label}
-                              {_showFilteredIcon(column.id) && <FilterListIcon className={classes.filteredIcon} />}
-                              {orderBy === column.id ? (
-                                <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
-                              ) : null}
-                            </TableSortLabel>
-                            <MoreIcon
-                              className={classes.moreIcon}
-                              onClick={event => {
-                                _menuClick(event, column.id, column.type, column.label);
-                              }}
-                            />
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {stableSort(arRows, getComparator(order, orderBy))
+          {!bInForm ? (
+            <TableContainer id='list-view' className={classes.tableInForm}>
+              <Table stickyHeader aria-label='sticky table'>
+                <TableHead>
+                  <TableRow>
+                    {arColumns.map((column) => {
+                      return (
+                        <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
+                          <TableSortLabel
+                            active={orderBy === column.id}
+                            direction={orderBy === column.id ? order : 'asc'}
+                            onClick={createSortHandler(column.id)}
+                          >
+                            {column.label}
+                            {_showFilteredIcon(column.id) && <FilterListIcon className={classes.filteredIcon} />}
+                            {orderBy === column.id ? (
+                              <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
+                            ) : null}
+                          </TableSortLabel>
+                          <MoreIcon
+                            className={classes.moreIcon}
+                            onClick={(event) => {
+                              _menuClick(event, column.id, column.type, column.label);
+                            }}
+                          />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {stableSort(arRows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      return (
+                        <TableRow key={row.pxRefObjectInsName || row.pyID}>
+                          {arColumns.map((column) => {
+                            const value = row[column.id];
+                            return (
+                              <TableCell key={column.id} align={column.align} className={classes.cell}>
+                                {_showButton(column.id, row) || column.displayAsLink ? (
+                                  <Link
+                                    component='button'
+                                    onClick={() => {
+                                      _listViewClick(row, column);
+                                    }}
+                                  >
+                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                  </Link>
+                                ) : column.format && typeof value === 'number' ? (
+                                  column.format(value)
+                                ) : (
+                                  value
+                                )}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <TableContainer id='list-view'>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell />}
+                    {arColumns.map((column) => {
+                      return (
+                        <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
+                          <TableSortLabel
+                            active={orderBy === column.id}
+                            direction={orderBy === column.id ? order : 'asc'}
+                            onClick={createSortHandler(column.id)}
+                          >
+                            {column.label}
+                            {orderBy === column.id ? (
+                              <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
+                            ) : null}
+                          </TableSortLabel>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {arRows &&
+                    arRows.length > 0 &&
+                    stableSort(arRows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map(row => {
+                      .map((row) => {
                         return (
-                          <TableRow key={row.pxRefObjectInsName || row.pyID}>
-                            {arColumns.map(column => {
+                          <TableRow key={row[rowID]}>
+                            {selectionMode === SELECTION_MODE.SINGLE && (
+                              <TableCell>
+                                <Radio
+                                  onChange={handleChange}
+                                  value={row[rowID]}
+                                  name='radio-buttons'
+                                  inputProps={{ 'aria-label': 'A' }}
+                                  checked={selectedValue === row[rowID]}
+                                />
+                              </TableCell>
+                            )}
+                            {selectionMode === SELECTION_MODE.MULTI && (
+                              <TableCell>
+                                <Checkbox
+                                  onChange={onCheckboxClick}
+                                  checked={selectedValues.some((selectedValue) => selectedValue[rowID] === row[rowID])}
+                                  value={row[rowID]}
+                                />
+                              </TableCell>
+                            )}
+                            {arColumns.map((column) => {
                               const value = row[column.id];
                               return (
-                                <TableCell key={column.id} align={column.align} className={classes.cell}>
-                                  {_showButton(column.id, row) || column.displayAsLink ? (
-                                    <Link
-                                      component='button'
-                                      onClick={() => {
-                                        _listViewClick(row, column);
-                                      }}
-                                    >
-                                      {column.format && typeof value === 'number' ? column.format(value) : value}
-                                    </Link>
-                                  ) : (
-                                    <>{column.format && typeof value === 'number' ? column.format(value) : value}</>
-                                  )}
+                                <TableCell className={classes.cell} key={column.id} align={column.align}>
+                                  {processColumnValue(column, value)}
                                 </TableCell>
                               );
                             })}
                           </TableRow>
                         );
                       })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <TableContainer id='list-view'>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell />}
-                      {arColumns.map(column => {
-                        return (
-                          <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                            <TableSortLabel
-                              active={orderBy === column.id}
-                              direction={orderBy === column.id ? order : 'asc'}
-                              onClick={createSortHandler(column.id)}
-                            >
-                              {column.label}
-                              {orderBy === column.id ? (
-                                <span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>
-                              ) : null}
-                            </TableSortLabel>
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {arRows &&
-                      arRows.length > 0 &&
-                      stableSort(arRows, getComparator(order, orderBy))
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map(row => {
-                          return (
-                            <TableRow key={row[rowID]}>
-                              {selectionMode === SELECTION_MODE.SINGLE && (
-                                <TableCell>
-                                  <Radio
-                                    onChange={handleChange}
-                                    value={row[rowID]}
-                                    name='radio-buttons'
-                                    inputProps={{ 'aria-label': 'A' }}
-                                    checked={selectedValue === row[rowID]}
-                                  />
-                                </TableCell>
-                              )}
-                              {selectionMode === SELECTION_MODE.MULTI && (
-                                <TableCell>
-                                  <Checkbox
-                                    onChange={onCheckboxClick}
-                                    checked={selectedValues.some(selectedValue => selectedValue[rowID] === row[rowID])}
-                                    value={row[rowID]}
-                                  />
-                                </TableCell>
-                              )}
-                              {arColumns.map(column => {
-                                const value = row[column.id];
-                                return (
-                                  <TableCell className={classes.cell} key={column.id} align={column.align}>
-                                    {processColumnValue(column, value)}
-                                  </TableCell>
-                                );
-                              })}
-                            </TableRow>
-                          );
-                        })}
-                  </TableBody>
-                </Table>
-                {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
-              </TableContainer>
-            )}
-          </>
+                </TableBody>
+              </Table>
+              {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
+            </TableContainer>
+          )}
           {arRows && arRows.length > 0 && (
             <TablePagination
               id='pagination'

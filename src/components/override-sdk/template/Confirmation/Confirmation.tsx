@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import { PropsWithChildren, useState } from 'react';
+
 import { Button, Card, makeStyles } from '@material-ui/core';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { getToDoAssignments } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, useState } from 'react';
 
 interface ConfirmationProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -14,7 +15,7 @@ interface ConfirmationProps extends PConnProps {
   showTasks: boolean;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),

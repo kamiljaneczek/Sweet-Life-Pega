@@ -1,8 +1,7 @@
-import { PropsWithChildren } from 'react';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getAllFields } from '@pega/react-sdk-components/lib/components/helpers/template-utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren } from 'react';
 
 interface ViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -124,7 +123,7 @@ export default function View(props: PropsWithChildren<ViewProps>) {
 }
 
 // Adapted from Constellation DX Component to add in additional props for some templates
-View.additionalProps = (state, getPConnect) => {
+View.additionalProps = (_state, getPConnect) => {
   const thePConn = getPConnect();
   const { template } = thePConn.getConfigProps();
 
@@ -132,7 +131,7 @@ View.additionalProps = (state, getPConnect) => {
   let allFields = {};
 
   switch (template) {
-    case 'CaseSummary':
+    case 'CaseSummary': {
       allFields = getAllFields(thePConn);
       // eslint-disable-next-line no-case-declarations
       const unresFields = {
@@ -141,6 +140,7 @@ View.additionalProps = (state, getPConnect) => {
       };
       propObj = thePConn.resolveConfigProps(unresFields);
       break;
+    }
 
     case 'Details':
       allFields = getAllFields(thePConn);

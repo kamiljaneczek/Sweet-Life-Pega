@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { getCurrencyCharacters, getCurrencyOptions } from './currency-utils';
-import { Input } from '../../../../design-system/ui/input';
+import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { useState } from 'react';
+import { Input } from '../../../../design-system/ui/input';
+import { getCurrencyCharacters, getCurrencyOptions } from './currency-utils';
 
 /* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
 as per the locale.

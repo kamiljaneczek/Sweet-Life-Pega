@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Popover from '@material-ui/core/Popover';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
-
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 
 // Operator is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -22,7 +21,7 @@ interface OperatorProps extends PConnProps {
   displayLabel?: any;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
     margin: theme.spacing(1)
@@ -75,7 +74,7 @@ export default function Operator(props: OperatorProps) {
     operatorPreviewPromise.then((res: any) => {
       const fillerString = '---';
       let fields: any = [];
-      if (res.data && res.data.pyOperatorInfo && res.data.pyOperatorInfo.pyUserName) {
+      if (res.data?.pyOperatorInfo?.pyUserName) {
         fields = [
           {
             id: 'pyPosition',
@@ -166,7 +165,7 @@ export default function Operator(props: OperatorProps) {
         <Grid item xs={12}>
           <Typography variant='h6'>{caseOpName}</Typography>
         </Grid>
-        {popoverFields.map(field => {
+        {popoverFields.map((field) => {
           return (
             <React.Fragment key={field.id}>
               <Grid container item xs={12} spacing={1}>

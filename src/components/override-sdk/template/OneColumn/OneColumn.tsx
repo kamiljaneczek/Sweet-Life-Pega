@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface OneColumnProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -7,7 +7,7 @@ interface OneColumnProps extends PConnProps {
 
 export default function OneColumn(props: PropsWithChildren<OneColumnProps>) {
   const { children } = props;
-  return (children as ReactElement[]).map(child => {
+  return (children as ReactElement[]).map((child) => {
     return (
       <div key={child.key} className=''>
         {child}

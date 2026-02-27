@@ -1,9 +1,8 @@
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
-
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface DateTimeProps extends PConnFieldProps {
@@ -63,13 +62,13 @@ export default function DateTime(props: DateTimeProps) {
     return <TextInput {...props} value={formattedDateTime} />;
   }
 
-  const handleChange = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
+  const handleChange = (date) => {
+    const changeValue = date?.isValid() ? date.toISOString() : null;
     onChange({ value: changeValue });
   };
 
-  const handleAccept = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
+  const handleAccept = (date) => {
+    const changeValue = date?.isValid() ? date.toISOString() : null;
     handleEvent(actions, 'changeNblur', propName, changeValue);
   };
 

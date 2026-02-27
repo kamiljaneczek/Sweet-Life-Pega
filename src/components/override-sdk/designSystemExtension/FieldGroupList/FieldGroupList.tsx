@@ -1,5 +1,5 @@
-import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
@@ -23,8 +23,8 @@ export default function FieldGroupList(props: FieldGroupListProps) {
     <Grid container spacing={4} justifyContent='space-between'>
       <Grid item style={{ width: '100%' }}>
         <Grid container spacing={1}>
-          {props.items.map(item => (
-            <Grid item style={{ width: '100%' }}>
+          {props.items.map((item) => (
+            <Grid item key={item.id} style={{ width: '100%' }}>
               <b>{item.name}</b>
               {props.onDelete && (
                 <button

@@ -10,15 +10,11 @@
   "paths": {
     "/attachments/upload": {
       "post": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Upload a file to be used as an attachment in a subsequent call",
         "description": "Uploads file to pega database or external storage as configured in application. An unique ID would sent back as response. This ID is needed to attach the uploaded file to a case.",
         "operationId": "uploadFile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "created",
@@ -52,15 +48,11 @@
     },
     "/cases/{caseID}/attachments": {
       "post": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Attach URL and uploaded file to a case.",
         "description": "Attaches URL and uploaded file to a case.",
         "operationId": "addAttachment",
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "parameters": [
           {
             "name": "caseID",
@@ -113,15 +105,11 @@
         }
       },
       "get": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Get list of attachments of a case",
         "description": "Get list of attachments of a case",
         "operationId": "getAttachmentList",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "caseID",
@@ -136,10 +124,7 @@
             "description": "When set to true, thumbnail will be part of response as base 64 encoded string",
             "required": false,
             "type": "boolean",
-            "enum": [
-              "true",
-              "false"
-            ]
+            "enum": ["true", "false"]
           }
         ],
         "responses": {
@@ -169,15 +154,11 @@
     },
     "/cases/{caseID}/attachment_categories": {
       "get": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Get list of attachment categories applicable for a case",
         "description": "Get list of attachments categories",
         "operationId": "getAttachmentCategories",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "caseID",
@@ -192,10 +173,7 @@
             "description": "Type of attachment category",
             "required": false,
             "type": "string",
-            "enum": [
-              "File",
-              "URL"
-            ]
+            "enum": ["File", "URL"]
           }
         ],
         "responses": {
@@ -225,16 +203,11 @@
     },
     "/attachments/{attachmentID}": {
       "get": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Get attachment",
         "description": "For file attachment content would be sent back as base64 encoded string. For URL, link will be sent in plain text. For correspondence, HTML content would be the response.",
         "operationId": "getAttachment",
-        "produces": [
-          "text/plain",
-          "text/html"
-        ],
+        "produces": ["text/plain", "text/html"],
         "parameters": [
           {
             "name": "attachmentID",
@@ -295,9 +268,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "attachments"
-        ],
+        "tags": ["attachments"],
         "summary": "Delete attachment",
         "description": "Link between the case and attachment would be deleted and if attachment doesn't have any other link accessing it, then attachment would be deleted as well.",
         "operationId": "deleteAttachment",
@@ -346,15 +317,11 @@
     },
     "/casetypes": {
       "get": {
-        "tags": [
-          "casetypes"
-        ],
+        "tags": ["casetypes"],
         "summary": "Get case types",
         "description": "Gets the case types from the authenticated user's application.",
         "operationId": "getCaseTypes",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -377,15 +344,11 @@
     },
     "/casetypes/{ID}": {
       "get": {
-        "tags": [
-          "casetypes"
-        ],
+        "tags": ["casetypes"],
         "summary": "Get case type details [DX]",
         "description": "Gets details about a given case type, including its fields, either with full layout information or as a list.",
         "operationId": "getCaseTypeInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -400,10 +363,7 @@
             "description": "if a flat list without a layout structure is desired, select Full for all UI based attributes or Basic for attributes limited to insure successful validation",
             "required": false,
             "type": "string",
-            "enum": [
-              "Full",
-              "Basic"
-            ]
+            "enum": ["Full", "Basic"]
           }
         ],
         "responses": {
@@ -427,15 +387,11 @@
     },
     "/casetypes/{ID}/refresh": {
       "put": {
-        "tags": [
-          "casetypes"
-        ],
+        "tags": ["casetypes"],
         "summary": "Refresh casetype details [DX]",
         "description": "Provide field updates to receive an updated creation page, including its fields.",
         "operationId": "putCaseTypeCreationInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -482,15 +438,11 @@
     },
     "/assignments": {
       "get": {
-        "tags": [
-          "assignments"
-        ],
+        "tags": ["assignments"],
         "summary": "Get assignments",
         "description": "Returns the authenticated user's list of assignments.",
         "operationId": "getAssignments",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -513,15 +465,11 @@
     },
     "/assignments/{ID}": {
       "get": {
-        "tags": [
-          "assignments"
-        ],
+        "tags": ["assignments"],
         "summary": "Get assignment details",
         "description": "Returns a single assignment's details given its ID (or) Returns the next available assignment for the requestor if 'next' is passed.",
         "operationId": "getAssignmentDetails",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -556,18 +504,12 @@
         }
       },
       "post": {
-        "tags": [
-          "assignments"
-        ],
+        "tags": ["assignments"],
         "summary": "Perform assignment action",
         "description": "Performs an action on an assignment given its ID and an optional content in the request body.",
         "operationId": "performAssignmentAction",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -633,15 +575,11 @@
     },
     "/assignments/{ID}/actions/{actionID}": {
       "get": {
-        "tags": [
-          "assignments"
-        ],
+        "tags": ["assignments"],
         "summary": "Get action details as applied to this assignment [DX]",
         "description": "Returns details about an action that can be performed against this assignment, including its fields, either within the view or as a list.",
         "operationId": "getAssignmentActionInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -663,10 +601,7 @@
             "description": "if a flat list without a layout structure is desired, select Full for all UI based attributes or Basic for attributes limited to insure successful validation",
             "required": false,
             "type": "string",
-            "enum": [
-              "Full",
-              "Basic"
-            ]
+            "enum": ["Full", "Basic"]
           }
         ],
         "responses": {
@@ -690,15 +625,11 @@
     },
     "/assignments/{ID}/actions/{actionID}/refresh": {
       "put": {
-        "tags": [
-          "assignments"
-        ],
+        "tags": ["assignments"],
         "summary": "Refresh action details for this assignment [DX]",
         "description": "Provide field updates to receive the updated view/fields of this action.",
         "operationId": "putAssignmentActionInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -752,15 +683,11 @@
     },
     "/cases": {
       "get": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Get cases",
         "description": "Gets all cases that the authenticated user has created in the default work pool.",
         "operationId": "getCases",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -781,18 +708,12 @@
         }
       },
       "post": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Create a new case",
         "description": "Creates a new case of the given type. \nThe HTTP response header *Location* contains the URI of the newly created case.",
         "operationId": "createCase",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -841,9 +762,7 @@
     },
     "/cases/{ID}": {
       "get": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Get case details",
         "description": "Gets the details of a case given its ID.",
         "operationId": "getCaseDetails",
@@ -887,18 +806,12 @@
         }
       },
       "put": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Update a case",
         "description": "Performs an action given a case ID and an optional content in the request body.",
         "operationId": "updateCase",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -973,9 +886,7 @@
     },
     "/cases/{ID}/pages/{pageID}": {
       "get": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Get page details [DX]",
         "description": "Gets layout details of a page for a given case.",
         "operationId": "getCasePageDetails",
@@ -1022,9 +933,7 @@
     },
     "/cases/{ID}/views/{viewID}": {
       "get": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Get view details [DX]",
         "description": "Gets layout details of a view for a given case.",
         "operationId": "getCaseViewDetails",
@@ -1071,15 +980,11 @@
     },
     "/cases/{ID}/actions/{actionID}": {
       "get": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Get action details as applied to this case [DX]",
         "description": "Returns details about an action that can be performed against this case, including its fields, either with full layout information or as a list.",
         "operationId": "getCaseActionInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1101,10 +1006,7 @@
             "description": "if a flat list without a layout structure is desired, select Full for all UI based attributes or Basic for attributes limited to insure successful validation",
             "required": false,
             "type": "string",
-            "enum": [
-              "Full",
-              "Basic"
-            ]
+            "enum": ["Full", "Basic"]
           }
         ],
         "responses": {
@@ -1128,15 +1030,11 @@
     },
     "/cases/{ID}/actions/{actionID}/refresh": {
       "put": {
-        "tags": [
-          "cases"
-        ],
+        "tags": ["cases"],
         "summary": "Refresh action details for this case [DX]",
         "description": "Provide field updates to receive an updated case-wide action view.",
         "operationId": "putCaseActionInfo",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1190,14 +1088,10 @@
     },
     "/documents": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get documents",
         "description": "Gets all the documents the authenticated user has access to. Use filterBy parameter to retrieve documents by Name (OperatorID?), creation date etc.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "filterBy",
@@ -1235,14 +1129,10 @@
     },
     "/documents/{ID}": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get document details",
         "description": "Return details of the document for the given document ID\u201d. Note that for documents created by uploading files, this API will only return the metadata. The uploaded file content will not be returned",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1276,14 +1166,10 @@
     },
     "/messages": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get messages",
         "description": "Retrieve messages for a given context",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "filterBy",
@@ -1291,15 +1177,7 @@
             "description": "if filtering by context, specify it in filterFor",
             "required": false,
             "type": "string",
-            "enum": [
-              "context",
-              "bookmarkfeed",
-              "followfeed",
-              "spacefeed",
-              "mentionfeed",
-              "profilefeed",
-              "repliesfeed"
-            ]
+            "enum": ["context", "bookmarkfeed", "followfeed", "spacefeed", "mentionfeed", "profilefeed", "repliesfeed"]
           },
           {
             "name": "filterFor",
@@ -1343,14 +1221,10 @@
         }
       },
       "post": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Create message",
         "description": "Create a message",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1386,14 +1260,10 @@
     },
     "/notifications": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get notifications",
         "description": "Retrieve notifications",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -1414,14 +1284,10 @@
         }
       },
       "post": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Create notification",
         "description": "Create a notification",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1457,14 +1323,10 @@
     },
     "/spaces": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get spaces",
         "description": "Fetches all the spaces present in the application",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "filterBy",
@@ -1509,14 +1371,10 @@
     },
     "/spaces/{ID}": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get space details",
         "description": "Get space details",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1550,14 +1408,10 @@
     },
     "/spaces/{ID}/join": {
       "put": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Join space",
         "description": "Join space",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1591,14 +1445,10 @@
     },
     "/spaces/{ID}/leave": {
       "put": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Leave space",
         "description": "Leave space",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1632,14 +1482,10 @@
     },
     "/spaces/{ID}/pins": {
       "get": {
-        "tags": [
-          "collaboration"
-        ],
+        "tags": ["collaboration"],
         "summary": "Get pins for the given space",
         "description": "Get pins for the given space",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ID",
@@ -1687,9 +1533,7 @@
     },
     "/data/{ID}": {
       "get": {
-        "tags": [
-          "data"
-        ],
+        "tags": ["data"],
         "summary": "Get data view contents",
         "description": "Gets the contents of a data view given its name and parameters.\nParameters are passed in as query string parameters. For example, if you have a data view called D_Customer with parameters \"ID\" and \"Company\" you could access the data view with the URL https://myco.org/prweb/api/v1/data/D_Customer?ID=1&Company=MyCo.\n\"Try it out\" note: When testing with \"try it out\" below you cannot enter values for data view parameters to use as part of the test. This means only data views without required parameters can be tested below.",
         "operationId": "getDataPage",
@@ -1723,9 +1567,7 @@
     },
     "/data/{ID}/metadata": {
       "get": {
-        "tags": [
-          "data"
-        ],
+        "tags": ["data"],
         "summary": "Get data view metadata",
         "description": "Gets the metadata of a data view given its name.",
         "operationId": "getDataPageMetadata",
@@ -1961,15 +1803,7 @@
         "instruction": {
           "type": "string",
           "example": "APPEND",
-          "enum": [
-            "DELETE",
-            "REPLACE",
-            "UPDATE",
-            "APPEND",
-            "INSERT",
-            "MOVE",
-            "ADD"
-          ],
+          "enum": ["DELETE", "REPLACE", "UPDATE", "APPEND", "INSERT", "MOVE", "ADD"],
           "description": "DELETE, REPLACE, UPDATE are common amongst embedded pages, pagelists & pagegroups. Pagelists also support APPEND, INSERT, & MOVE.  Pagegroups have ADD"
         },
         "target": {
@@ -2003,10 +1837,7 @@
         "type": {
           "type": "string",
           "example": "File",
-          "enum": [
-            "File",
-            "URL"
-          ],
+          "enum": ["File", "URL"],
           "description": "Determines the type of attachment"
         },
         "attachmentFieldName": {
@@ -2032,18 +1863,13 @@
         "delete": {
           "type": "boolean",
           "example": "false",
-          "enum": [
-            "true",
-            "false"
-          ],
+          "enum": ["true", "false"],
           "description": "This should be Include only while submitting form, an already attachment field needs to be cleared. If delete = true, type has to be File along with a valid attachment field name. Not other field should be included in request payload for this attachment. "
         }
       }
     },
     "CreateCaseRequest": {
-      "required": [
-        "caseTypeID"
-      ],
+      "required": ["caseTypeID"],
       "properties": {
         "caseTypeID": {
           "type": "string",
@@ -2636,22 +2462,12 @@
         },
         "groupFormat": {
           "type": "string",
-          "enum": [
-            "Grid",
-            "Dynamic",
-            "Inline"
-          ],
+          "enum": ["Grid", "Dynamic", "Inline"],
           "description": "SCREENLAYOUT can be header, header_footer, footer, content_only, header_left_right, header_left. SIMPLELAYOUT can be Default, Stacked, Inline, Inline grid double, Inline grid triple."
         },
         "layoutFormat": {
           "type": "string",
-          "enum": [
-            "SCREENLAYOUT",
-            "SIMPLELAYOUT",
-            "NONE",
-            "TABLELAYOUT",
-            "REPEATINGLAYOUT"
-          ],
+          "enum": ["SCREENLAYOUT", "SIMPLELAYOUT", "NONE", "TABLELAYOUT", "REPEATINGLAYOUT"],
           "description": "Layouts in the topmost group of a Page use SCREENLAYOUT.  All other layouts can be SIMPLELAYOUT, TABLELAYOUT, or REPEATINGLAYOUT."
         },
         "title": {
@@ -2677,10 +2493,7 @@
         },
         "sourceType": {
           "type": "string",
-          "enum": [
-            "Property",
-            "DataPage"
-          ],
+          "enum": ["Property", "DataPage"],
           "description": "Whether this layout is sourced from a property or data page; set when the layoutFormat is TABLELAYOUT or REPEATINGLAYOUT."
         },
         "fieldListID": {
@@ -2793,11 +2606,7 @@
           "type": "string",
           "example": "primary",
           "description": "Used for the column header layout, a primary column remains when the browser width is shrunk, a secondary column moves into the primary, and other means the column can be lost",
-          "enum": [
-            "primary",
-            "secondary",
-            "other"
-          ]
+          "enum": ["primary", "secondary", "other"]
         },
         "captionFor": {
           "type": "string",
@@ -2987,19 +2796,12 @@
           "type": "string",
           "example": "masterDetail",
           "description": "How to edit rows in a repeating layoutNOTE: if readOnly, then all fields will besent as readOnly",
-          "enum": [
-            "readOnly",
-            "row",
-            "masterDetail"
-          ]
+          "enum": ["readOnly", "row", "masterDetail"]
         },
         "editingInlineType": {
           "type": "string",
           "example": "readWrite",
-          "enum": [
-            "row",
-            "readWrite"
-          ],
+          "enum": ["row", "readWrite"],
           "description": "Available when rowEditing is 'row'; row means click to edit, readWrite means inline editable"
         }
       }
@@ -3009,11 +2811,7 @@
       "properties": {
         "modeType": {
           "type": "string",
-          "enum": [
-            "editable",
-            "readOnly",
-            "ignore"
-          ],
+          "enum": ["editable", "readOnly", "ignore"],
           "example": "editable"
         },
         "controlFormat": {
@@ -3022,10 +2820,7 @@
         },
         "textAlign": {
           "type": "string",
-          "enum": [
-            "Left",
-            "Right"
-          ],
+          "enum": ["Left", "Right"],
           "example": "Right"
         },
         "tooltip": {
@@ -3040,18 +2835,7 @@
         },
         "formatType": {
           "type": "string",
-          "enum": [
-            "none",
-            "text",
-            "date",
-            "datetime",
-            "email",
-            "number",
-            "tel",
-            "url",
-            "truefalse",
-            "advancedtext"
-          ],
+          "enum": ["none", "text", "date", "datetime", "email", "number", "tel", "url", "truefalse", "advancedtext"],
           "example": "datetime"
         },
         "specifySize": {
@@ -3064,21 +2848,13 @@
         "listSource": {
           "type": "string",
           "example": "datapage",
-          "enum": [
-            "promptlist",
-            "locallist",
-            "datapage"
-          ],
+          "enum": ["promptlist", "locallist", "datapage"],
           "description": "used with controls pxAutoComplete/pxDropDown/pxRadioButtons; list can be sourced from promptlist, locallist, or datapage"
         },
         "loadMode": {
           "type": "string",
           "example": "auto",
-          "enum": [
-            "auto",
-            "deferload",
-            "lazyload"
-          ],
+          "enum": ["auto", "deferload", "lazyload"],
           "description": "When \u201cauto\u201d, datapage and clipboard page will be loaded inline into options, otherwise, need to retrieve manually "
         },
         "options": {
@@ -3129,10 +2905,7 @@
         },
         "groupOrder": {
           "type": "string",
-          "enum": [
-            "asc",
-            "desc"
-          ]
+          "enum": ["asc", "desc"]
         },
         "maxResults": {
           "type": "string"
@@ -3239,12 +3012,7 @@
           "type": "string",
           "example": "url",
           "description": "used with control pxLink",
-          "enum": [
-            "one",
-            "email",
-            "tel",
-            "url"
-          ]
+          "enum": ["one", "email", "tel", "url"]
         },
         "linkData": {
           "type": "string",
@@ -3255,21 +3023,13 @@
           "type": "string",
           "example": "styleClass",
           "description": "used with control pxLink",
-          "enum": [
-            "none",
-            "image",
-            "property",
-            "styleclass"
-          ]
+          "enum": ["none", "image", "property", "styleclass"]
         },
         "linkImagePosition": {
           "type": "string",
           "example": "left",
           "description": "used with control pxLink",
-          "enum": [
-            "left",
-            "right"
-          ]
+          "enum": ["left", "right"]
         },
         "linkImage": {
           "type": "string"
@@ -3285,13 +3045,7 @@
         "iconSource": {
           "type": "string",
           "example": "standardicon",
-          "enum": [
-            "standardicon",
-            "image",
-            "exturl",
-            "property",
-            "styleclass"
-          ],
+          "enum": ["standardicon", "image", "exturl", "property", "styleclass"],
           "description": "used with control pxIcon to determine its image source"
         },
         "iconStandard": {
@@ -3449,10 +3203,7 @@
           "type": "string",
           "example": "vertical",
           "description": "used with control pxRadioButtons, either 'vertical' or 'horizontal'",
-          "enum": [
-            "vertical",
-            "horizontal"
-          ]
+          "enum": ["vertical", "horizontal"]
         },
         "wrapAfter": {
           "type": "integer",
@@ -3473,23 +3224,11 @@
         },
         "dateTime": {
           "type": "string",
-          "enum": [
-            "auto",
-            "date",
-            "datetime",
-            "time"
-          ]
+          "enum": ["auto", "date", "datetime", "time"]
         },
         "displayMode": {
           "type": "string",
-          "enum": [
-            "calendar",
-            "dropdowns",
-            "textinput",
-            "oneinput",
-            "twoinput",
-            "button"
-          ]
+          "enum": ["calendar", "dropdowns", "textinput", "oneinput", "twoinput", "button"]
         },
         "displayLongFormat": {
           "type": "boolean"
@@ -3502,10 +3241,7 @@
         },
         "calendarNavigation": {
           "type": "string",
-          "enum": [
-            "true",
-            "false"
-          ]
+          "enum": ["true", "false"]
         },
         "allowTextEntry": {
           "type": "boolean",
@@ -3535,14 +3271,7 @@
       "properties": {
         "action": {
           "type": "string",
-          "enum": [
-            "postValue",
-            "refresh",
-            "setValue",
-            "takeAction",
-            "openUrlInWindow",
-            "runScript"
-          ]
+          "enum": ["postValue", "refresh", "setValue", "takeAction", "openUrlInWindow", "runScript"]
         },
         "refreshFor": {
           "type": "string",
@@ -3872,9 +3601,7 @@
       }
     },
     "CreateMessageRequest": {
-      "required": [
-        "messageText"
-      ],
+      "required": ["messageText"],
       "properties": {
         "postMessage": {
           "$ref": "#/definitions/postMessageRequest"
@@ -4283,10 +4010,7 @@
         "type": {
           "type": "string",
           "example": "File",
-          "enum": [
-            "File",
-            "URL"
-          ],
+          "enum": ["File", "URL"],
           "description": "Type of attachment"
         },
         "category": {

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel } from '@material-ui/core';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useState } from 'react';
 
 interface CheckboxProps extends Omit<PConnFieldProps, 'value'> {
   // If any, enter additional props that only exist on Checkbox here
@@ -56,11 +56,11 @@ export default function CheckboxComponent(props: CheckboxProps) {
     return <FieldValueList name={hideLabel ? '' : caption} value={value ? trueLabel : falseLabel} variant='stacked' />;
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
   };
 
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     thePConn.getValidationApi().validate(event.target.checked);
   };
 

@@ -1,11 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 
 interface AssignmentProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -48,7 +46,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
 
   function findCurrentIndicies(arStepperSteps: any[], arIndicies: number[], depth: number): number[] {
     let count = 0;
-    arStepperSteps.forEach(step => {
+    arStepperSteps.forEach((step) => {
       if (step.visited_status === 'current') {
         arIndicies[depth] = count;
 
@@ -71,7 +69,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
   }
 
   function getStepsInfo(steps, formedSteps: any = []) {
-    steps.forEach(step => {
+    steps.forEach((step) => {
       if (step.name) {
         step.name = PCore.getLocaleUtils().getLocaleValue(step.name, undefined, localeReference);
       }
@@ -94,7 +92,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
       if (oWorkData?.caseInfo && oWorkData.caseInfo.assignments !== null) {
         const oCaseInfo = oData.caseInfo;
 
-        if (oCaseInfo && oCaseInfo.actionButtons) {
+        if (oCaseInfo?.actionButtons) {
           setActionButtons(oCaseInfo.actionButtons);
         }
 
@@ -132,7 +130,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
+  function handleSnackbarClose(_event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
@@ -181,17 +179,17 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
           // check if create stage (modal)
           const { PUB_SUB_EVENTS } = PCore.getConstants();
           const { publish } = PCore.getPubSubUtils();
-          // @ts-ignore - Property 'isAssignmentInCreateStage' is private and only accessible within class 'CaseInfo'
+          // @ts-expect-error - Property 'isAssignmentInCreateStage' is private and only accessible within class 'CaseInfo'
           const isAssignmentInCreateStage = thePConn.getCaseInfo().isAssignmentInCreateStage();
           const isLocalAction =
-            // @ts-ignore - Property 'isLocalAction' is private and only accessible within class 'CaseInfo'.
+            // @ts-expect-error - Property 'isLocalAction' is private and only accessible within class 'CaseInfo'.
             thePConn.getCaseInfo().isLocalAction() ||
             (PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION && getPConnect().getValue(PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION));
           if (isAssignmentInCreateStage && isInModal && !isLocalAction) {
             const cancelPromise = cancelCreateStageAssignment(itemKey);
 
             cancelPromise
-              .then(data => {
+              .then((data) => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
@@ -201,7 +199,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
             const cancelPromise = cancelAssignment(itemKey);
 
             cancelPromise
-              .then(data => {
+              .then((data) => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
@@ -240,11 +238,11 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     if (!refreshConditions) {
       return [];
     }
-    return refreshConditions.filter(item => item.event && item.event === 'Changes').map(item => [item.field, item.field?.substring(1)]) || [];
+    return refreshConditions.filter((item) => item.event && item.event === 'Changes').map((item) => [item.field, item.field?.substring(1)]) || [];
   }
 
   // expected format of refreshConditions : [{field: ".Name", event: "Changes"}]
-  // @ts-ignore - Property 'getActionRefreshConditions' is private and only accessible within class 'CaseInfo'
+  // @ts-expect-error - Property 'getActionRefreshConditions' is private and only accessible within class 'CaseInfo'
   const refreshConditions = thePConn.getCaseInfo()?.getActionRefreshConditions();
   const context = thePConn.getContextName();
   const pageReference = thePConn.getPageReference();
@@ -260,7 +258,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     preserveClientChanges: false
   };
   if (refreshProps.length > 0) {
-    refreshProps.forEach(prop => {
+    refreshProps.forEach((prop) => {
       PCore.getRefreshManager().registerForRefresh(
         'PROP_CHANGE',
         thePConn.getActionsApi().refreshCaseView.bind(thePConn.getActionsApi(), caseKey, null, pageReference, {

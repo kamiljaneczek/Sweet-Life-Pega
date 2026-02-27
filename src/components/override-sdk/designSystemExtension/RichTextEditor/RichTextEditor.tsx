@@ -1,10 +1,9 @@
-import React, { forwardRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import { FormControl, FormHelperText, InputLabel, makeStyles } from '@material-ui/core';
-
 import { useAfterInitialEffect, useConsolidatedRef, useUID } from '@pega/react-sdk-components/lib/hooks';
+import { Editor } from '@tinymce/tinymce-react';
+import React, { forwardRef } from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fieldLabel: {
     position: 'relative',
     transform: 'translate(0, 0px) scale(1)',
@@ -41,7 +40,7 @@ const RichTextEditor = forwardRef(function RichTextEditor(props: RichTextEditorP
     editorRef?.current.mode.set(readOnly || disabled ? 'readonly' : 'design');
   }, [readOnly, disabled]);
 
-  const filePickerCallback = cb => {
+  const filePickerCallback = (cb) => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
@@ -56,7 +55,7 @@ const RichTextEditor = forwardRef(function RichTextEditor(props: RichTextEditorP
           registry. In the next release this part hopefully won't be
           necessary, as we are looking to handle it internally.
         */
-        const blobId = `blobid${new Date().getTime()}`;
+        const blobId = `blobid${Date.now()}`;
         const blobCache = editorRef.current.editorUpload.blobCache;
         const base64 = reader.result.split(',')[1];
         const blobInfo = blobCache.create(blobId, file, base64);

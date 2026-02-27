@@ -1,11 +1,10 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { NavContext } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
+import { makeStyles } from '@material-ui/core/styles';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { NavContext } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import './AppShell.css';
 
@@ -26,7 +25,7 @@ interface AppShellProps extends PConnProps {
   navDisplayOptions: { alignment: string; position: string };
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex'
   },
@@ -110,8 +109,8 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
     else {
       PCore.getAssetLoader()
         .getSvcImage(portalLogo)
-        .then(blob => window.URL.createObjectURL(blob))
-        .then(data => {
+        .then((blob) => window.URL.createObjectURL(blob))
+        .then((data) => {
           setIconURL(data);
           setFullIconURL(data);
         })
@@ -126,8 +125,8 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
     if (imageKey && portalTemplate === 'wss') {
       PCore.getAssetLoader()
         .getSvcImage(imageKey)
-        .then(blob => window.URL.createObjectURL(blob))
-        .then(imagePath => setImageBlobUrl(imagePath));
+        .then((blob) => window.URL.createObjectURL(blob))
+        .then((imagePath) => setImageBlobUrl(imagePath));
     }
   }, []);
 
@@ -149,7 +148,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   const links = !pages
     ? []
-    : pages.map(page => {
+    : pages.map((page) => {
         const name = localizedVal(page.pyLabel, '', localeReference);
         return {
           text: name,
@@ -179,9 +178,9 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
           appInfo={{
             imageSrc: iconURL,
             appName: localizedVal(appNameToDisplay, '', `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()),
-            onClick: links[0] && /* links[0].onClick ? */ links[0].onClick /* : undefined */
+            onClick: links[0]?.onClick /* : undefined */
           }}
-          navLinks={links.filter((link, index) => {
+          navLinks={links.filter((_link, index) => {
             return index !== 0;
           })}
           operator={getOperator()}

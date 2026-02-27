@@ -1,10 +1,9 @@
-import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { getCurrencyCharacters, getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 /* Using @unicef/material-ui-currency-textfield component here, since it allows formatting decimal values,
 as per the locale.
@@ -65,7 +64,7 @@ export default function Percentage(props: PercentageProps) {
   const theCurrDec = theSymbols.theDecimalIndicator;
   const theCurrSep = theSymbols.theDigitGroupSeparator;
 
-  function PercentageOnBlur(event, inValue) {
+  function PercentageOnBlur(_event, inValue) {
     handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
   }
 

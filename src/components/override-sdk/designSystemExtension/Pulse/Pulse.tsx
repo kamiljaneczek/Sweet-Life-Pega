@@ -1,14 +1,12 @@
-import { PropsWithChildren } from 'react';
 import { Card, CardContent, CardHeader, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { PropsWithChildren } from 'react';
 
 // Pulse is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
-interface PulseProps {
-  // If any, enter additional props that only exist on this component
-}
+type PulseProps = {};
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),

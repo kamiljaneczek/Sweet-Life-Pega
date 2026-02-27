@@ -1,11 +1,11 @@
 /* eslint-disable react/no-array-index-key */
-import React, { createElement, isValidElement } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+import React, { createElement, isValidElement } from 'react';
 
 // DetailsFields is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -14,7 +14,7 @@ interface DetailsFieldsProps {
   fields: any[];
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),

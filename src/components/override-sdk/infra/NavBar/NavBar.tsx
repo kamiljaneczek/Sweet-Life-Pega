@@ -1,38 +1,36 @@
-import { useEffect, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import clsx from 'clsx';
-
 import {
+  Collapse,
+  Divider,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
   ListItemSecondaryAction,
-  Collapse,
-  Divider,
-  IconButton,
+  ListItemText,
   Menu,
   MenuItem,
   Typography
 } from '@material-ui/core';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutlineOutlined';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import AddIcon from '@material-ui/icons/Add';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import AddIcon from '@material-ui/icons/Add';
+import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutlineOutlined';
 import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
-import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
-
 import { useNavBar } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 
 import './NavBar.css';
 
@@ -53,7 +51,7 @@ const iconMap = {
 
 const drawerWidth = 300;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
@@ -223,7 +221,7 @@ export default function NavBar(props: NavBarProps) {
       </List>
       <Collapse in={bShowCaseTypes && open} timeout='auto' unmountOnExit className='scrollable'>
         <List component='div' disablePadding>
-          {caseTypes.map(caseType => (
+          {caseTypes.map((caseType) => (
             <ListItem
               button
               className={classes.nested}
@@ -239,7 +237,7 @@ export default function NavBar(props: NavBarProps) {
         </List>
       </Collapse>
       <List>
-        {navPages.map(page => (
+        {navPages.map((page) => (
           <ListItem button onClick={() => navPanelButtonClick(page)} key={page.pyLabel}>
             <ListItemIcon>{iconMap[page.pxPageViewIcon]}</ListItemIcon>
             <ListItemText primary={localeUtils.getLocaleValue(page.pyLabel, '', localeReference)} />
@@ -248,42 +246,40 @@ export default function NavBar(props: NavBarProps) {
       </List>
       <Divider />
       <List className='marginTopAuto'>
-        <>
-          <ListItem onClick={navPanelOperatorButtonClick}>
+        <ListItem onClick={navPanelOperatorButtonClick}>
+          <ListItemIcon>
+            <PersonOutlineIcon fontSize='large' />
+          </ListItemIcon>
+          <ListItemText primary={portalOperator} />
+          {open && (
+            <ListItemSecondaryAction>
+              <IconButton edge='end' onClick={navPanelOperatorButtonClick}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          )}
+        </ListItem>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted={bShowOperatorButtons}
+          open={bShowOperatorButtons}
+          onClick={navPanelOperatorButtonClick}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}
+        >
+          <MenuItem onClick={logout}>
             <ListItemIcon>
-              <PersonOutlineIcon fontSize='large' />
+              <ArrowBackIcon fontSize='large' />
             </ListItemIcon>
-            <ListItemText primary={portalOperator} />
-            {open && (
-              <ListItemSecondaryAction>
-                <IconButton edge='end' onClick={navPanelOperatorButtonClick}>
-                  <ChevronRightIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted={bShowOperatorButtons}
-            open={bShowOperatorButtons}
-            onClick={navPanelOperatorButtonClick}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left'
-            }}
-          >
-            <MenuItem onClick={logout}>
-              <ListItemIcon>
-                <ArrowBackIcon fontSize='large' />
-              </ListItemIcon>
-              <Typography variant='inherit'>{localizedVal('Log off', localeCategory)}</Typography>
-            </MenuItem>
-          </Menu>
-        </>
+            <Typography variant='inherit'>{localizedVal('Log off', localeCategory)}</Typography>
+          </MenuItem>
+        </Menu>
       </List>
     </Drawer>
   );

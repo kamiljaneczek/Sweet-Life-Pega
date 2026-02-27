@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 import './NarrowWideForm.css';
 
 interface NarrowWideFormProps extends PConnProps {

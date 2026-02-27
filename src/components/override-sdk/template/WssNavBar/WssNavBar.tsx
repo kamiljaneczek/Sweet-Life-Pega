@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Box from '@material-ui/core/Box';
-import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
-import { IconButton, Menu, MenuItem, Typography, Button } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { useState } from 'react';
 import './WssNavBar.css';
 
 interface WssNavBarProps extends PConnProps {
@@ -25,7 +25,7 @@ interface WssNavBarProps extends PConnProps {
   appName: any;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex'
   },
@@ -74,7 +74,7 @@ export default function WssNavBar(props: WssNavBarProps) {
 
   const navLinksContent = (
     <Box id='nav-links' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} style={{ justifyContent: alignment }}>
-      {navLinks.map(link => (
+      {navLinks.map((link) => (
         <Button className='link-style' key={link.text} onClick={link.onClick}>
           {link.text}
         </Button>
@@ -117,7 +117,7 @@ export default function WssNavBar(props: WssNavBarProps) {
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
               >
-                {navLinks.map(link => (
+                {navLinks.map((link) => (
                   <MenuItem key={link.text} onClick={link.onClick}>
                     <Typography>{link.text}</Typography>
                   </MenuItem>

@@ -1,12 +1,12 @@
-import { render } from 'react-dom';
 import { RouterProvider } from '@tanstack/react-router';
+import { createRoot } from 'react-dom/client';
 import { router } from './router';
 import './common.css';
 
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  render(<RouterProvider router={router} />, outletElement);
+  createRoot(outletElement).render(<RouterProvider router={router} />);
 }
 
 document.addEventListener('SdkLoggedOut', () => {

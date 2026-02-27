@@ -1,15 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import isDeepEqual from 'fast-deep-equal/react';
-
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useRef, useState } from 'react';
 
 interface CaseHistoryProps extends PConnProps {
   // If any, enter additional props that only exist on this component

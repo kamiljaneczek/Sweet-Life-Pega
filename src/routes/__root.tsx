@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
-import Header from '../app/components/header';
 import Footer from '../app/components/footer';
+import Header from '../app/components/header';
 
 function RootComponent() {
   return (

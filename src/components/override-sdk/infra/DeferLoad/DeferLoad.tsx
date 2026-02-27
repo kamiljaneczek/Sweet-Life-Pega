@@ -1,10 +1,8 @@
-import { useState, useEffect, createElement } from 'react';
 import { Box, Card, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { createElement, useEffect, useState } from 'react';
 
 interface DeferLoadProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -20,7 +18,7 @@ interface DeferLoadProps extends PConnProps {
 // is totally at your own risk.
 //
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
@@ -74,7 +72,7 @@ export default function DeferLoad(props: DeferLoadProps) {
     updateData: isContainerPreview
   });
 
-  const onResponse = data => {
+  const onResponse = (data) => {
     setLoading(false);
     if (deferLoadId) {
       PCore.getDeferLoadManager().start(
@@ -113,12 +111,12 @@ export default function DeferLoad(props: DeferLoadProps) {
         getPConnect()
           .getActionsApi()
           .showData(name, dataContext, dataContextParameters, {
-            // @ts-ignore - Type 'boolean' is not assignable to type 'string'
+            // @ts-expect-error - Type 'boolean' is not assignable to type 'string'
             skipSemanticUrl: true,
-            // @ts-ignore
+            // @ts-expect-error
             isDeferLoaded: true
           })
-          .then(data => {
+          .then((data) => {
             onResponse(data);
           });
       } else {
@@ -130,14 +128,14 @@ export default function DeferLoad(props: DeferLoadProps) {
       getPConnect()
         .getActionsApi()
         .loadView(encodeURI(loadViewCaseID), name, getViewOptions())
-        .then(data => {
+        .then((data) => {
           onResponse(data);
         });
     } else {
       getPConnect()
         .getActionsApi()
         .refreshCaseView(encodeURI(loadViewCaseID), name, '') // 3rd arg empty string until typedef allows optional
-        .then(data => {
+        .then((data) => {
           onResponse(data.root);
         });
     }
@@ -157,7 +155,7 @@ export default function DeferLoad(props: DeferLoadProps) {
       <div className={classes.root}>{content}</div>
     ) : (
       <Card id='DeferLoad' className={classes.root}>
-        <>{content}</>
+        {content}
       </Card>
     );
   }

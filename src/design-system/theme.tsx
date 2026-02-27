@@ -1,6 +1,7 @@
 // ThemeSwitch.tsx
-import { useEffect, useState } from 'react';
+
 import { MoonIcon, SunIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { Switch } from './ui/switch';
 

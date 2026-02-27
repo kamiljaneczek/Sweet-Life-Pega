@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
-import { render } from 'react-dom';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
-
-import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-
-import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-
+import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
+import { createRoot, Root } from 'react-dom/client';
 import localSdkComponentMap from '../../sdk-local-component-map';
 import { theme } from '../theme';
-import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
+
+const rootMap = new Map<Element, Root>();
 
 declare const myLoadMashup: any;
 
@@ -88,7 +88,12 @@ function initialRender(inRenderObj) {
   );
 
   // Initial render of component passed in (which should be a RootContainer)
-  render(<>{theComponent}</>, target);
+  let root = rootMap.get(target);
+  if (!root) {
+    root = createRoot(target);
+    rootMap.set(target, root);
+  }
+  root.render(theComponent);
   //  setIsPegaReady(true);
   // Initial render to show that we have a PConnect and can render in the target location
   // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
@@ -96,14 +101,14 @@ function initialRender(inRenderObj) {
 
 export function startMashup() {
   // NOTE: When loadMashup is complete, this will be called.
-  PCore.onPCoreReady(renderObj => {
+  PCore.onPCoreReady((renderObj) => {
     console.log(`PCore ready!`);
     // Check that we're seeing the PCore version we expect
     compareSdkPCoreVersions();
 
     // Initialize the SdkComponentMap (local and pega-provided)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
+    getSdkComponentMap(localSdkComponentMap).then((_theComponentMap: any) => {
       console.log(`SdkComponentMap initialized`);
 
       // Don't call initialRender until SdkComponentMap is fully initialized

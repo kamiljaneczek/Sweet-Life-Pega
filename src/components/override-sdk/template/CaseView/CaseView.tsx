@@ -1,16 +1,15 @@
 /* eslint-disable react/jsx-boolean-value */
 
-import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 import { Avatar, Card, CardHeader, Divider, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { makeStyles } from '@material-ui/core/styles';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 
 interface CaseViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -21,7 +20,7 @@ interface CaseViewProps extends PConnProps {
   caseInfo: any;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
@@ -74,7 +73,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   const classes = useStyles();
 
-  const editAction = availableActions.find(action => action.ID === 'pyUpdateCaseDetails');
+  const editAction = availableActions.find((action) => action.ID === 'pyUpdateCaseDetails');
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'CaseView';
@@ -127,7 +126,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
       let { label, inheritedProps } = theTabCompConfig;
       // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
       if (!label) {
-        inheritedProps.forEach(inheritedProp => {
+        inheritedProps.forEach((inheritedProp) => {
           if (inheritedProp.prop === 'label') {
             label = inheritedProp.value;
           }
@@ -169,7 +168,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
 
   useEffect(() => {
     if (hasNewAttachments) {
-      // @ts-ignore - Argument of type 'boolean' is not assignable to parameter of type 'object'
+      // @ts-expect-error - Argument of type 'boolean' is not assignable to parameter of type 'object'
       PCore.getPubSubUtils().publish((PCore.getEvents().getCaseEvent() as any).CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW, true);
     }
   }, [hasNewAttachments]);

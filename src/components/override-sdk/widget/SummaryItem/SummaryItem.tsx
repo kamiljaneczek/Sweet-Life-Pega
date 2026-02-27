@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useState } from 'react';
 
 import './SummaryItem.css';
 
@@ -30,7 +30,7 @@ export default function SummaryItem(props: SummaryItemProps) {
     props.menuIconOverrideAction$(item);
   }
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -73,12 +73,11 @@ export default function SummaryItem(props: SummaryItemProps) {
               <MoreVertIcon />
             </IconButton>
             <Menu style={{ marginTop: '3rem' }} id='file-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-              {item.actions &&
-                item.actions.map(option => (
-                  <MenuItem style={{ fontSize: '14px' }} key={option.id || option.text} onClick={option.onClick}>
-                    {option.text}
-                  </MenuItem>
-                ))}
+              {item.actions?.map((option) => (
+                <MenuItem style={{ fontSize: '14px' }} key={option.id || option.text} onClick={option.onClick}>
+                  {option.text}
+                </MenuItem>
+              ))}
             </Menu>
           </div>
         )}

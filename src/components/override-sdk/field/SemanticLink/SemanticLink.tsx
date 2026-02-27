@@ -1,6 +1,6 @@
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
@@ -8,7 +8,7 @@ import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps
 /* although this is called the SemanticLink component, we are not yet displaying as a
 SemanticLink in SDK and only showing the value as a read only text field. */
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
