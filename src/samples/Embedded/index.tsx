@@ -9,10 +9,8 @@ export default function Embedded() {
   return (
     <PegaAuthProvider>
       <PegaReadyProvider theme={theme}>
-        <>
-          <Header />
-          <MainScreen />
-        </>
+        <Header />
+        <MainScreen />
       </PegaReadyProvider>
     </PegaAuthProvider>
   );

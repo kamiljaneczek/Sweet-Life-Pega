@@ -52,7 +52,7 @@ export default function Operator(props: OperatorProps) {
     operatorPreviewPromise.then((res: any) => {
       const fillerString = '---';
       let fields: any = [];
-      if (res.data && res.data.pyOperatorInfo && res.data.pyOperatorInfo.pyUserName) {
+      if (res.data?.pyOperatorInfo?.pyUserName) {
         fields = [
           {
             id: 'pyPosition',

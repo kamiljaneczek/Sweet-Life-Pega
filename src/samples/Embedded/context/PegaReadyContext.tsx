@@ -85,7 +85,7 @@ export const PegaReadyProvider: React.FC<React.PropsWithChildren<PegaReadyProvid
 
   // Memoize the root PConnect function to avoid unnecessary re-renders
   const rootPConnect = useMemo(() => {
-    if (rootProps && rootProps?.getPConnect) {
+    if (rootProps?.getPConnect) {
       return rootProps.getPConnect();
     }
 

@@ -1,7 +1,7 @@
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { ChevronRight, X } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '../../../../design-system/ui/button';
 import { Card, CardContent, CardHeader } from '../../../../design-system/ui/card';
@@ -162,7 +162,7 @@ export default function ToDo(props: ToDoProps) {
       });
   }
 
-  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
+  const renderTaskId = (type, _getPConnect, showTodoList, assignment) => {
     const displayID = getID(assignment);
 
     if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {

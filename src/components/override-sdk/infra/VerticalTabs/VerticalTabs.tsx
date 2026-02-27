@@ -1,5 +1,5 @@
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // VerticalTabs does NOT have getPConnect. So, no need to extend from PConnProps
 interface VerticalTabsProps {

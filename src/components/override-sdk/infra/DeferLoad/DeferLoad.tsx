@@ -139,7 +139,7 @@ export default function DeferLoad(props: DeferLoadProps) {
       <div className='m-1 p-1'>{content}</div>
     ) : (
       <div id='DeferLoad' className='m-1 rounded-lg border bg-card p-1 shadow-sm'>
-        <>{content}</>
+        {content}
       </div>
     );
   }

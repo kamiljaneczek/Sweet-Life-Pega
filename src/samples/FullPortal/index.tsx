@@ -72,7 +72,7 @@ export default function FullPortal() {
 
       // Initialize the SdkComponentMap (local and pega-provided)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      getSdkComponentMap(localSdkComponentMap).then((theComponentMap) => {
+      getSdkComponentMap(localSdkComponentMap).then((_theComponentMap) => {
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized

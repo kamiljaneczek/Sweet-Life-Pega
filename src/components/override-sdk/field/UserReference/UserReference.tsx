@@ -64,7 +64,7 @@ const UserReference = (props: UserReferenceProps) => {
         // referenced users won't be available, so get user details from dx api
         const { getOperatorDetails } = PCore.getUserApi();
         getOperatorDetails(userId).then((res: any) => {
-          if (res.data && res.data.pyOperatorInfo && res.data.pyOperatorInfo.pyUserName) {
+          if (res.data?.pyOperatorInfo?.pyUserName) {
             setUserName(res.data.pyOperatorInfo.pyUserName);
           }
         });

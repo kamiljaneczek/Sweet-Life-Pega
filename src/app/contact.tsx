@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
-
 import { useState } from 'react';
+import { useCreateCaseViaPCore } from '../api/hooks/usePCoreQuery';
 import { Button } from '../design-system/ui/button';
 import { Input } from '../design-system/ui/input';
 import { Textarea } from '../design-system/ui/textarea';
@@ -9,52 +8,24 @@ import useConstellation from '../hooks/useConstellation';
 import Loading from './components/loading';
 
 const Contact = () => {
-  const [caseID, setCaseID] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const isPegaReady = useConstellation();
+  const { mutate, isPending, isSuccess, data } = useCreateCaseViaPCore();
+
+  const caseID = data?.data?.caseInfo?.content?.pyID ?? '';
 
   function createInquiryCase() {
-    let token = '';
-    (async () => {
-      const responseToken = await fetch('https://lab0339.lab.pega.com/prweb/PRRestService/oauth2/v1/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `custom-bearer`
-        },
-        body: 'client_id=11351708984521870813&grant_type=custom-bearer&enable_psyncId=true'
-      });
-      const dataToken = await responseToken.json();
-
-      console.log('token: ', dataToken.access_token);
-      token = dataToken.access_token;
-
-      const caseBody = {
-        caseTypeID: 'SL-TellUsMoreRef-Work-Inquiry',
-        parentCaseID: '',
-        content: {
-          FirstName: 'Adam',
-          LastName: 'Smith',
-          Email: email,
-          InquiryMessage: message
-        }
-      };
-
-      const responseCase = await fetch('https://lab0339.lab.pega.com/prweb/api/application/v2/cases?viewType=none&pageName=', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(caseBody)
-      });
-      const dataCase = await responseCase.json();
-      setCaseID(dataCase.data.caseInfo.content.pyID);
-
-      console.log('dataCase: ', dataCase);
-    })();
+    mutate({
+      caseTypeID: 'SL-TellUsMoreRef-Work-Inquiry',
+      content: {
+        FirstName: 'Adam',
+        LastName: 'Smith',
+        Email: email,
+        InquiryMessage: message
+      }
+    });
   }
 
   return (
@@ -67,7 +38,7 @@ const Contact = () => {
             <p className='mb-8 lg:mb-16 text-center text-gray-500 dark:text-gray-400 text-lg'>
               Want to send feedback about a beta feature? Need details about our Business plan? Let us know.
             </p>
-            {caseID === '' ? (
+            {!isSuccess ? (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -121,8 +92,8 @@ const Contact = () => {
                     required
                   />
                 </div>
-                <Button type='submit' variant='default'>
-                  Send message
+                <Button type='submit' variant='default' disabled={isPending}>
+                  {isPending ? 'Sending...' : 'Send message'}
                 </Button>
               </form>
             ) : (

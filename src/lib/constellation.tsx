@@ -69,7 +69,7 @@ function initialRender(inRenderObj) {
   // Initial render of component passed in (which should be a RootContainer)
   const renderToTarget = (el: HTMLElement) => {
     defined_root = createRoot(el);
-    defined_root.render(<>{theComponent}</>);
+    defined_root.render(theComponent);
   };
 
   if (target) {
@@ -99,7 +99,7 @@ export function startMashup() {
 
     // Initialize the SdkComponentMap (local and pega-provided)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
+    getSdkComponentMap(localSdkComponentMap).then((_theComponentMap: any) => {
       console.log(`SdkComponentMap initialized`);
 
       // Don't call initialRender until SdkComponentMap is fully initialized

@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "files": {
-    "includes": ["src/**", "!src/routeTree.gen.ts"]
+    "includes": ["src/**", "!src/routeTree.gen.ts", "!src/api/generated/**"]
   },
   "formatter": {
     "enabled": true,

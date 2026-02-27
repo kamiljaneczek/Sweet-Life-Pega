@@ -16,7 +16,7 @@ interface IOption {
 const preProcessColumns = (columnList) => {
   return columnList.map((col) => {
     const tempColObj = { ...col };
-    tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
+    tempColObj.value = col.value?.startsWith('.') ? col.value.substring(1) : col.value;
     return tempColObj;
   });
 };

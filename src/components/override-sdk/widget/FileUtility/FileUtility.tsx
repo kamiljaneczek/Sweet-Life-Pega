@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import './FileUtility.css';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { Button } from '../../../../design-system/ui/button';
 import { Label } from '../../../../design-system/ui/label';
@@ -272,7 +272,7 @@ export default function FileUtility(props: FileUtilityProps) {
       }
       file.mimeType = file.type;
       file.icon = Utils.getIconFromFileType(file.type);
-      file.ID = `${new Date().getTime()}I${index}`;
+      file.ID = `${Date.now()}I${index}`;
       index += 1;
     }
     return arFiles;
@@ -427,7 +427,7 @@ export default function FileUtility(props: FileUtilityProps) {
     // list for display
     let oLink: any = {};
     oLink.icon = 'chain';
-    oLink.ID = `${new Date().getTime()}`;
+    oLink.ID = `${Date.now()}`;
     oLink = getListUtilityItemProps({
       att: oLink,
       downloadFile: null,

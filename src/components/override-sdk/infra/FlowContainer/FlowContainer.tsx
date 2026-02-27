@@ -1,7 +1,7 @@
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/helpers';
+import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/container-helpers';
 import {
   addContainerItem,
   getToDoAssignments,

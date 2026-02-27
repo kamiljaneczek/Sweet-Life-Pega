@@ -17,7 +17,7 @@ export const createFilter = (value, fieldId, comparator = 'EQ') => {
 };
 
 export const combineFilters = (filterList, existingFilters) => {
-  if (filterList && filterList.length) {
+  if (filterList?.length) {
     // Need to combine them
     if (existingFilters) {
       return { AND: [existingFilters, ...filterList] };
@@ -55,7 +55,7 @@ export const createFilterComponent = (getPConnect, filterMeta, index) => {
   if (type === 'DateTime') {
     return <DashboardFilter key={name} getPConnect={getPConnect} name={name} filterProp={filterProp} metadata={filterMeta} type={filterMeta.type} />;
   }
-  if (datasource && datasource.fields) {
+  if (datasource?.fields) {
     datasource.fields.key = datasource.fields.value;
   }
   if (filterMeta.config.listType === 'associated' && propInfo && propInfo.datasource) {
@@ -154,5 +154,5 @@ export const getFormattedDate = (date) => {
   if (!date) {
     return date;
   }
-  return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+  return `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`;
 };

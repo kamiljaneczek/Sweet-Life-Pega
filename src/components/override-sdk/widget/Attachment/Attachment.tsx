@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-
-import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/helpers/attachmentHelpers';
+import { getIconFromFileType } from '@pega/react-sdk-components/lib/components/widget/Attachment/AttachmentUtils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import download from 'downloadjs';
 import { GripVertical, Loader } from 'lucide-react';
@@ -57,7 +56,7 @@ export default function Attachment(props: AttachmentProps) {
   const uploadMultipleFilesLabel = localizedVal('file_upload_text_multiple', localeCategory);
   const uploadSingleFileLabel = localizedVal('file_upload_text_one', localeCategory);
   let categoryName = '';
-  if (value && value.pyCategoryName) {
+  if (value?.pyCategoryName) {
     categoryName = value.pyCategoryName;
   }
   const deleteIcon = Utils.getImageSrc('trash', Utils.getSDKStaticConentUrl());
@@ -109,7 +108,7 @@ export default function Attachment(props: AttachmentProps) {
       // If file to be deleted is the one added in previous stage i.e. for which a file instance is created in server
       // no need to filter currentAttachmentList as we will get another entry of file in redux with delete & label
 
-      if (value && value?.pxResults && +value?.pyCount > 0 && file.responseProps && file?.responseProps?.pzInsKey !== 'temp') {
+      if (value?.pxResults && +value?.pyCount > 0 && file.responseProps && file?.responseProps?.pzInsKey !== 'temp') {
         const updatedAttachments = files.map((f) => {
           if (f.responseProps && f.responseProps.pzInsKey === file.responseProps.pzInsKey) {
             return { ...f, delete: true, label: valueRef };
@@ -156,7 +155,7 @@ export default function Attachment(props: AttachmentProps) {
     return (error) => {
       if (!isFetchCanceled(error)) {
         let uploadFailMsg = pConn.getLocalizedValue('Something went wrong', '', '');
-        if (error.response && error.response.data && error.response.data.errorDetails) {
+        if (error.response?.data?.errorDetails) {
           uploadFailMsg = pConn.getLocalizedValue(error.response.data.errorDetails[0].localizedValue, '', '');
         }
         setFiles((current) => {
@@ -223,7 +222,7 @@ export default function Attachment(props: AttachmentProps) {
     const maxAttachmentSize = PCore.getEnvironmentInfo().getMaxAttachmentSize() || '5';
     const tempFilesToBeUploaded = [
       ...addedFiles.map((f: any, index) => {
-        f.ID = `${new Date().getTime()}I${index}`;
+        f.ID = `${Date.now()}I${index}`;
         f.inProgress = true;
         f.props = {
           type: f.type,
@@ -272,8 +271,8 @@ export default function Attachment(props: AttachmentProps) {
     const filesToBeUploaded = files
       .filter((e) => {
         const isFileUploaded = e.props && e.props.progress === 100;
-        const fileHasError = e.props && e.props.error;
-        const isFileUploadedinLastStep = e.responseProps && e.responseProps.pzInsKey;
+        const fileHasError = e.props?.error;
+        const isFileUploadedinLastStep = e.responseProps?.pzInsKey;
         return !isFileUploaded && !fileHasError && !isFileUploadedinLastStep;
       })
       .map((f) =>

@@ -45,7 +45,6 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
       switch (fieldTypeLower) {
         case 'caseoperator':
           return <Operator {...field.config} />;
-          break;
 
         default:
           return <ReadOnlyField label={field.config.label} value='---' />;
