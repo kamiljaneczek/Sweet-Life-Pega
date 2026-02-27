@@ -20,7 +20,7 @@ export function HomeFeaturedProductsSkeleton() {
 
 export function ProductsPageSkeleton() {
   return (
-    <div className='flex-grow py-12 px-6 dark:bg-gray-900'>
+    <div className='grow py-12 px-6 dark:bg-gray-900'>
       <div className='container mx-auto'>
         <Skeleton className='h-9 w-72 mb-8' />
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>

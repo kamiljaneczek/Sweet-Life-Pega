@@ -49,7 +49,7 @@ export default function Support() {
   }
 
   return (
-    <div className='flex-grow'>
+    <div className='grow'>
       <section className='dark:bg-gray-900'>
         <div className='py-8 px-4 mx-auto max-w-screen-xl 6 lg:px-6'>
           <div className='max-w-screen-md'>
@@ -136,7 +136,7 @@ export default function Support() {
             >
               <HoverCard openDelay={200}>
                 <HoverCardTrigger>
-                  <Button onClick={handleCreateCase} className='flex-grow px-8 py-6' variant='default' size='lg'>
+                  <Button onClick={handleCreateCase} className='grow px-8 py-6' variant='default' size='lg'>
                     <span className='text-lg font-bold' /> Create incident
                   </Button>
                 </HoverCardTrigger>
@@ -149,7 +149,7 @@ export default function Support() {
               {!isPegaReady && <SupportIncidentSkeleton />}
               <div
                 id='pega-root'
-                className={cn('flex-grow w-full max-w-3xl', { hidden: !isPegaReady || showPega === 'Confirmation' || showPega === 'Info' })}
+                className={cn('grow w-full max-w-3xl', { hidden: !isPegaReady || showPega === 'Confirmation' || showPega === 'Info' })}
               />
             </div>
             <div

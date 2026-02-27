@@ -211,7 +211,7 @@ export default function ToDo(props: ToDoProps) {
       <ul className='divide-y'>
         {assignments.map((assignment) => (
           <li className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
-            <div className='mr-4 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
+            <div className='mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
               {currentUserInitials}
             </div>
             <div className='block'>
@@ -248,7 +248,7 @@ export default function ToDo(props: ToDoProps) {
           {showTodoList && (
             <CardHeader>
               <div className='flex items-center gap-4'>
-                <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
+                <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
                   {currentUserInitials}
                 </div>
                 <div className='flex items-center gap-2'>

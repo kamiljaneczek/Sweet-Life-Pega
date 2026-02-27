@@ -12,7 +12,7 @@ const Products = () => {
   return (
     <>
       {(!isPegaReady || isPending) && <ProductsPageSkeleton />}
-      <div className={cn('flex-grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady || isPending })}>
+      <div className={cn('grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady || isPending })}>
         <div className='container mx-auto'>
           <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
             <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>

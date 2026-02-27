@@ -31,7 +31,7 @@ const Contact = () => {
   return (
     <>
       {!isPegaReady && <Loading />}
-      <div className='flex-grow bg-white dark:bg-gray-900'>
+      <div className='grow bg-white dark:bg-gray-900'>
         <section className={isPegaReady ? '' : 'hidden'}>
           <div className='py-8 lg:py-16 px-4 mx-auto max-w-screen-md'>
             <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white'>Contact Us</h2>
@@ -52,7 +52,7 @@ const Contact = () => {
                     id='email'
                     label='Your email'
                     helperText='How can we reach you?'
-                    className='block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+                    className='block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-accent focus:border-accent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent'
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
@@ -72,7 +72,7 @@ const Contact = () => {
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     error={false}
-                    className='block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+                    className='block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-accent focus:border-accent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent'
                     helperText='Let us know how we can help you'
                     required
                   />
@@ -87,7 +87,7 @@ const Contact = () => {
                     onChange={(e) => setMessage(e.target.value)}
                     label='Your message'
                     variant='outlined'
-                    className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+                    className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-accent focus:border-accent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent'
                     placeholder=''
                     required
                   />

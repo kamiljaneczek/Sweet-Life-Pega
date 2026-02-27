@@ -4,6 +4,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
 import { queryClient } from './api/query-client';
 import { router } from './router';
+import './app.css';
 import './common.css';
 
 const outletElement = document.getElementById('outlet');

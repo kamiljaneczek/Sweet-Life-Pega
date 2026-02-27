@@ -2,7 +2,7 @@
 
 const Company = () => {
   return (
-    <div className='flex-grow dark:bg-gray-900'>
+    <div className='grow dark:bg-gray-900'>
       <section className='w-full py-12 md:py-16 '>
         <div className='container px-4 md:px-6'>
           <div className='grid gap-6 lg:grid-cols-2 lg:gap-12'>
