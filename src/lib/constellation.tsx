@@ -1,14 +1,11 @@
+import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
+import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { useMemo } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-
-import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-
-import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-
-import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../sdk-local-component-map';
-import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import C11nEnv from '@pega/pcore-pconnect-typedefs/interpreter/c11n-env';
 
 declare const myLoadMashup: any;
 
@@ -95,7 +92,7 @@ function initialRender(inRenderObj) {
 
 export function startMashup() {
   // NOTE: When loadMashup is complete, this will be called.
-  PCore.onPCoreReady(renderObj => {
+  PCore.onPCoreReady((renderObj) => {
     console.log(`PCore ready!`);
     // Check that we're seeing the PCore version we expect
     compareSdkPCoreVersions();

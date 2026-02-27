@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import StyledSweetLifeDeligthLibraryFeaturedProductsWrapper from './styles';
-import { IProduct } from '../../../../types/types';
-import { useCallback, useEffect, useState } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../../../../design-system/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../../../../design-system/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../../../../design-system/ui/carousel';
+import { IProduct } from '../../../../types/types';
+import StyledSweetLifeDeligthLibraryFeaturedProductsWrapper from './styles';
 
 interface SweetLifeDeligthLibraryFeaturedProductsProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -70,7 +70,7 @@ export default function SweetLifeDeligthLibraryFeaturedProducts(props: SweetLife
         >
           <CarouselContent>
             {products.length > 0 &&
-              products.map(product => {
+              products.map((product) => {
                 const theKey = `product-${product.SKU}`;
                 return (
                   <CarouselItem key={theKey} className='md:basis-1/2 lg:basis-1/3'>

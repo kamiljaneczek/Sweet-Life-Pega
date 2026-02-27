@@ -1,14 +1,12 @@
-import React, { PropsWithChildren, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { createElement } from 'react';
-import { MoreVertical, Filter, FileText, ChevronUp, ChevronDown } from 'lucide-react';
-
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
-import { buildFieldsForTable, filterData, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
-import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
+import { buildFieldsForTable, filterData, getContext } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { ChevronDown, ChevronUp, FileText, Filter, MoreVertical } from 'lucide-react';
+import React, { createElement, PropsWithChildren, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { Button } from '../../../../design-system/ui/button';
 
@@ -177,20 +175,20 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
         .getListActions()
         .initDefaultPageInstructions(
           getPConnect().getReferenceList(),
-          fieldDefs.filter(item => item.name).map(item => item.name)
+          fieldDefs.filter((item) => item.name).map((item) => item.name)
         );
     } else {
-      // @ts-ignore - An argument for 'fields' was not provided
+      // @ts-expect-error - An argument for 'fields' was not provided
       getPConnect().getListActions().initDefaultPageInstructions(getPConnect().getReferenceList());
     }
   }, []);
 
-  const displayedColumns = fieldDefs.map(field => {
+  const displayedColumns = fieldDefs.map((field) => {
     return field.name ? field.name : field.cellRenderer;
   });
 
   const getFormattedValue = (val, key) => {
-    const rawField = fieldsWithPropNames.find(item => item.propName === key);
+    const rawField = fieldsWithPropNames.find((item) => item.propName === key);
     let options = {};
     if (rawField && ['Boolean', 'Checkbox'].includes(rawField.type)) {
       const { trueLabel, falseLabel } = rawField.config;
@@ -217,10 +215,10 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     return getFormattedValue(valBuilder, inColKey);
   }
 
-  const formatRowsData = data => {
+  const formatRowsData = (data) => {
     if (!data) return {};
 
-    return data.map(item => {
+    return data.map((item) => {
       return displayedColumns.reduce((dataForRow, colKey) => {
         dataForRow[colKey] = getRowValue(item, colKey);
         return dataForRow;
@@ -231,7 +229,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
   function generateRowsData() {
     // if referenceList is empty and dataPageName property value exists then make a datapage fetch call and get the list of data.
     if (!referenceList.length && dataPageName) {
-      getDataPage(dataPageName, parameters, context).then(listData => {
+      getDataPage(dataPageName, parameters, context).then((listData) => {
         const data = formatRowsData(listData);
         myRows = data;
         setRowData(data);
@@ -326,7 +324,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     const eleData: any = [];
     referenceList.forEach((element, index) => {
       const data: any = [];
-      rawFields.forEach(item => {
+      rawFields.forEach((item) => {
         // removing label field from config to hide title in the table cell
         item = { ...item, config: { ...item.config, label: '' } };
         const referenceListData = getReferenceList(pConn);
@@ -388,7 +386,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
       return a[1] - b[1];
     });
 
-    return stabilizedThis.map(el => el[0]);
+    return stabilizedThis.map((el) => el[0]);
   }
 
   function _menuClick(event, columnId: string, columnType: string, labelValue: string) {
@@ -591,7 +589,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                           type='button'
                           id='menu-icon'
                           className='ml-1 inline-flex cursor-pointer items-center bg-transparent border-none p-0'
-                          onClick={event => {
+                          onClick={(event) => {
                             _menuClick(event, field.name, field.meta.type, field.label);
                           }}
                         >
@@ -644,7 +642,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                 .map((row, index) => {
                   return (
                     <tr key={index} className='border-b border-gray-200 hover:bg-gray-50'>
-                      {displayedColumns.map(colKey => {
+                      {displayedColumns.map((colKey) => {
                         return (
                           <td key={colKey} className='border-r border-gray-300 p-2'>
                             {showDeleteButton && colKey === 'DeleteIcon' ? (
@@ -653,7 +651,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
                                   type='button'
                                   id='table-edit-menu-icon'
                                   className='inline-flex cursor-pointer items-center bg-transparent border-none p-0'
-                                  onClick={event => {
+                                  onClick={(event) => {
                                     editMenuClick(event, index);
                                   }}
                                 >
@@ -745,7 +743,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
       )}
       {open && (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50' onClick={_closeDialog}>
-          <div className='w-full max-w-md rounded-lg bg-white shadow-xl' onClick={e => e.stopPropagation()}>
+          <div className='w-full max-w-md rounded-lg bg-white shadow-xl' onClick={(e) => e.stopPropagation()}>
             <div className='border-b border-gray-200 px-6 py-4'>
               <h2 className='text-lg font-semibold'>Filter: {filterBy}</h2>
             </div>

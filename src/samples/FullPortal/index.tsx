@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { SdkConfigAccess, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
-
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import { getAvailablePortals, loginIfNecessary, SdkConfigAccess } from '@pega/auth/lib/sdk-auth-manager';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { theme } from '../../theme';
 
@@ -67,13 +66,13 @@ export default function FullPortal() {
    */
   function startPortal() {
     // NOTE: When loadMashup is complete, this will be called.
-    PCore.onPCoreReady(renderObj => {
+    PCore.onPCoreReady((renderObj) => {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
 
       // Initialize the SdkComponentMap (local and pega-provided)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      getSdkComponentMap(localSdkComponentMap).then(theComponentMap => {
+      getSdkComponentMap(localSdkComponentMap).then((theComponentMap) => {
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized
@@ -102,7 +101,7 @@ export default function FullPortal() {
       setPortalSelectionScreen(true);
       setDefaultPortalName(defaultPortal);
       // Getting current user's access group's available portals list other than excluded portals (relies on Traditional DX APIs)
-      getAvailablePortals().then(portals => {
+      getAvailablePortals().then((portals) => {
         setAvailablePortals(portals as string[]);
       });
     }

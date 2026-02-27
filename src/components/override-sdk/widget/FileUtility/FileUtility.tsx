@@ -1,15 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { MoreVertical, Loader } from 'lucide-react';
-
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-
 import download from 'downloadjs';
+import { Loader, MoreVertical } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 // import SummaryList from '../../SummaryList';
 // import ActionButtonsForFileUtil from '../ActionButtonsForFileUtil';
 import './FileUtility.css';
 
-import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { validateMaxSize } from '@pega/react-sdk-components/lib/components/helpers/attachmentShared';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { Button } from '../../../../design-system/ui/button';
 import { Label } from '../../../../design-system/ui/label';
@@ -85,7 +83,7 @@ export default function FileUtility(props: FileUtilityProps) {
   const [vaItems, setFullAttachments] = useState([]);
 
   function addAttachments(attsFromResp: any[] = []) {
-    attsFromResp = attsFromResp.map(respAtt => {
+    attsFromResp = attsFromResp.map((respAtt) => {
       const updatedAtt = {
         ...respAtt,
         meta: `${respAtt.category} . ${Utils.generateDateTime(respAtt.createTime, 'DateTime-Since')}, ${respAtt.createdBy}`
@@ -180,7 +178,7 @@ export default function FileUtility(props: FileUtilityProps) {
     const context = thePConn.getContextName();
 
     attachUtils
-      // @ts-ignore - 3rd parameter "responseEncoding" is optional
+      // @ts-expect-error - 3rd parameter "responseEncoding" is optional
       .downloadAttachment(ID, context)
       .then((content: any) => {
         if (type === 'FILE') {
@@ -219,7 +217,7 @@ export default function FileUtility(props: FileUtilityProps) {
       attPromise.then((resp: any) => {
         const arFullListAttachments = addAttachments(resp);
         const attachmentsCount = arFullListAttachments.length;
-        const arItems: any = arFullListAttachments.slice(0, 3).map(att => {
+        const arItems: any = arFullListAttachments.slice(0, 3).map((att) => {
           return getListUtilityItemProps({
             att,
             downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
@@ -228,7 +226,7 @@ export default function FileUtility(props: FileUtilityProps) {
             removeFile: null
           });
         });
-        const viewAllarItems: any = arFullListAttachments.map(att => {
+        const viewAllarItems: any = arFullListAttachments.map((att) => {
           return getListUtilityItemProps({
             att,
             downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
@@ -238,7 +236,7 @@ export default function FileUtility(props: FileUtilityProps) {
           });
         });
         setProgress(false);
-        setList(current => {
+        setList((current) => {
           return { ...current, count: attachmentsCount, data: arItems };
         });
         setFullAttachments(viewAllarItems);
@@ -299,7 +297,7 @@ export default function FileUtility(props: FileUtilityProps) {
         removeFile: null
       });
     });
-    setFileData(current => {
+    setFileData((current) => {
       return { ...current, fileList: arFileList$, attachedFiles: myFiles };
     });
   }
@@ -325,11 +323,11 @@ export default function FileUtility(props: FileUtilityProps) {
   }, [menuOpen]);
 
   const handleClick = () => {
-    setMenuOpen(prev => !prev);
+    setMenuOpen((prev) => !prev);
   };
 
   function onAddFilesClick() {
-    setFileData(current => {
+    setFileData((current) => {
       return { ...current, showfileModal: true };
     });
     setMenuOpen(false);
@@ -339,16 +337,16 @@ export default function FileUtility(props: FileUtilityProps) {
     let attachedFiles: any = fileData.attachedFiles;
     let fileList: any = fileData.fileList;
     if (item !== null) {
-      attachedFiles = attachedFiles.filter(ele => ele.ID !== item.id);
-      fileList = fileList.filter(ele => ele.id !== item.id);
-      setFileData(current => {
+      attachedFiles = attachedFiles.filter((ele) => ele.ID !== item.id);
+      fileList = fileList.filter((ele) => ele.id !== item.id);
+      setFileData((current) => {
         return { ...current, fileList, attachedFiles };
       });
     }
   }
 
   function closeFilePopup() {
-    setFileData(current => {
+    setFileData((current) => {
       return { ...current, showfileModal: false };
     });
   }
@@ -364,11 +362,11 @@ export default function FileUtility(props: FileUtilityProps) {
     }
 
     Promise.allSettled(
-      fileData.attachedFiles.map(file => attachmentUtils.uploadAttachment(file, onUploadProgress, errorHandler, thePConn.getContextName()))
+      fileData.attachedFiles.map((file) => attachmentUtils.uploadAttachment(file, onUploadProgress, errorHandler, thePConn.getContextName()))
     )
       .then((fileResponses: any) => {
         const uploadedFiles: any = [];
-        fileResponses.forEach(fileResponse => {
+        fileResponses.forEach((fileResponse) => {
           if (fileResponse.status === 'fulfilled') {
             uploadedFiles.push(fileResponse.value);
           }
@@ -376,7 +374,7 @@ export default function FileUtility(props: FileUtilityProps) {
         if (uploadedFiles.length > 0) {
           (attachmentUtils.linkAttachmentsToCase(caseID, uploadedFiles, 'File', thePConn.getContextName()) as Promise<any>)
             .then(() => {
-              setFileData(current => {
+              setFileData((current) => {
                 return { ...current, fileList: [], attachedFiles: [] };
               });
               getAttachments();
@@ -388,21 +386,21 @@ export default function FileUtility(props: FileUtilityProps) {
   }
 
   function onAddLinksClick() {
-    setLinkData(current => {
+    setLinkData((current) => {
       return { ...current, showLinkModal: true };
     });
     setMenuOpen(false);
   }
 
   function closeAddLinksPopup() {
-    setLinkData(current => {
+    setLinkData((current) => {
       return { ...current, showLinkModal: false };
     });
   }
 
-  const fieldlinkOnChange = event => {
+  const fieldlinkOnChange = (event) => {
     const title = event.target.value;
-    setLink(current => {
+    setLink((current) => {
       const updatedData = { ...current, title };
       updatedData.disable = !(updatedData.title && updatedData.url);
       return updatedData;
@@ -411,7 +409,7 @@ export default function FileUtility(props: FileUtilityProps) {
 
   function fieldurlOnChange(event) {
     const url = event.target.value;
-    setLink(current => {
+    setLink((current) => {
       const updatedData = { ...current, url };
       updatedData.disable = !(updatedData.title && updatedData.url);
       return updatedData;
@@ -455,7 +453,7 @@ export default function FileUtility(props: FileUtilityProps) {
     attachedLink.url = url;
 
     attachedListTemp.push(attachedLink);
-    setLinkData(current => {
+    setLinkData((current) => {
       return {
         ...current,
         linksList: localList,
@@ -470,9 +468,9 @@ export default function FileUtility(props: FileUtilityProps) {
     let attachedLinks: any = linkData.attachedLinks;
     let linksList: any = linkData.linksList;
     if (item !== null) {
-      attachedLinks = attachedLinks.filter(ele => ele.id !== item.id);
-      linksList = linksList.filter(ele => ele.id !== item.id);
-      setLinkData(current => {
+      attachedLinks = attachedLinks.filter((ele) => ele.id !== item.id);
+      linksList = linksList.filter((ele) => ele.id !== item.id);
+      setLinkData((current) => {
         return { ...current, linksList, attachedLinks };
       });
     }
@@ -494,7 +492,7 @@ export default function FileUtility(props: FileUtilityProps) {
       setProgress(true);
       (attachmentUtils.linkAttachmentsToCase(caseID, linksToAttach, 'URL', thePConn.getContextName()) as Promise<any>)
         .then(() => {
-          setLinkData(current => {
+          setLinkData((current) => {
             return { ...current, linksList: [], attachedLinks: [] };
           });
           getAttachments();

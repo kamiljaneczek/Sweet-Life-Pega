@@ -1,14 +1,14 @@
+/* eslint-disable no-console */
+
+import { useEffect, useState } from 'react';
+import { Button } from '../design-system/ui/button';
 /* import { SelectTrigger } from '@radix-ui/react-select'; */
-import Header from './components/header';
 /* import { Label } from '../design-system/ui/label';
 import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select'; */
 import useConstellation from '../hooks/useConstellation';
-import { useEffect, useState } from 'react';
+import { cn } from '../lib/utils';
 import { IProduct } from '../types/types';
-import Footer from './components/footer';
-import Loading from './components/loading';
-import { Button } from '../design-system/ui/button';
-import classNames from 'classnames';
+import { ProductsPageSkeleton } from './components/skeletons';
 
 const Products = () => {
   const isPegaReady = useConstellation();
@@ -46,11 +46,11 @@ const Products = () => {
       };
 
       (PCore.getDataPageUtils().getDataAsync(dataViewName, 'root', parameters, paging, query) as Promise<any>)
-        .then(response => {
+        .then((response) => {
           console.log('DataPageUtils.getDataAsync response', response);
           setProducts(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           throw new Error('Error', error);
         });
     }
@@ -58,15 +58,42 @@ const Products = () => {
 
   return (
     <>
-      <Header />
-      {!isPegaReady && <Loading />}
-      <div className={classNames('flex-grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady })}>
+      {!isPegaReady && <ProductsPageSkeleton />}
+      <div className={cn('flex-grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady })}>
         <div className='container mx-auto'>
           <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
             <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>
+            {/*  <div className='flex items-center space-x-4'>
+                <Label className='text-[#666] dark:text-gray-400' htmlFor='price-range'>
+                  Price Range
+                </Label>
+                <Select>
+                  <SelectTrigger className='w-[60px] lg:w-[180px]' id='price-range'>
+                    <SelectValue placeholder='Select price range' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='all'>all</SelectItem>
+                    <SelectItem value='0-10'>$0 - $10</SelectItem>
+                    <SelectItem value='10-20'>$20 - $30</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Label className='text-[#666] dark:text-gray-400' htmlFor='category'>
+                  Category
+                </Label>
+                <Select>
+                  <SelectTrigger className='w-[60px] lg:w-[180px]'>
+                    <SelectValue placeholder='Select category' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='Chocolates'>Chocolates</SelectItem>
+                    <SelectItem value='Bonbons'>Bonbons</SelectItem>
+                    <SelectItem value='Candies'>Candies</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div> */}
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-8'>
-            {products.map(product => (
+            {products.map((product) => (
               <div key={product.Name} className='hover:scale-105 block rounded-xl bg-white shadow-lg dark:bg-gray-600 text-center'>
                 <div className='flex my-4 flex-col items-center align-middle center'>
                   <img className='rounded-t-xl w-32 h-32' src={`assets/img/prod_${Math.floor(Math.random() * 13) + 1}.svg`} alt='' />
@@ -95,8 +122,6 @@ const Products = () => {
         </div>
         <div id='pega-root' />
       </div>
-
-      <Footer />
     </>
   );
 };

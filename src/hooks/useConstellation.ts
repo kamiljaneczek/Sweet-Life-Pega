@@ -1,6 +1,5 @@
+import { getSdkConfig, loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB } from '@pega/auth/lib/sdk-auth-manager';
 import { useEffect, useState } from 'react';
-
-import { loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { startMashup } from '../lib/constellation';
 
 function useConstellation() {

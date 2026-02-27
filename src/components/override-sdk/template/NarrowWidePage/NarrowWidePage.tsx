@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface NarrowWidePageProps extends PConnProps {
   // If any, enter additional props that only exist on this component

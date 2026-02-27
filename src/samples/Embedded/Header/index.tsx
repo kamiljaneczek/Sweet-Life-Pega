@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { makeStyles } from '@mui/styles';
+import { useState } from 'react';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: theme.headerNav.backgroundColor,
     borderBottom: `1px solid ${theme.palette.divider}`,

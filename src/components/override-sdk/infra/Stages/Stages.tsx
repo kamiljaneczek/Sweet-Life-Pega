@@ -1,6 +1,5 @@
-import { ChevronsRight, Check } from 'lucide-react';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Check, ChevronsRight } from 'lucide-react';
 
 interface StagesProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -18,7 +17,7 @@ function getFilteredStages(stages) {
     return [];
   }
 
-  return stages.filter(stage => stage.type !== 'Alternate' || (stage.type === 'Alternate' && stage.visited_status === 'active'));
+  return stages.filter((stage) => stage.type !== 'Alternate' || (stage.type === 'Alternate' && stage.visited_status === 'active'));
 }
 
 /* TODO - this component should be refactored and not exposed as top level DX Component -

@@ -1,6 +1,5 @@
-import { PropsWithChildren, useState } from 'react';
-
 import { ArrowDown, ArrowRight } from 'lucide-react';
+import { PropsWithChildren, useState } from 'react';
 
 // FieldGroupProps is one of the few components that does NOT have getPConnect.
 //  So, no need to extend PConnProps
@@ -23,7 +22,7 @@ export default function FieldGroup(props: PropsWithChildren<FieldGroupProps>) {
   );
 
   const headerClickHandler = () => {
-    setCollapsed(current => !current);
+    setCollapsed((current) => !current);
   };
 
   return (

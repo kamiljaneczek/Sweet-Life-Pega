@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
-
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '../../../../design-system/ui/button';
 
 interface CaseViewActionsMenuProps extends PConnProps {
@@ -62,7 +61,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
   }, [menuOpen]);
 
   const handleClick = () => {
-    setMenuOpen(prev => !prev);
+    setMenuOpen((prev) => !prev);
   };
 
   const handleClose = () => {
@@ -106,7 +105,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
 
   const arMenuItems: React.ReactNode[] = [];
 
-  availableActions.forEach(action => {
+  availableActions.forEach((action) => {
     arMenuItems.push(
       <button
         type='button'
@@ -119,7 +118,7 @@ export default function CaseViewActionsMenu(props: CaseViewActionsMenuProps) {
     );
   });
 
-  availableProcesses.forEach(process => {
+  availableProcesses.forEach((process) => {
     arMenuItems.push(
       <button
         type='button'

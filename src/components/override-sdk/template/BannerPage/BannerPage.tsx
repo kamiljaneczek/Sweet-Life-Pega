@@ -1,7 +1,6 @@
-import { Children, PropsWithChildren, useMemo } from 'react';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Children, PropsWithChildren, useMemo } from 'react';
 
 interface BannerPageProps extends PConnProps {
   // If any, enter additional props that only exist on this component

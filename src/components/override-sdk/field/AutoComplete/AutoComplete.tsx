@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import isDeepEqual from 'fast-deep-equal/react';
-
-import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Input } from '../../../../design-system/ui/input';
 
@@ -14,18 +13,18 @@ interface IOption {
   value: string;
 }
 
-const preProcessColumns = columnList => {
-  return columnList.map(col => {
+const preProcessColumns = (columnList) => {
+  return columnList.map((col) => {
     const tempColObj = { ...col };
     tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
     return tempColObj;
   });
 };
 
-const getDisplayFieldsMetaData = columnList => {
-  const displayColumns = columnList.filter(col => col.display === 'true');
+const getDisplayFieldsMetaData = (columnList) => {
+  const displayColumns = columnList.filter((col) => col.display === 'true');
   const metaDataObj: any = { key: '', primary: '', secondary: [] };
-  const keyCol = columnList.filter(col => col.key === 'true');
+  const keyCol = columnList.filter((col) => col.key === 'true');
   metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
   for (let index = 0; index < displayColumns.length; index += 1) {
     if (displayColumns[index].primary === 'true') {
@@ -95,7 +94,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
 
   const flattenParameters = (params = {}) => {
     const flatParams = {};
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       const { name, value: theVal } = params[key];
       flatParams[name] = theVal;
     });
@@ -139,7 +138,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       getDataPage(datasource, parameters, context).then((results: any) => {
         const optionsData: any[] = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
-        results?.forEach(element => {
+        results?.forEach((element) => {
           const val = element[displayColumn.primary]?.toString();
           const obj = {
             key: element[displayColumn.key] || element.pyGUID,
@@ -172,7 +171,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (value) {
-    const index = options?.findIndex(element => element.key === value);
+    const index = options?.findIndex((element) => element.key === value);
     if (index > -1) {
       selectedValue = options[index].value;
     } else {
@@ -194,12 +193,12 @@ export default function AutoComplete(props: AutoCompleteProps) {
   };
 
   if (readOnly) {
-    const theValAsString = options?.find(opt => opt.key === value)?.value;
+    const theValAsString = options?.find((opt) => opt.key === value)?.value;
     return <TextInput {...props} value={theValAsString} />;
   }
 
   // Filter options based on input value
-  const filteredOptions = options.filter(option => option.value?.toLowerCase().includes((inputValue || '').toLowerCase()));
+  const filteredOptions = options.filter((option) => option.value?.toLowerCase().includes((inputValue || '').toLowerCase()));
 
   return (
     <div ref={wrapperRef} className='relative w-full' data-test-id={testId}>
@@ -211,12 +210,12 @@ export default function AutoComplete(props: AutoCompleteProps) {
         error={status === 'error'}
         helperText={helperTextToDisplay}
         InputProps={{}}
-        onChange={e => handleInputValue((e.target as HTMLInputElement).value)}
+        onChange={(e) => handleInputValue((e.target as HTMLInputElement).value)}
         onFocus={() => setIsOpen(true)}
       />
       {isOpen && filteredOptions.length > 0 && (
         <ul className='absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white shadow-lg'>
-          {filteredOptions.map(option => (
+          {filteredOptions.map((option) => (
             <li
               key={option.key}
               className='cursor-pointer px-3 py-2 text-sm hover:bg-gray-100'

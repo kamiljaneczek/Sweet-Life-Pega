@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-import { dateFormatInfoDefault, getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { Calendar } from '../../../../design-system/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../../design-system/ui/popover';
 import { CalendarIcon } from 'lucide-react';
-import { Button } from '../../../../design-system/ui/button';
 import { useState } from 'react';
-import { cn } from '../../../../lib/utils';
+import { Button } from '../../../../design-system/ui/button';
+import { Calendar } from '../../../../design-system/ui/calendar';
 import { Label } from '../../../../design-system/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../../design-system/ui/popover';
+import { cn } from '../../../../lib/utils';
 
 // Will return the date string in YYYY-MM-DD format which we'll be POSTing to the server
 function getFormattedDate(date) {
@@ -83,13 +84,13 @@ export default function Date(props: DateProps) {
     'data-test-id': testId
   };
 
-  const handleChange = date => {
+  const handleChange = (date) => {
     onChange({ value: getFormattedDate(date) });
     setDate(date.toDateString());
   };
 
-  const handleAccept = date => {
-    if (date && date.isValid()) {
+  const handleAccept = (date) => {
+    if (date?.isValid()) {
       handleEvent(actions, 'changeNblur', propName, getFormattedDate(date));
     }
   };

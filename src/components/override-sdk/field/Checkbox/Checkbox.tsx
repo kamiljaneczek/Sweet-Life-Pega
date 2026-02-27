@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useState } from 'react';
 
 import { Checkbox } from '../../../../design-system/ui/checkbox';
 import { Label } from '../../../../design-system/ui/label';

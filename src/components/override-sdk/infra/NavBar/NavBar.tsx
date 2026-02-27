@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { User, ChevronLeft, ChevronRight, Flag, Home, ChevronUp, ChevronDown, Plus, Briefcase, X, ArrowLeft } from 'lucide-react';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
-
 import { useNavBar } from '@pega/react-sdk-components/lib/components/helpers/reactContextHelpers';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { ArrowLeft, Briefcase, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Flag, Home, Plus, User, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 import './NavBar.css';
 
@@ -162,7 +161,7 @@ export default function NavBar(props: NavBarProps) {
       {bShowCaseTypes && open && (
         <div className='scrollable transition-all duration-200'>
           <ul className='m-0 p-0 list-none'>
-            {caseTypes.map(caseType => (
+            {caseTypes.map((caseType) => (
               <li
                 className='flex items-center pl-8 pr-4 py-2 cursor-pointer hover:bg-gray-100'
                 onClick={() => navPanelCreateCaseType(caseType.pyClassName, caseType.pyFlowType)}
@@ -178,7 +177,7 @@ export default function NavBar(props: NavBarProps) {
         </div>
       )}
       <ul className='m-0 p-0 list-none'>
-        {navPages.map(page => (
+        {navPages.map((page) => (
           <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={() => navPanelButtonClick(page)} key={page.pyLabel}>
             <span className='flex-shrink-0 min-w-[40px]'>{iconMap[page.pxPageViewIcon]}</span>
             <span className='flex-grow'>{localeUtils.getLocaleValue(page.pyLabel, '', localeReference)}</span>

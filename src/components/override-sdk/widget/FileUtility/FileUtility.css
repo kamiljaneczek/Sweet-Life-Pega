@@ -89,7 +89,7 @@
 }
 
 .psdk-add-link-action {
-  text-transform: unset !important;
+  text-transform: unset;
   font-size: 14px;
 }
 

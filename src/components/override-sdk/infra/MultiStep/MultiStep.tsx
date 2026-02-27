@@ -1,9 +1,8 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { Progress } from '../../../../design-system/ui/progress';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { CardContent, CardHeader } from '../../../../design-system/ui/card';
+import { Progress } from '../../../../design-system/ui/progress';
 
 interface MultiStepProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -20,7 +19,7 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
 
   const { getPConnect, children, itemKey = '', actionButtons, onButtonPress } = props;
   const { arNavigationSteps } = props;
-  const currStepIndex = arNavigationSteps.findIndex(step => {
+  const currStepIndex = arNavigationSteps.findIndex((step) => {
     return step.visited_status === 'current';
   });
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
       </div>
 
       <CardContent>
-        {arNavigationSteps.map(mainStep => {
+        {arNavigationSteps.map((mainStep) => {
           return (
             <React.Fragment key={mainStep.actionID}>
               {!mainStep?.steps && mainStep.visited_status === 'current' && (

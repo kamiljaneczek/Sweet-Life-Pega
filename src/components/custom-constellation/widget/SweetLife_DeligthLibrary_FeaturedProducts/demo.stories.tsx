@@ -19,9 +19,5 @@ export const BaseSweetLifeDeligthLibraryFeaturedProducts = () => {
     whatsnewlink: configProps.whatsnewlink
   };
 
-  return (
-    <>
-      <SweetLifeDeligthLibraryFeaturedProducts {...props} />
-    </>
-  );
+  return <SweetLifeDeligthLibraryFeaturedProducts {...props} />;
 };

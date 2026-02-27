@@ -1,15 +1,12 @@
 .DS_Store
 node_modules
-/dist
 /distAuthoring
 /__DO_NOT_COMMIT
-
+/dist
 # local env files
 .env.local
 .env.*.local
-
 upgrade-docs
-
 # Log files
 npm-debug.log*
 yarn-debug.log*
@@ -45,7 +42,6 @@ pnpm-debug.log*
 test-results/
 tests/coverage
 tests/playwright-report
-test-reports/
 
 
 # unit testing coverage
@@ -53,3 +49,6 @@ test-reports/
 
 
 /keys
+
+# Generated public directory (Vite static assets)
+/public

@@ -160,9 +160,9 @@
 }
 
 .marginTopAuto {
-  margin-top: auto !important;
+  margin-top: auto;
 }
 
 .scrollable {
-  overflow-y: scroll !important;
+  overflow-y: scroll;
 }

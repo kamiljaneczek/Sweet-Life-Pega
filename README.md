@@ -21,9 +21,9 @@ This release allows React SDK users to take advantage of the latest SDK enhancem
 
 # Overview
 
-The **React SDK** combined with Pega's client orchestration APIs provides a guided iterative development workflow experience that accelerates integrating Pega's Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
+The **React SDK** combined with Pega's client orchestration APIs provides a guided iterative development workflow experience that accelerates integrating Pega’s Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
 
-A DX component contains logic and presentation tags to merge the alternate design system with Pega's client orchestration APIs.
+A DX component contains logic and presentation tags to merge the alternate design system with Pega’s client orchestration APIs.
 
 The alternative design system used in the React SDK is [Material UI](https://v6.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
 

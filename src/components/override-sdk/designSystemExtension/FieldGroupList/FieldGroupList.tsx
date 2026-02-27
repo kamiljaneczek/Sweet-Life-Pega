@@ -19,7 +19,7 @@ export default function FieldGroupList(props: FieldGroupListProps) {
     <div className='flex justify-between gap-4'>
       <div className='w-full'>
         <div className='flex flex-col gap-1'>
-          {props.items.map(item => (
+          {props.items.map((item) => (
             <div className='w-full' key={item.id}>
               <b>{item.name}</b>
               {props.onDelete && (

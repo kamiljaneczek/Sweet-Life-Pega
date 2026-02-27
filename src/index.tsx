@@ -1,34 +1,12 @@
-// from react_root.js
+import { RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
+import { router } from './router';
 import './common.css';
-import { BrowserRouter, Routes, Route } from 'react-router';
-
-import Home from './app/home';
-import Company from './app/company';
-import Products from './app/products';
-import Contact from './app/contact';
-import Support from './app/support';
-import DesingSystem from './app/desingsystem';
-
-const baseURL = '/';
 
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  const root = createRoot(outletElement);
-  root.render(
-    <BrowserRouter>
-      <Routes>
-        <Route path={`${baseURL}`} element={<Home />} />
-        <Route path={`${baseURL}company`} element={<Company />} />
-        <Route path={`${baseURL}products`} element={<Products />} />
-        <Route path={`${baseURL}support`} element={<Support />} />
-        <Route path={`${baseURL}contact`} element={<Contact />} />
-        <Route path={`${baseURL}desingsystem`} element={<DesingSystem />} />
-        <Route path='*' element={<Home />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  createRoot(outletElement).render(<RouterProvider router={router} />);
 }
 
 document.addEventListener('SdkLoggedOut', () => {

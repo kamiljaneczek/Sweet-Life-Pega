@@ -1,7 +1,6 @@
-import { Children, PropsWithChildren, useEffect, useState } from 'react';
-
 import { getTransientTabs, getVisibleTabs, tabClick } from '@pega/react-sdk-components/lib/components/template/SubTabs/tabUtils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Children, PropsWithChildren, useEffect, useState } from 'react';
 
 interface DetailsSubTabsProps extends PConnProps {
   // If any, enter additional props that only exist on this component

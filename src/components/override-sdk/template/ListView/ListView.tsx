@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MoreVertical, Filter, FileText, Search, X, ChevronUp, ChevronDown } from 'lucide-react';
-
 import { filterData } from '@pega/react-sdk-components/lib/components/helpers/simpleTableHelpers';
+import { ChevronDown, ChevronUp, FileText, Filter, MoreVertical, Search, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import './ListView.css';
-import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
+import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
-
-import useInit from './hooks';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-
 import { Button } from '../../../../design-system/ui/button';
 import { Checkbox } from '../../../../design-system/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../design-system/ui/select';
+import useInit from './hooks';
 
 interface ListViewProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -78,7 +75,7 @@ export default function ListView(props: ListViewProps) {
   });
 
   const thePConn = getPConnect();
-  // @ts-ignore - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
+  // @ts-expect-error - Property 'getComponentConfig' is private and only accessible within class 'C11nEnv'.
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps: any = thePConn.getConfigProps() as ListViewProps;
 
@@ -185,7 +182,7 @@ export default function ListView(props: ListViewProps) {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map(el => el[0]);
+    return stabilizedThis.map((el) => el[0]);
   }
 
   const [page, setPage] = useState(0);
@@ -207,7 +204,7 @@ export default function ListView(props: ListViewProps) {
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
-      const colIndex = fields.findIndex(ele => ele.name === theField);
+      const colIndex = fields.findIndex((ele) => ele.name === theField);
       const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = fields[index].id;
@@ -244,7 +241,7 @@ export default function ListView(props: ListViewProps) {
   function getMyColumnList(arCols: any[]): string[] {
     const myColList: string[] = [];
 
-    arCols.forEach(col => {
+    arCols.forEach((col) => {
       myColList.push(col.id);
     });
 
@@ -280,7 +277,7 @@ export default function ListView(props: ListViewProps) {
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
     // Constructing the select parameters list (will be sent in dashboardFilterPayload)
-    columnList.current.forEach(col => {
+    columnList.current.forEach((col) => {
       selectParam.push({
         field: col
       });
@@ -395,15 +392,15 @@ export default function ListView(props: ListViewProps) {
     } else {
       // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields
       //  corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
-      fieldDefs.forEach(field => {
-        if (!listFields.find(f => f.field === field.name)) {
+      fieldDefs.forEach((field) => {
+        if (!listFields.find((f) => f.field === field.name)) {
           listFields.push({
             field: field.name
           });
         }
       });
-      patchQueryFields.forEach(k => {
-        if (!listFields.find(f => f.field === k)) {
+      patchQueryFields.forEach((k) => {
+        if (!listFields.find((f) => f.field === k)) {
           listFields.push({
             field: k
           });
@@ -411,8 +408,8 @@ export default function ListView(props: ListViewProps) {
       });
     }
 
-    compositeKeys.forEach(k => {
-      if (!listFields.find(f => f.field === k)) {
+    compositeKeys.forEach((k) => {
+      if (!listFields.find((f) => f.field === k)) {
         listFields.push({
           field: k
         });
@@ -429,7 +426,7 @@ export default function ListView(props: ListViewProps) {
       !elementFound &&
       Array.isArray(select) &&
       !(compositeKeys !== null && compositeKeys?.length) &&
-      !select.find(sel => sel.field === itemKey)
+      !select.find((sel) => sel.field === itemKey)
     ) {
       return [
         ...select,
@@ -447,9 +444,9 @@ export default function ListView(props: ListViewProps) {
     return fieldsMap.get(columnId);
   };
 
-  const getFieldsMap = fieldDefs => {
+  const getFieldsMap = (fieldDefs) => {
     const fieldsMap = new Map();
-    fieldDefs.forEach(element => {
+    fieldDefs.forEach((element) => {
       fieldsMap.set(element.id, element);
     });
     return fieldsMap;
@@ -471,7 +468,7 @@ export default function ListView(props: ListViewProps) {
 
     const selectParams: any = [];
 
-    myColumns.forEach(column => {
+    myColumns.forEach((column) => {
       selectParams.push({
         field: column.id
       });
@@ -479,7 +476,7 @@ export default function ListView(props: ListViewProps) {
 
     const colList: any = [];
 
-    selectParams.forEach(col => {
+    selectParams.forEach((col) => {
       colList.push(col.field);
     });
 
@@ -517,7 +514,7 @@ export default function ListView(props: ListViewProps) {
       setTimeout(() => {
         PCore.getPubSubUtils().subscribe(
           PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CHANGE,
-          data => {
+          (data) => {
             processFilterChange(data);
           },
           `dashboard-component-${'id'}`,
@@ -869,9 +866,9 @@ export default function ListView(props: ListViewProps) {
     const value = event.target.value;
     const reqObj = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex(element => element[rowID] === value);
+      const index = response.findIndex((element) => element[rowID] === value);
       const selectedRow = response[index];
-      compositeKeys.forEach(element => {
+      compositeKeys.forEach((element) => {
         reqObj[element] = selectedRow[element];
       });
     } else {
@@ -884,9 +881,9 @@ export default function ListView(props: ListViewProps) {
   const onCheckboxClick = (rowValue: string, checked: boolean) => {
     const reqObj: any = {};
     if (compositeKeys?.length > 1) {
-      const index = response.findIndex(element => element[rowID] === rowValue);
+      const index = response.findIndex((element) => element[rowID] === rowValue);
       const selectedRow = response[index];
-      compositeKeys.forEach(element => {
+      compositeKeys.forEach((element) => {
         reqObj[element] = selectedRow[element];
       });
       reqObj.$selected = checked;
@@ -951,7 +948,7 @@ export default function ListView(props: ListViewProps) {
                 <table className='w-full border-collapse'>
                   <thead className='sticky top-0 bg-muted'>
                     <tr>
-                      {arColumns.map(column => {
+                      {arColumns.map((column) => {
                         return (
                           <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
                             <span
@@ -959,7 +956,7 @@ export default function ListView(props: ListViewProps) {
                               onClick={createSortHandler(column.id)}
                               role='button'
                               tabIndex={0}
-                              onKeyDown={e => {
+                              onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
                               }}
                             >
@@ -981,7 +978,7 @@ export default function ListView(props: ListViewProps) {
                             <button
                               type='button'
                               className='ml-1 inline-flex items-center align-bottom text-muted-foreground hover:text-foreground'
-                              onClick={event => {
+                              onClick={(event) => {
                                 _menuClick(event, column.id, column.type, column.label);
                               }}
                             >
@@ -995,10 +992,10 @@ export default function ListView(props: ListViewProps) {
                   <tbody>
                     {stableSort(arRows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map(row => {
+                      .map((row) => {
                         return (
                           <tr key={row.pxRefObjectInsName || row.pyID} className='border-b hover:bg-muted/50'>
-                            {arColumns.map(column => {
+                            {arColumns.map((column) => {
                               const value = row[column.id];
                               return (
                                 <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
@@ -1032,7 +1029,7 @@ export default function ListView(props: ListViewProps) {
                       {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && (
                         <th className='w-12 border-b px-4 py-3' />
                       )}
-                      {arColumns.map(column => {
+                      {arColumns.map((column) => {
                         return (
                           <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
                             <span
@@ -1040,7 +1037,7 @@ export default function ListView(props: ListViewProps) {
                               onClick={createSortHandler(column.id)}
                               role='button'
                               tabIndex={0}
-                              onKeyDown={e => {
+                              onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
                               }}
                             >
@@ -1068,7 +1065,7 @@ export default function ListView(props: ListViewProps) {
                       arRows.length > 0 &&
                       stableSort(arRows, getComparator(order, orderBy))
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map(row => {
+                        .map((row) => {
                           return (
                             <tr key={row[rowID]} className='border-b hover:bg-muted/50'>
                               {selectionMode === SELECTION_MODE.SINGLE && (
@@ -1088,12 +1085,12 @@ export default function ListView(props: ListViewProps) {
                                 <td className='px-4 py-2'>
                                   <Checkbox
                                     onCheckedChange={(checked: boolean | 'indeterminate') => onCheckboxClick(String(row[rowID]), checked === true)}
-                                    checked={selectedValues.some(sv => sv[rowID] === row[rowID])}
+                                    checked={selectedValues.some((sv) => sv[rowID] === row[rowID])}
                                     value={row[rowID]}
                                   />
                                 </td>
                               )}
-                              {arColumns.map(column => {
+                              {arColumns.map((column) => {
                                 const value = row[column.id];
                                 return (
                                   <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
@@ -1116,7 +1113,7 @@ export default function ListView(props: ListViewProps) {
                 <span>Rows per page:</span>
                 <select
                   value={rowsPerPage}
-                  onChange={e => handleChangeRowsPerPage(e.target.value)}
+                  onChange={(e) => handleChangeRowsPerPage(e.target.value)}
                   className='rounded-md border border-input bg-background px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
                 >
                   <option value={10}>10</option>
@@ -1179,7 +1176,7 @@ export default function ListView(props: ListViewProps) {
       {/* Filter dialog */}
       {open && (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50' onClick={_closeDialog}>
-          <div className='w-full max-w-md rounded-lg border bg-background p-0 shadow-lg' onClick={e => e.stopPropagation()}>
+          <div className='w-full max-w-md rounded-lg border bg-background p-0 shadow-lg' onClick={(e) => e.stopPropagation()}>
             <div className='border-b px-6 py-4'>
               <h3 className='text-lg font-semibold text-foreground'>Filter: {filterBy}</h3>
             </div>

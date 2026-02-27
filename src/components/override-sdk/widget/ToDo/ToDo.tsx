@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { X, ChevronRight } from 'lucide-react';
-
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { ChevronRight, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Button } from '../../../../design-system/ui/button';
-import { Card, CardHeader, CardContent } from '../../../../design-system/ui/card';
+import { Card, CardContent, CardHeader } from '../../../../design-system/ui/card';
 
 import './ToDo.css';
 
@@ -25,7 +24,7 @@ interface ToDoProps extends PConnProps {
   isConfirm?: boolean;
 }
 
-const isChildCase = assignment => {
+const isChildCase = (assignment) => {
   return assignment.isChild;
 };
 
@@ -91,15 +90,15 @@ export default function ToDo(props: ToDoProps) {
     return [];
   }
 
-  const getAssignmentId = assignment => {
+  const getAssignmentId = (assignment) => {
     return type === CONSTS.TODO ? assignment.ID : assignment.id;
   };
 
-  const getPriority = assignment => {
+  const getPriority = (assignment) => {
     return type === CONSTS.TODO ? assignment.urgency : assignment.priority;
   };
 
-  const getAssignmentName = assignment => {
+  const getAssignmentName = (assignment) => {
     return type === CONSTS.TODO ? assignment.name : assignment.stepName;
   };
 
@@ -177,7 +176,7 @@ export default function ToDo(props: ToDoProps) {
     return displayID;
   };
 
-  const getListItemComponent = assignment => {
+  const getListItemComponent = (assignment) => {
     return (
       <>
         <span className='hidden md:inline'>
@@ -210,7 +209,7 @@ export default function ToDo(props: ToDoProps) {
         </CardHeader>
       )}
       <ul className='divide-y'>
-        {assignments.map(assignment => (
+        {assignments.map((assignment) => (
           <li className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
             <div className='mr-4 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
               {currentUserInitials}
@@ -263,7 +262,7 @@ export default function ToDo(props: ToDoProps) {
           )}
           <CardContent>
             <ul className='divide-y'>
-              {assignments.map(assignment => (
+              {assignments.map((assignment) => (
                 <li
                   key={getAssignmentId(assignment)}
                   className='flex cursor-pointer items-center gap-3 px-2 py-3 hover:bg-accent'

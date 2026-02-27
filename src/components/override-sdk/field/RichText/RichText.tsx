@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useRef } from 'react';
 
 interface RichTextProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextArea here
@@ -19,7 +19,7 @@ export default function RichText(props: RichTextProps) {
   const editorRef: any = useRef(null);
 
   let { readOnly, required, disabled } = props;
-  [readOnly, required, disabled] = [readOnly, required, disabled].map(prop => prop === true || (typeof prop === 'string' && prop === 'true'));
+  [readOnly, required, disabled] = [readOnly, required, disabled].map((prop) => prop === true || (typeof prop === 'string' && prop === 'true'));
 
   const helperTextToDisplay = validatemessage || helperText;
 

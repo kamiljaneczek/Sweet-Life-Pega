@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useRef, useState } from 'react';
 
 import './SummaryItem.css';
 
@@ -29,7 +29,7 @@ export default function SummaryItem(props: SummaryItemProps) {
   }
 
   const handleClick = () => {
-    setOpen(prev => !prev);
+    setOpen((prev) => !prev);
   };
 
   const handleClose = () => {
@@ -96,7 +96,7 @@ export default function SummaryItem(props: SummaryItemProps) {
                 className='absolute right-0 top-full z-50 mt-1 min-w-[150px] rounded border border-gray-200 bg-white py-1 shadow-lg'
               >
                 {item.actions &&
-                  item.actions.map(option => (
+                  item.actions.map((option) => (
                     <button
                       type='button'
                       key={option.id || option.text}

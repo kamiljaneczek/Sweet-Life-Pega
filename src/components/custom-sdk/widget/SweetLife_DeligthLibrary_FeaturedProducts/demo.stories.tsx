@@ -12,7 +12,7 @@ const meta: Meta<typeof SweetLifeDeligthLibraryFeaturedProducts> = {
 export default meta;
 type Story = StoryObj<typeof SweetLifeDeligthLibraryFeaturedProducts>;
 
-export const BaseSweetLifeDeligthLibraryFeaturedProducts: Story = args => {
+export const BaseSweetLifeDeligthLibraryFeaturedProducts: Story = (args) => {
   const props = {
     datasource: configProps.datasource
   };
