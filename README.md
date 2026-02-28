@@ -3,6 +3,8 @@ If foudn issues create help fxiing it.
 
 This version is only compatible with Pega Infinity 23
 
+Switch to pega25/react-router or main for Pega 25 compatible version
+
 Check out demo: [https://youtu.be/LrdKmpy3QCU](https://youtu.be/LrdKmpy3QCU)
 
 
