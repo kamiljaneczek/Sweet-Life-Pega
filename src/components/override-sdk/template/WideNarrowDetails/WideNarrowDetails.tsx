@@ -1,10 +1,8 @@
-import { createElement } from 'react';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-
-import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
+import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { createElement } from 'react';
 
 interface WideNarrowDetailsProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -12,8 +10,6 @@ interface WideNarrowDetailsProps extends PConnProps {
   label?: string;
   showHighlightedData?: boolean;
 }
-
-const COLUMN_WIDTHS = [8, 4];
 
 export default function WideNarrowDetails(props: WideNarrowDetailsProps) {
   // Get emitted components from map (so we can get any override that may exist)
@@ -36,7 +32,7 @@ export default function WideNarrowDetails(props: WideNarrowDetailsProps) {
 
     return createElement(createPConnectComponent(), {
       ...theConfigObject,
-      // eslint-disable-next-line react/no-array-index-key
+
       key: index.toString()
     });
   });
@@ -45,7 +41,7 @@ export default function WideNarrowDetails(props: WideNarrowDetailsProps) {
   let highlightedDataArr = [];
   if (showHighlightedData) {
     const { highlightedData = [] } = (getPConnect().getRawMetadata() as any).config;
-    highlightedDataArr = highlightedData.map(field => {
+    highlightedDataArr = highlightedData.map((field) => {
       field.config.displayMode = 'STACKED_LARGE_VAL';
 
       // Mark as status display when using pyStatusWork
@@ -54,7 +50,7 @@ export default function WideNarrowDetails(props: WideNarrowDetailsProps) {
         field.config.displayAsStatus = true;
       }
 
-      return getPConnect().createComponent(field, '', '', {}); // 2nd, 3rd, and 4th args empty string/object/null until typedef marked correctly as optional
+      return getPConnect().createComponent(field, undefined, undefined, {}); // 2nd, 3rd, and 4th args now properly typed as optional
     });
   }
 
@@ -63,24 +59,21 @@ export default function WideNarrowDetails(props: WideNarrowDetailsProps) {
     theName = propsToUse.label;
   }
 
+  // Wide-narrow layout: 2fr 1fr (equivalent to MUI xs={8} xs={4} in 12-column grid)
   return (
     <FieldGroup name={theName}>
       {showHighlightedData && highlightedDataArr.length > 0 && (
-        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+        <div className='grid gap-2 pb-4' style={{ gridTemplateColumns: '2fr 1fr' }}>
           {highlightedDataArr.map((child, i) => (
-            <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`hf-${i + 1}`}>
-              {child}
-            </Grid>
+            <div key={`hf-${i + 1}`}>{child}</div>
           ))}
-        </Grid>
+        </div>
       )}
-      <Grid container spacing={1}>
+      <div className='grid gap-2' style={{ gridTemplateColumns: '2fr 1fr' }}>
         {children?.map((child, i) => (
-          <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`r-${i + 1}`}>
-            {child}
-          </Grid>
+          <div key={`r-${i + 1}`}>{child}</div>
         ))}
-      </Grid>
+      </div>
     </FieldGroup>
   );
 }

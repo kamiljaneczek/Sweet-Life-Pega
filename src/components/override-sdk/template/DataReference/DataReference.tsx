@@ -1,7 +1,6 @@
-import { PropsWithChildren, ReactElement, useEffect, useMemo, useState } from 'react';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement, useEffect, useMemo, useState } from 'react';
 
 // ReferenceProps can't be used until getComponentConfig() is NOT private
 interface DataReferenceProps extends PConnProps {
@@ -68,15 +67,15 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
           ''
         ) as Promise<any>
       )
-        .then(res => {
+        .then((res) => {
           if (res.data.data !== null) {
             const ddDataSource = res.data.data
-              .map(listItem => ({
+              .map((listItem) => ({
                 key: listItem[key.split(' .', 2)[1]],
                 text: listItem[text.split(' .', 2)[1]],
                 value: listItem[value.split(' .', 2)[1]]
               }))
-              .filter(item => item.key);
+              .filter((item) => item.key);
             // Filtering out undefined entries that will break preview
             setDropDownDataSource(ddDataSource);
           } else {
@@ -84,8 +83,7 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
             setDropDownDataSource(ddDataSource);
           }
         })
-        .catch(err => {
-          // eslint-disable-next-line no-console
+        .catch((err) => {
           console.error(err?.stack);
           return Promise.resolve({
             data: { data: [] }
@@ -123,12 +121,12 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
     }
   }
 
-  const handleSelection = event => {
+  const handleSelection = (event) => {
     const caseKey = pConn.getCaseInfo().getKey();
     const refreshOptions = { autoDetectRefresh: true };
     if (canBeChangedInReviewMode && pConn.getValue('__currentPageTabViewName', '')) {
       // 2nd arg empty string until typedef marked correctly
-      getPConnect().getActionsApi().refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName', ''), null, refreshOptions); // 2nd arg empty string until typedef marked correctly
+      getPConnect().getActionsApi().refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName', ''), '', refreshOptions);
       PCore.getDeferLoadManager().refreshActiveComponents(pConn.getContextName());
     } else {
       const pgRef = pConn.getPageReference().replace('caseInfo.content', '');
@@ -138,12 +136,12 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
     // AutoComplete sets value on event.id whereas Dropdown sets it on event.target.value
     const propValue = event?.id || event?.target.value;
     if (propValue && canBeChangedInReviewMode && isDisplayModeEnabled) {
-      (PCore.getDataApiUtils().getCaseEditLock(caseKey, '') as Promise<any>).then(caseResponse => {
+      (PCore.getDataApiUtils().getCaseEditLock(caseKey, '') as Promise<any>).then((caseResponse) => {
         const pageTokens = pConn.getPageReference().replace('caseInfo.content', '').split('.');
         let curr = {};
         const commitData = curr;
 
-        pageTokens.forEach(el => {
+        pageTokens.forEach((el) => {
           if (el !== '') {
             curr[el] = {};
             curr = curr[el];
@@ -168,7 +166,7 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
             caseResponse.headers.etag,
             pConn.getContextName()
           ) as Promise<any>
-        ).then(response => {
+        ).then((response) => {
           PCore.getContainerUtils().updateParentLastUpdateTime(pConn.getContextName(), response.data.data.caseInfo.lastUpdateTime);
           PCore.getContainerUtils().updateRelatedContextEtag(pConn.getContextName(), response.headers.etag);
         });
@@ -251,10 +249,10 @@ export default function DataReference(props: PropsWithChildren<DataReferenceProp
   }
 
   return childrenToRender.length === 1 ? (
-    childrenToRender[0] ?? null
+    (childrenToRender[0] ?? null)
   ) : (
     <div>
-      {childrenToRender.map(child => (
+      {childrenToRender.map((child) => (
         <>{child}</>
       ))}
     </div>

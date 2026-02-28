@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useMemo } from 'react';
-
-import { getReferenceList, buildView } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+
+import { buildView, getReferenceList } from '@pega/react-sdk-components/lib/components/helpers/field-group-utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useMemo } from 'react';
 
 interface FieldGroupTemplateProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -55,39 +54,29 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
     }
   };
 
-  if (!isReadonlyMode) {
-    const addFieldGroupItem = () => {
-      addRecord();
-    };
-    const deleteFieldGroupItem = index => {
-      if (PCore.getPCoreVersion()?.includes('8.7')) {
-        pConn.getListActions().deleteEntry(index, pageReference);
-      } else {
-        pConn.getListActions().deleteEntry(index);
-      }
-    };
-    if (referenceList.length === 0 && allowAddEdit !== false) {
-      addFieldGroupItem();
+  const addFieldGroupItem = () => {
+    addRecord();
+  };
+  const deleteFieldGroupItem = (index) => {
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
+      pConn.getListActions().deleteEntry(index, pageReference);
+    } else {
+      pConn.getListActions().deleteEntry(index);
     }
+  };
 
-    const MemoisedChildren = useMemo(() => {
-      return referenceList.map((item, index) => ({
-        id: index,
-        name: fieldHeader === 'propertyRef' ? getDynamicHeaderProp(item, index) : `${HEADING} ${index + 1}`,
-        children: buildView(pConn, index, lookForChildInConfig)
-      }));
-    }, [referenceList?.length]);
-
-    return (
-      <FieldGroupList
-        items={MemoisedChildren}
-        onAdd={allowAddEdit !== false ? addFieldGroupItem : undefined}
-        onDelete={allowAddEdit !== false ? deleteFieldGroupItem : undefined}
-      />
-    );
+  if (isReadonlyMode) {
+    pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   }
 
-  pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
+  const MemoisedChildren = useMemo(() => {
+    return referenceList.map((item, index) => ({
+      id: index,
+      name: fieldHeader === 'propertyRef' ? getDynamicHeaderProp(item, index) : `${HEADING} ${index + 1}`,
+      children: buildView(pConn, index, lookForChildInConfig)
+    }));
+  }, [referenceList?.length]);
+
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => {
       const key = item[heading] || `field-group-row-${index}`;
@@ -98,6 +87,20 @@ export default function FieldGroupTemplate(props: FieldGroupTemplateProps) {
       );
     });
   }, []);
+
+  if (!isReadonlyMode) {
+    if (referenceList.length === 0 && allowAddEdit !== false) {
+      addFieldGroupItem();
+    }
+
+    return (
+      <FieldGroupList
+        items={MemoisedChildren}
+        onAdd={allowAddEdit !== false ? addFieldGroupItem : undefined}
+        onDelete={allowAddEdit !== false ? deleteFieldGroupItem : undefined}
+      />
+    );
+  }
 
   return <div>{memoisedReadOnlyList}</div>;
 }

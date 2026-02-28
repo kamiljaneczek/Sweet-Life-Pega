@@ -1,34 +1,30 @@
-import { withStyles } from '@material-ui/core/styles';
-import { Tab, Divider } from '@material-ui/core';
-
 // LeftAlignVerticalTabs does NOT have getPConnect. So, no need to extend from PConnProps
 
 interface LeftAlignVerticalTabsProps {
   // If any, enter additional props that only exist on this component
+  label?: string;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
 // LeftAlignVerticalTab is a specialized Tab that has styles to make it
 //  left aligned and full width of the container Tabs
 
-// Aligning the Tab labels left (with & .<class name> syntax) inspired by:
-//  https://stackoverflow.com/questions/63307723/how-to-modify-the-wrapper-css-rule-of-a-tabs-component-to-make-the-text-aligned
+export default function LeftAlignVerticalTabs(props: LeftAlignVerticalTabsProps) {
+  const { label, selected = false, onClick } = props;
 
-// In this styling, "root" is the top-level "Tab" object (which is the button)
-//  and the button contains spans that will match on the '> span'
-const LeftAlignVerticalTabs: any = withStyles((/* theme */) => ({
-  root: {
-    width: '100%',
-    maxWidth: '100%'
-  },
-  wrapper: {
-    display: 'block',
-    textAlign: 'left'
-  }
-}))((props: LeftAlignVerticalTabsProps) => (
-  <div>
-    <Tab {...props} />
-    <Divider />
-  </div>
-));
-
-export default LeftAlignVerticalTabs;
+  return (
+    <div>
+      <button
+        type='button'
+        role='tab'
+        aria-selected={selected}
+        className={`w-full cursor-pointer px-4 py-2 text-left text-sm ${selected ? 'border-l-[3px] border-blue-700 font-medium text-blue-700 dark:border-blue-400 dark:text-blue-400' : 'border-l-[3px] border-transparent text-foreground hover:bg-muted'}`}
+        onClick={onClick}
+      >
+        {label}
+      </button>
+      <hr className='border-border' />
+    </div>
+  );
+}

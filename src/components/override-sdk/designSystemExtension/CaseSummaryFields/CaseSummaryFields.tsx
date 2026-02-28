@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import isDeepEqual from 'fast-deep-equal/react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
 
 import { getDateFormatInfo } from '@pega/react-sdk-components/lib/components/helpers/date-format-utils';
-import { getCurrencyOptions } from '@pega/react-sdk-components/lib/components/field/Currency/currency-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useState } from 'react';
 
 import './CaseSummaryFields.css';
 
@@ -18,6 +16,15 @@ interface CaseSummaryFieldsProps {
   status?: string;
   showStatus?: boolean;
   theFields: any[] | any | never;
+}
+
+function ReadOnlyField({ label, value }: { label: string; value: string }) {
+  return (
+    <div className='flex flex-col'>
+      <span className='text-xs text-muted-foreground'>{label}</span>
+      <span className='text-sm text-foreground'>{value}</span>
+    </div>
+  );
 }
 
 export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
@@ -34,23 +41,13 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
 
     if (field.config.value === null || field.config.value === '') {
       // Special handling for missing value
-      // eslint-disable-next-line sonarjs/no-small-switch
+
       switch (fieldTypeLower) {
         case 'caseoperator':
           return <Operator {...field.config} />;
-          break;
 
         default:
-          return (
-            <TextField
-              value='---'
-              label={field.config.label}
-              InputProps={{
-                readOnly: true,
-                disableUnderline: true
-              }}
-            />
-          );
+          return <ReadOnlyField label={field.config.label} value='---' />;
       }
     }
 
@@ -59,62 +56,32 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
       case 'decimal':
       case 'integer':
       case 'dropdown':
-        return (
-          <TextField
-            value={field.config.value}
-            label={field.config.label}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
-          />
-        );
+        return <ReadOnlyField label={field.config.label} value={field.config.value} />;
 
       case 'checkbox': {
         const { caption, label, value, trueLabel, falseLabel } = field.config;
         const fieldLabel = label || caption;
         const fieldValue = value ? trueLabel : falseLabel;
 
-        return (
-          <TextField
-            value={fieldValue}
-            label={fieldLabel}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
-          />
-        );
+        return <ReadOnlyField label={fieldLabel} value={fieldValue} />;
       }
 
       case 'status':
         return (
-          <TextField
-            className='psdk-csf-status-style'
-            value={field.config.value}
-            label={field.config.label}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
-          />
+          <div className='flex flex-col'>
+            <span className='text-xs text-muted-foreground'>{field.config.label}</span>
+            <span className='psdk-csf-status-style'>{field.config.value}</span>
+          </div>
         );
 
       case 'phone': {
         const displayPhone = field.config.value !== '' ? field.config.value : '---';
         return (
           <a href={`tel:${displayPhone}`}>
-            <TextField
-              value={field.config.value}
-              label={field.config.label}
-              InputProps={{
-                readOnly: true,
-                inputProps: {
-                  style: { cursor: 'pointer' },
-                  disableUnderline: true
-                }
-              }}
-            />
+            <div className='flex flex-col cursor-pointer'>
+              <span className='text-xs text-muted-foreground'>{field.config.label}</span>
+              <span className='text-sm text-foreground'>{field.config.value}</span>
+            </div>
           </a>
         );
       }
@@ -123,15 +90,10 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
         const displayEmail = format(field.config.value, field.type);
         return (
           <a href={`mailto:${displayEmail}`}>
-            <TextField
-              value={field.config.value}
-              label={field.config.label}
-              InputProps={{
-                readOnly: true,
-                disableUnderline: true,
-                inputProps: { style: { cursor: 'pointer' } }
-              }}
-            />
+            <div className='flex flex-col cursor-pointer'>
+              <span className='text-xs text-muted-foreground'>{field.config.label}</span>
+              <span className='text-sm text-foreground'>{field.config.value}</span>
+            </div>
           </a>
         );
       }
@@ -144,45 +106,23 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
           fieldTypeLower === 'datetime' ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong;
 
         return (
-          <TextField
+          <ReadOnlyField
+            label={field.config.label}
             value={format(field.config.value, field.type, {
               format: theFormat
             })}
-            label={field.config.label}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
           />
         );
       }
 
       case 'currency': {
         const theCurrencyOptions = getCurrencyOptions(field.config?.currencyISOCode);
-        return (
-          <TextField
-            value={format(field.config.value, field.type, theCurrencyOptions)}
-            label={field.config.label}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
-          />
-        );
+        return <ReadOnlyField label={field.config.label} value={format(field.config.value, field.type, theCurrencyOptions)} />;
       }
 
       case 'boolean':
       case 'userreference':
-        return (
-          <TextField
-            value={format(field.config.value, field.type)}
-            label={field.config.label}
-            InputProps={{
-              readOnly: true,
-              disableUnderline: true
-            }}
-          />
-        );
+        return <ReadOnlyField label={field.config.label} value={format(field.config.value, field.type)} />;
 
       case 'caseoperator':
         return <Operator {...field.config} />;
@@ -202,9 +142,9 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
       // display the field when either visibility property doesn't exist or is true(if exists)
       if (field.config.visibility === undefined || field.config.visibility === true) {
         return (
-          <Grid item xs={6} key={field.config.label}>
+          <div className='col-span-6' key={field.config.label}>
             {getFieldValue(field)}
-          </Grid>
+          </div>
         );
       }
 
@@ -237,9 +177,5 @@ export default function CaseSummaryFields(props: CaseSummaryFieldsProps) {
     setFieldsToRender(theFieldsModifiable);
   }
 
-  return (
-    <Grid container className='psdk-case-summary-fields'>
-      {theFieldsAsGridItems}
-    </Grid>
-  );
+  return <div className='psdk-case-summary-fields grid grid-cols-12'>{theFieldsAsGridItems}</div>;
 }

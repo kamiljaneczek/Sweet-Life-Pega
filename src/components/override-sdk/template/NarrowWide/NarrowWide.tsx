@@ -1,16 +1,16 @@
-import { PropsWithChildren, ReactElement } from 'react';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 import './NarrowWide.css';
 
 interface NarrowWideProps extends PConnProps {
   // If any, enter additional props that only exist on this component
   a: any;
   b: any;
-  // eslint-disable-next-line react/no-unused-prop-types
+
   title?: string;
-  // eslint-disable-next-line react/no-unused-prop-types
+
   cols?: string;
-  // eslint-disable-next-line react/no-unused-prop-types
+
   icon?: string;
 }
 

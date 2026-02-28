@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from 'react';
-import isDeepEqual from 'fast-deep-equal/react';
-import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
+
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { Label } from '../../../../design-system/ui/label';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../design-system/ui/select';
-import { cn } from '../../../../lib/utils';
 
 interface IOption {
   key: string;
@@ -17,7 +16,7 @@ interface IOption {
 
 const flattenParameters = (params = {}) => {
   const flatParams = {};
-  Object.keys(params).forEach(key => {
+  Object.keys(params).forEach((key) => {
     const { name, value: theVal } = params[key];
     flatParams[name] = theVal;
   });
@@ -25,18 +24,18 @@ const flattenParameters = (params = {}) => {
   return flatParams;
 };
 
-const preProcessColumns = columnList => {
-  return columnList.map(col => {
+const preProcessColumns = (columnList) => {
+  return columnList.map((col) => {
     const tempColObj = { ...col };
-    tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
+    tempColObj.value = col.value?.startsWith('.') ? col.value.substring(1) : col.value;
     return tempColObj;
   });
 };
 
-const getDisplayFieldsMetaData = columnList => {
-  const displayColumns = columnList.filter(col => col.display === 'true');
+const getDisplayFieldsMetaData = (columnList) => {
+  const displayColumns = columnList.filter((col) => col.display === 'true');
   const metaDataObj: any = { key: '', primary: '', secondary: [] };
-  const keyCol = columnList.filter(col => col.key === 'true');
+  const keyCol = columnList.filter((col) => col.key === 'true');
   metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
   for (let index = 0; index < displayColumns.length; index += 1) {
     if (displayColumns[index].primary === 'true') {
@@ -143,7 +142,7 @@ export default function Dropdown(props: DropdownProps) {
       getDataPage(datasource, parameters, context).then((results: any) => {
         const optionsData: any[] = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
-        results?.forEach(element => {
+        results?.forEach((element) => {
           const val = element[displayColumn.primary]?.toString();
           const obj = {
             key: element[displayColumn.key] || element.pyGUID,
@@ -156,7 +155,7 @@ export default function Dropdown(props: DropdownProps) {
     }
   }, []);
 
-  const metaData = Array.isArray(fieldMetadata) ? fieldMetadata.filter(field => field?.classID === className)[0] : fieldMetadata;
+  const metaData = Array.isArray(fieldMetadata) ? fieldMetadata.filter((field) => field?.classID === className)[0] : fieldMetadata;
 
   let displayName = metaData?.datasource?.propertyForDisplayText;
   displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
@@ -171,7 +170,7 @@ export default function Dropdown(props: DropdownProps) {
     return (
       <FieldValueList
         name={hideLabel ? '' : label}
-        // @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
+        // @ts-expect-error - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
         value={thePConn.getLocalizedValue(value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
       />
     );
@@ -181,7 +180,7 @@ export default function Dropdown(props: DropdownProps) {
     return (
       <FieldValueList
         name={hideLabel ? '' : label}
-        // @ts-ignore - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
+        // @ts-expect-error - Property 'getLocaleRuleNameFromKeys' is private and only accessible within class 'C11nEnv'
         value={thePConn.getLocalizedValue(value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
         variant='stacked'
       />
@@ -198,7 +197,7 @@ export default function Dropdown(props: DropdownProps) {
     'data-test-id': testId
   }; */
 
-  const handleChange = evt => {
+  const handleChange = (evt) => {
     const selectedValue = evt === placeholder ? '' : evt;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
     if (onRecordChange) {
@@ -220,7 +219,7 @@ export default function Dropdown(props: DropdownProps) {
         required={required}
         helperText={helperTextToDisplay}
         error={status === 'error'}
-        className='flex w-full p-2shad.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light'
+        className='flex w-full p-2shad.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent focus:border-accent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent'
       >
         <SelectValue
           // placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly

@@ -1,0 +1,124 @@
+
+
+Pegasystems' Developer License for PegaRULES Process Commander 
+
+IMPORTANT-READ CAREFULLY: Until you or your company have a signed written 
+Software License Agreement with Pegasystems Inc. ("Pegasystems") covering the 
+Use of the PegaRULES Process Commander Software ("Software"), the terms of 
+this license agreement shall govern your Use of the Software.  If you or your 
+company have signed a written Software License Agreement with Pegasystems 
+covering the Use of the Software, the terms of the signed license agreement 
+shall take precedence over any conflicting terms of this Agreement.  This 
+PegaRULES Process Commander Software License Agreement ("License Agreement") 
+is a binding agreement between you and Pegasystems for the use of the 
+Software identified above, or any component thereof, which includes computer 
+software and may include associated media, printed materials, and "online" or 
+electronic documentation.  Your use, distribution, or installation of the 
+Software indicates your acceptance of this agreement. BY INSTALLING, COPYING, 
+OR OTHERWISE USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS OF THIS 
+LICENSE AGREEMENT. IF YOU DO NOT AGREE TO THE TERMS OF THIS LICENSE 
+AGREEMENT, DO NOT INSTALL, COPY, OR USE THE SOFTWARE.
+
+The Software is owned by Pegasystems or its suppliers and is protected by 
+copyright and other laws.  THE SOFTWARE IS LICENSED, NOT PURCHASED. 
+
+1. GRANT OF LICENSE. BY CLICKING ACCEPT BELOW,  EVIDENCING YOUR ACCEPTANCE OF 
+THIS LICENSE AGREEMENT, PEGASYSTEMS GRANTS YOU A LIMITED, NON-TRANSFERABLE, 
+NON-EXCLUSIVE LICENSE TO USE THE SOFTWARE, IN OBJECT CODE ONLY, AS FOLLOWS:  
+ 
+Provided that you comply with all terms and conditions of this License 
+Agreement, Pegasystems grants to you the following rights under this License 
+Agreement.  The Software is licensed solely for development purposes.  In 
+addition, you are permitted to use the Software on one server solely for the 
+purposes of developing, testing and demonstrating applications. Production 
+use of this Software is NOT granted by this License Agreement. 
+
+(a) Solely for purposes of your use of the Software as authorized under this 
+License, you may permit an unlimited number of authorized devices to access 
+it for the purposes of testing an application under development.  Deployment 
+licenses, for any other purpose (including, without limitation, usage in a 
+general production environment) must be obtained from Pegasystems.
+
+(b) TERM - YOUR RIGHT TO USE THE SOFTWARE UNDER THIS LICENSE SHALL BE 
+EFFECTIVE FROM THE DATE YOU FIRST INSTALL ANY PORTION OF THE SOFTWARE ON ANY 
+DEVICE FOR A PERIOD OF NINETY (90) DAYS, AFTER WHICH TIME THE SOFTWARE AND 
+ANY COPIES MUST BE UNINSTALLED AND RETURNED TO PEGASYSTEMS. If you desire to 
+use the Software after this Term, you will need to execute a written License 
+Agreement with Pegasystems. 
+
+(c) All rights not expressly granted are reserved by Pegasystems.
+
+2. ADDITIONAL LIMITATIONS. You may not reverse engineer, decompile, or 
+disassemble the Software. You may not rent, lease, lend, or transfer the 
+Software. 
+
+3. INTELLECTUAL PROPERTY RIGHTS. All ownership, title and intellectual 
+property rights in and to the Software both existing object and all generated 
+code (including but not limited to any images, photographs, animations, 
+video, audio, text and "applets" incorporated into the Software), and any 
+copies you are permitted to make herein are owned by Pegasystems or its 
+suppliers. All ownership, title and intellectual property rights in and to 
+the content which may be accessed through use of the Software is the property 
+of the respective content owner and may be protected by applicable copyright 
+or other intellectual property laws and treaties. This License grants you no 
+rights to use such content. For each copy of the Software you are authorized 
+to use above, you may also reproduce one additional copy of the Software 
+solely for archival or restoration purposes.
+
+4. U.S. GOVERNMENT RESTRICTED RIGHTS. All Software provided to the U.S. 
+Government pursuant to solicitations issued on or after December 1, 1995 is 
+provided with the commercial rights and restrictions described elsewhere 
+herein. All SOFTWARE provided to the U.S. Government pursuant to 
+solicitations issued prior to December 1, 1995 is provided with RESTRICTED 
+RIGHTS as provided for in FAR, 48 CFR 52.227-14 (JUNE 1987) or FAR, 48 CFR 
+252.227-7013 (OCT 1988), as applicable. 
+
+5. EXPORT RESTRICTIONS. You acknowledge that Software is of U.S. origin. You 
+agree to comply with all applicable international and national laws that 
+apply to the Software, including the U.S. Export Administration Regulations, 
+as well as end-user, end-use and destination restrictions issued by U.S. and 
+other governments. 
+
+6. APPLICABLE LAW. This License is governed by the laws of the Commonwealth 
+of Massachusetts. 
+
+7. QUESTIONS. Should you have any questions concerning this License, or if 
+you desire to contact Pegasystems for any reason, please contact
+Pegasystems Inc., One Rogers Street Cambridge, MA 02142-1209, USA.  
+617-374-9600 or on the Web at http://www.pega.com.
+
+8. DISCLAIMER OF WARRANTIES. To the maximum extent permitted by applicable 
+law, Pegasystems and its suppliers provide the Software AS IS, and hereby 
+disclaim all warranties and conditions, either express, implied or statutory, 
+including, but not limited to, any (if any) implied warranties or conditions 
+of merchantability, of fitness for a particular purpose, of lack of viruses, 
+of accuracy or completeness of responses, of results, and of lack of 
+negligence or lack of workmanlike effort. ALSO, THERE IS NO WARRANTY OR 
+CONDITION OF TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO 
+DESCRIPTION OR NON-INFRINGEMENT, WITH REGARD TO THE SOFTWARE. THE ENTIRE RISK 
+AS TO THE QUALITY OF OR ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE 
+REMAINS WITH YOU.
+
+9. EXCLUSION OF INCIDENTAL, CONSEQUENTIAL AND CERTAIN OTHER DAMAGES. TO THE 
+MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL PEGASYSTEMS OR 
+ITS SUPPLIERS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR 
+CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR 
+LOSS OF PROFITS OR CONFIDENTIAL OR OTHER INFORMATION, FOR BUSINESS 
+INTERRUPTION, FOR PERSONAL INJURY, FOR LOSS OF PRIVACY, FOR FAILURE TO MEET 
+ANY DUTY INCLUDING OF GOOD FAITH OR OF REASONABLE CARE, FOR NEGLIGENCE, AND 
+FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN ANY 
+WAY RELATED TO THE USE OF OR INABILITY TO USE THE SOFTWARE, OR OTHERWISE 
+UNDER OR IN CONNECTION WITH ANY PROVISION OF THIS LICENSE, EVEN IN THE EVENT 
+OF THE FAULT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, BREACH OF 
+CONTRACT OR BREACH OF WARRANTY OF PEGASYSTEMS OR ANY SUPPLIER, AND EVEN IF 
+PEGASYSTEMS OR ANY SUPPLIER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH 
+DAMAGES. 
+
+10. LIMITATION OF LIABILITY AND REMEDIES. NOTWITHSTANDING ANY DAMAGES THAT 
+YOU MIGHT INCUR FOR ANY REASON WHATSOEVER (INCLUDING, WITHOUT LIMITATION, ALL 
+DAMAGES REFERENCED ABOVE AND ALL DIRECT OR GENERAL DAMAGES), PEGASYSTEMS 
+AGGREGATE LIABILITY FOR ALL MATTERS ARISING FROM, OR IN CONNECTION WITH THIS 
+AGREEMENT, WHETHER IN CONTRACT, TORT, OR OTHERWISE, SHALL BE LIMITED TO THE 
+GREATER OF THE AMOUNT ACTUALLY PAID BY YOU FOR THE SOFTWARE OR $10.00 EVEN IF 
+THAT PARTY HAS BEEN ADVISED ABOUT OR SHOULD HAVE BEEN AWARE OF THE 
+POSSIBILITY OF SUCH DAMAGES. 

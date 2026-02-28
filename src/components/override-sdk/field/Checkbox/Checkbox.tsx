@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel } from '@material-ui/core';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useEffect, useState } from 'react';
+
+import { Checkbox } from '../../../../design-system/ui/checkbox';
+import { Label } from '../../../../design-system/ui/label';
 
 interface CheckboxProps extends Omit<PConnFieldProps, 'value'> {
   // If any, enter additional props that only exist on Checkbox here
   value?: boolean;
-  // eslint-disable-next-line react/no-unused-prop-types
+
   caption?: string;
   trueLabel?: string;
   falseLabel?: string;
@@ -56,37 +58,37 @@ export default function CheckboxComponent(props: CheckboxProps) {
     return <FieldValueList name={hideLabel ? '' : caption} value={value ? trueLabel : falseLabel} variant='stacked' />;
   }
 
-  const handleChange = event => {
-    handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
+  const handleChange = (checkedState: boolean) => {
+    handleEvent(actionsApi, 'changeNblur', propName, checkedState as unknown as string);
   };
 
-  const handleBlur = event => {
-    thePConn.getValidationApi().validate(event.target.checked);
+  const handleBlur = () => {
+    thePConn.getValidationApi().validate(checked as unknown as string);
   };
-
-  let theCheckbox = <Checkbox color='primary' disabled={disabled} />;
-
-  if (readOnly) {
-    // Workaround for lack of InputProps readOnly from https://github.com/mui-org/material-ui/issues/17043
-    //  Also note that we need to turn off the onChange call in the FormControlLabel wrapper, too. See below!
-    theCheckbox = <Checkbox value={value || false} readOnly={readOnly} />;
-  }
 
   return (
-    <FormControl required={required} error={status === 'error'}>
-      {!hideLabel && <FormLabel component='legend'>{label}</FormLabel>}
-      <FormGroup>
-        <FormControlLabel
-          control={theCheckbox}
+    <fieldset className={status === 'error' ? 'text-destructive' : ''}>
+      {!hideLabel && (
+        <legend className='mb-1 text-sm font-medium'>
+          {label}
+          {required && <span className='text-destructive'> *</span>}
+        </legend>
+      )}
+      <div className='flex items-center gap-2' data-test-id={testId}>
+        <Checkbox
+          id={`checkbox-${propName}`}
           checked={checked}
-          onChange={!readOnly ? handleChange : undefined}
+          onCheckedChange={!readOnly ? handleChange : undefined}
           onBlur={!readOnly ? handleBlur : undefined}
-          label={caption}
-          labelPlacement='end'
-          data-test-id={testId}
+          disabled={disabled || readOnly}
         />
-      </FormGroup>
-      <FormHelperText>{helperTextToDisplay}</FormHelperText>
-    </FormControl>
+        <Label htmlFor={`checkbox-${propName}`} className='text-sm font-normal'>
+          {caption}
+        </Label>
+      </div>
+      {helperTextToDisplay && (
+        <p className={`mt-1 text-xs ${status === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}>{helperTextToDisplay}</p>
+      )}
+    </fieldset>
   );
 }

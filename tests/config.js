@@ -21,6 +21,10 @@ const config = {
       user: {
         username: 'user.digv2',
         password: 'pega'
+      },
+      localizedUser: {
+        username: 'localization@DigV2',
+        password: 'pega'
       }
     }
   },
@@ -47,5 +51,4 @@ const config = {
   }
 };
 
-// eslint-disable-next-line no-undef
 exports.config = config;

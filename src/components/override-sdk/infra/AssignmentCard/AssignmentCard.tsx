@@ -1,7 +1,7 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 interface AssignmentCardProps extends PConnProps {
   // If any, enter additional props that only exist on this component

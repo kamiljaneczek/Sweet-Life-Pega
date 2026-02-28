@@ -1,24 +1,18 @@
-/* eslint-disable no-nested-ternary */
-
-import { useState, useEffect, useContext } from 'react';
-import { Card } from '../../../../design-system/ui/card';
-import Typography from '../../../../design-system/ui/typography';
-import DayjsUtils from '@date-io/dayjs';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/helpers';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import { withSimpleViewContainerRenderer } from '@pega/react-sdk-components/lib/components/infra/Containers/SimpleView/SimpleView';
-
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { isContainerInitialized } from '@pega/react-sdk-components/lib/components/infra/Containers/container-helpers';
 import {
   addContainerItem,
   getToDoAssignments,
-  showBanner,
-  hasContainerItems
+  hasContainerItems,
+  showBanner
 } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
+import { withSimpleViewContainerRenderer } from '@pega/react-sdk-components/lib/components/infra/Containers/SimpleView/SimpleView';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { useContext, useEffect, useState } from 'react';
+import { Card } from '../../../../design-system/ui/card';
+import Typography from '../../../../design-system/ui/typography';
 
 interface FlowContainerProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -98,7 +92,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     if (caseViewMode && caseViewMode === 'review') {
       return true;
     }
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+
     if (caseViewMode && caseViewMode === 'perform') {
       return false;
     }
@@ -134,7 +128,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
   }, []);
 
   useEffect(() => {
-    // @ts-ignore - Property 'getMetadata' is private and only accessible within class 'C11nEnv'
+    // @ts-expect-error - Property 'getMetadata' is private and only accessible within class 'C11nEnv'
     if (isInitialized && pConnectOfFlowContainer.getMetadata().children && !hasItems) {
       // ensuring not to add container items, if container already has items
       // because during multi doc mode, we will have container items already in store
@@ -149,7 +143,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     const caseActions = ourPConn.getValue(pCoreConstants.CASE_INFO.AVAILABLEACTIONS, ''); // 2nd arg empty string until typedefs properly allow optional
     let bCaseWideAction = false;
     if (caseActions && actionID) {
-      const actionObj = caseActions.find(caseAction => caseAction.ID === actionID);
+      const actionObj = caseActions.find((caseAction) => caseAction.ID === actionID);
       if (actionObj) {
         bCaseWideAction = actionObj.type === 'Case';
       }
@@ -162,7 +156,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
 
     const childCases = ourPConn.getValue(pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS, ''); // 2nd arg empty string until typedefs properly allow optional
     // const allAssignments = [];
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+
     if (childCases && childCases.length > 0) {
       return true;
     }
@@ -213,8 +207,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
     let loadingInfo: any;
     try {
       loadingInfo = thePConn.getLoadingStatus(''); // 1st arg empty string until typedefs properly allow optional
-    } catch (ex) {
-      // eslint-disable-next-line no-console
+    } catch {
       console.error(`${thePConn.getComponentName()}: loadingInfo catch block`);
     }
 
@@ -255,7 +248,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
       setShowConfirm(true);
 
       // publish this "assignmentFinished" for mashup, need to get approved as a standard
-      // @ts-ignore - second parameter “payload” for publish method should be optional
+      // @ts-expect-error - second parameter “payload” for publish method should be optional
       PCore.getPubSubUtils().publish('assignmentFinished');
 
       // debugger;
@@ -275,7 +268,7 @@ export const FlowContainer = (props: FlowContainerProps) => {
 
   const displayPageMessages = () => {
     let hasBanner = false;
-    const messages = pageMessages ? pageMessages.map(msg => localizedVal(msg.message, 'Messages')) : pageMessages;
+    const messages = pageMessages ? pageMessages.map((msg) => localizedVal(msg.message, 'Messages')) : pageMessages;
     hasBanner = messages && messages.length > 0;
     return hasBanner && <AlertBanner id='flowContainerBanner' variant='urgent' messages={messages} />;
   };
@@ -287,11 +280,9 @@ export const FlowContainer = (props: FlowContainerProps) => {
           !displayOnlyFA ? (
             <Card className='shadow-none border-none'>
               {displayPageMessages()}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {rootViewElement}
-                </Assignment>
-              </MuiPickersUtilsProvider>
+              <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                {rootViewElement}
+              </Assignment>
             </Card>
           ) : (
             <Card className='shadow-none border-none'>
@@ -299,11 +290,9 @@ export const FlowContainer = (props: FlowContainerProps) => {
                 <Typography variant='h1'>{containerName}</Typography>
               </div>
               {displayPageMessages()}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {rootViewElement}
-                </Assignment>
-              </MuiPickersUtilsProvider>
+              <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                {rootViewElement}
+              </Assignment>
             </Card>
           )
         ) : (

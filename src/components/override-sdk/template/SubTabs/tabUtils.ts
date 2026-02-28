@@ -1,5 +1,5 @@
-export const getDeferFriendlyTabs = allTabs => {
-  return allTabs.map(tab => {
+export const getDeferFriendlyTabs = (allTabs) => {
+  return allTabs.map((tab) => {
     const theTabCompConfig = tab.getPConnect().getConfigProps();
     return { type: 'DeferLoad', config: theTabCompConfig };
   });
@@ -10,7 +10,7 @@ export const getVisibleTabs = (allTabs, uuid) => {
   return allTabs.props
     .getPConnect()
     .getChildren()
-    ?.filter(child => {
+    ?.filter((child) => {
       // US-402838: Filter out tab entries if the config object does not contain the visibility attribute or it evaluates to the boolean true,
       const config = child.getPConnect().getConfigProps();
 
@@ -33,7 +33,7 @@ export const getTransientTabs = (availableTabs, currentTabId, tabItems) => {
       const config = child.getPConnect().getConfigProps();
       const tabLabel =
         config.label ||
-        config.inheritedProps?.find(obj => obj.prop === 'label')?.value ||
+        config.inheritedProps?.find((obj) => obj.prop === 'label')?.value ||
         PCore.getLocaleUtils().getLocaleValue('No label specified in config', 'Generic');
       const tabContent = () => {
         if (i.toString() === currentTabId) {

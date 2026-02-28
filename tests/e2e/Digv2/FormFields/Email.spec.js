@@ -43,9 +43,18 @@ test.describe('E2E test', () => {
 
     /** Required tests */
     const requiredEmail = page.locator('input[data-test-id="96fa7548c363cdd5adb29c2c2749e436"]');
-
-    requiredEmail.fill('John@doe.com');
+    await requiredEmail.fill('John@doe.com');
+    await requiredEmail.blur();
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
+
+    /** Checking 'field label', 'placeholder', and 'helper text' */
+    const requiredEmailFieldLabel = page.locator('text="Required Email"');
+    await expect(requiredEmailFieldLabel && requiredEmailFieldLabel.locator('text="*"')).toBeVisible();
+
+    const placeholderValue = await requiredEmail.getAttribute('placeholder');
+    await expect(placeholderValue).toBe('Email Placeholder');
+
+    await expect(page.locator('div[id="Assignment"] >> p:has-text("Email Helper Text")')).toBeVisible();
 
     attributes = await common.getAttributes(requiredEmail);
     await expect(attributes.includes('required')).toBeTruthy();
@@ -89,10 +98,10 @@ test.describe('E2E test', () => {
     const editableEmail = page.locator('input[data-test-id="c75f8a926bb5e08fd8342f7fe45dc344"]');
     await editableEmail.fill('Johndoe.com');
     await editableEmail.blur();
-    await expect(page.locator('p:has-text("Invalid")')).toBeVisible();
+    await expect(page.locator('p:has-text("Enter a valid email address")')).toBeVisible();
     editableEmail.fill('John@doe.com');
     await editableEmail.blur();
-    await expect(page.locator('p:has-text("Invalid")')).toBeHidden();
+    await expect(page.locator('p:has-text("Enter a valid email address")')).toBeHidden();
 
     attributes = await common.getAttributes(editableEmail);
     await expect(attributes.includes('readonly')).toBeFalsy();

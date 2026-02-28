@@ -1,44 +1,26 @@
-// from react_root.js
-import { render } from 'react-dom';
-import {} from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { RouterProvider } from '@tanstack/react-router';
+import { createRoot } from 'react-dom/client';
+import { queryClient } from './api/query-client';
+import { router } from './router';
+import './app.css';
 import './common.css';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-
-import Home from './app/home';
-import Company from './app/company';
-import Products from './app/products';
-import Contact from './app/contact';
-import Support from './app/support';
-import DesingSystem from './app/desingsystem';
-
-const baseURL = '/';
 
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  render(
-    <BrowserRouter>
-      <Switch>
-        <Route exact path={`${baseURL}`} component={Home} />
-        <Route path={`${baseURL}index.html`} component={Home} />
-        <Route path={`${baseURL}company`} component={Company} />
-        <Route path={`${baseURL}company.html`} component={Company} />
-        <Route path={`${baseURL}products`} component={Products} />
-        <Route path={`${baseURL}products.html`} component={Products} />
-        <Route path={`${baseURL}support`} component={Support} />
-        <Route path={`${baseURL}support.html`} component={Support} />
-        <Route path={`${baseURL}contact`} component={Contact} />
-        <Route path={`${baseURL}contact.html`} component={Contact} />
-        <Route path={`${baseURL}desingsystem`} component={DesingSystem} />
-        <Route path={`${baseURL}desingsystem.html`} component={DesingSystem} />
-        <Route path='*' component={Home} />
-      </Switch>
-    </BrowserRouter>,
-    document.getElementById('outlet')
+  createRoot(outletElement).render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
 document.addEventListener('SdkLoggedOut', () => {
+  queryClient.clear();
+
   const thePegaRoot = document.getElementById('pega-root');
   if (thePegaRoot) {
     // Clear any prior Pega content within pega root

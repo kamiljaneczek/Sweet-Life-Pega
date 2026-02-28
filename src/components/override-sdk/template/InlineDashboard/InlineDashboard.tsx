@@ -1,7 +1,5 @@
-import { PropsWithChildren, ReactElement } from 'react';
-import { Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface InlineDashboardProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -9,65 +7,31 @@ interface InlineDashboardProps extends PConnProps {
   filterPosition?: string;
 }
 
-const useStyles = makeStyles((/* theme */) => ({
-  headerStyles: {
-    fontWeight: 500,
-    fontSize: '1.25rem'
-  },
-  containerStyles: {
-    marginTop: '1rem',
-    marginBottom: '1rem'
-  },
-  colStyles: {
-    display: 'grid',
-    gap: '1rem',
-    alignContent: 'baseline'
-  },
-  filterContainerStyles: {
-    display: 'grid',
-    gap: '1rem',
-    gridTemplateColumns: 'repeat(7, 1fr);'
-  },
-  inlineStyles: {
-    display: 'grid',
-    gap: '1rem',
-    alignContent: 'baseline',
-    marginTop: '1rem'
-  }
-}));
-
 export default function InlineDashboard(props: PropsWithChildren<InlineDashboardProps>) {
-  const classes = useStyles();
-
   const { children, title, filterPosition } = props;
   const childrenToRender = children as ReactElement[];
 
-  const direction = filterPosition === 'inline-start' ? 'row-reverse' : 'row';
+  const isInlineStart = filterPosition === 'inline-start';
+
   return (
     <>
-      <Typography variant='h4' className={classes.headerStyles}>
-        {title}
-      </Typography>
+      <h4 className='text-xl font-medium'>{title}</h4>
 
       {filterPosition === 'block-start' && (
-        <Grid container spacing={2} direction='column-reverse' className={classes.containerStyles}>
-          <Grid item xs={12} className={classes.colStyles}>
-            {childrenToRender[0]}
-          </Grid>
-          <Grid id='filters' item xs={12} className={classes.filterContainerStyles}>
+        <div className='flex flex-col-reverse gap-4 my-4'>
+          <div className='grid gap-4 content-baseline'>{childrenToRender[0]}</div>
+          <div className='grid gap-4' style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}>
             {childrenToRender[1]}
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       )}
       {filterPosition !== 'block-start' && (
-        <Grid container spacing={2} direction={direction} className={classes.containerStyles}>
-          <Grid item xs={9}>
-            {childrenToRender[0]}
-          </Grid>
-          <Grid id='filters' item xs={3} className={classes.inlineStyles}>
+        <div className='grid gap-4 my-4' style={{ gridTemplateColumns: isInlineStart ? '1fr 3fr' : '3fr 1fr' }}>
+          <div className={isInlineStart ? 'order-2' : ''}>{childrenToRender[0]}</div>
+          <div id='filters' className={`grid gap-4 content-baseline mt-4 ${isInlineStart ? 'order-1' : ''}`}>
             {childrenToRender[1]}
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       )}
     </>
   );

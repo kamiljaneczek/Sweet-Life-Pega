@@ -1,31 +1,30 @@
-import { useEffect, useState } from 'react';
-import { TextField } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import isDeepEqual from 'fast-deep-equal/react';
-
-import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import isDeepEqual from 'fast-deep-equal/react';
+import { useEffect, useRef, useState } from 'react';
+
+import { Input } from '../../../../design-system/ui/input';
 
 interface IOption {
   key: string;
   value: string;
 }
 
-const preProcessColumns = columnList => {
-  return columnList.map(col => {
+const preProcessColumns = (columnList) => {
+  return columnList.map((col) => {
     const tempColObj = { ...col };
-    tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
+    tempColObj.value = col.value?.startsWith('.') ? col.value.substring(1) : col.value;
     return tempColObj;
   });
 };
 
-const getDisplayFieldsMetaData = columnList => {
-  const displayColumns = columnList.filter(col => col.display === 'true');
+const getDisplayFieldsMetaData = (columnList) => {
+  const displayColumns = columnList.filter((col) => col.display === 'true');
   const metaDataObj: any = { key: '', primary: '', secondary: [] };
-  const keyCol = columnList.filter(col => col.key === 'true');
+  const keyCol = columnList.filter((col) => col.key === 'true');
   metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
   for (let index = 0; index < displayColumns.length; index += 1) {
     if (displayColumns[index].primary === 'true') {
@@ -79,6 +78,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<IOption[]>([]);
   const [theDatasource, setDatasource] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   let selectedValue: any = '';
   const helperTextToDisplay = validatemessage || helperText;
 
@@ -93,7 +94,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
 
   const flattenParameters = (params = {}) => {
     const flatParams = {};
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       const { name, value: theVal } = params[key];
       flatParams[name] = theVal;
     });
@@ -137,7 +138,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       getDataPage(datasource, parameters, context).then((results: any) => {
         const optionsData: any[] = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
-        results?.forEach(element => {
+        results?.forEach((element) => {
           const val = element[displayColumn.primary]?.toString();
           const obj = {
             key: element[displayColumn.key] || element.pyGUID,
@@ -150,6 +151,17 @@ export default function AutoComplete(props: AutoCompleteProps) {
     }
   }, []);
 
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   }
@@ -159,7 +171,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (value) {
-    const index = options?.findIndex(element => element.key === value);
+    const index = options?.findIndex((element) => element.key === value);
     if (index > -1) {
       selectedValue = options[index].value;
     } else {
@@ -167,7 +179,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     }
   }
 
-  const handleChange = (event: object, newValue) => {
+  const handleChange = (event: object, newValue: IOption | null) => {
     const val = newValue ? newValue.key : '';
     handleEvent(actionsApi, 'changeNblur', propName, val);
     if (onRecordChange) {
@@ -175,44 +187,49 @@ export default function AutoComplete(props: AutoCompleteProps) {
     }
   };
 
-  const handleInputValue = (event, newInputValue) => {
+  const handleInputValue = (newInputValue: string) => {
     setInputValue(newInputValue);
+    setIsOpen(true);
   };
 
   if (readOnly) {
-    const theValAsString = options?.find(opt => opt.key === value)?.value;
+    const theValAsString = options?.find((opt) => opt.key === value)?.value;
     return <TextInput {...props} value={theValAsString} />;
   }
-  // Need to use both getOptionLabel and getOptionSelected to map our
-  //  key/value structure to what Autocomplete expects
+
+  // Filter options based on input value
+  const filteredOptions = options.filter((option) => option.value?.toLowerCase().includes((inputValue || '').toLowerCase()));
+
   return (
-    <Autocomplete
-      options={options}
-      getOptionLabel={(option: IOption) => {
-        return option.value ? option.value : '';
-      }}
-      getOptionSelected={(option: any) => {
-        return option.value ? option.value : '';
-      }}
-      fullWidth
-      onChange={handleChange}
-      value={selectedValue}
-      inputValue={inputValue || selectedValue}
-      onInputChange={handleInputValue}
-      renderInput={params => (
-        <TextField
-          {...params}
-          fullWidth
-          variant='outlined'
-          helperText={helperTextToDisplay}
-          placeholder={placeholder}
-          size='small'
-          required={required}
-          error={status === 'error'}
-          label={label}
-          data-test-id={testId}
-        />
+    <div ref={wrapperRef} className='relative w-full' data-test-id={testId}>
+      <Input
+        label={label}
+        required={required}
+        placeholder={placeholder ?? ''}
+        value={inputValue || selectedValue || ''}
+        error={status === 'error'}
+        helperText={helperTextToDisplay}
+        InputProps={{}}
+        onChange={(e) => handleInputValue((e.target as HTMLInputElement).value)}
+        onFocus={() => setIsOpen(true)}
+      />
+      {isOpen && filteredOptions.length > 0 && (
+        <ul className='absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white shadow-lg'>
+          {filteredOptions.map((option) => (
+            <li
+              key={option.key}
+              className='cursor-pointer px-3 py-2 text-sm hover:bg-gray-100'
+              onClick={() => {
+                handleChange({}, option);
+                setInputValue(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.value}
+            </li>
+          ))}
+        </ul>
       )}
-    />
+    </div>
   );
 }

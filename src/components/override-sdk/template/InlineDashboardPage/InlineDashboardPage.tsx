@@ -1,8 +1,8 @@
-import { useMemo, Children, useEffect, useState, PropsWithChildren } from 'react';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 import { buildFilterComponents } from '@pega/react-sdk-components/lib/components/infra/DashboardFilter/filterUtils';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { Children, PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
 interface InlineDashboardPageProps extends PConnProps {
   // If any, enter additional props that only exist on this component

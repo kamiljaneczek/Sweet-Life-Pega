@@ -21,7 +21,7 @@ export default function ActionButtons(props: ActionButtonsProps) {
   return (
     <div className='mt-4 flex flex-row justify-between'>
       <div className='flex flex-row gap-4'>
-        {arSecondaryButtons.map(sButton => (
+        {arSecondaryButtons.map((sButton) => (
           <Button
             variant='secondary'
             key={sButton.name}
@@ -34,8 +34,9 @@ export default function ActionButtons(props: ActionButtonsProps) {
           </Button>
         ))}
       </div>
-      {arMainButtons.map(mButton => (
+      {arMainButtons.map((mButton) => (
         <Button
+          key={mButton.name}
           variant='default'
           size='lg'
           onClick={() => {

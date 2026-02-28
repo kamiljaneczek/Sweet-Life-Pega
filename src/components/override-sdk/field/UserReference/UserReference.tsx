@@ -1,8 +1,6 @@
-import { memo, useEffect, useState } from 'react';
-import { Typography } from '@material-ui/core';
-
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { memo, useEffect, useState } from 'react';
 
 import { getUserId, isUserNameAvailable } from './UserReferenceUtils';
 
@@ -66,7 +64,7 @@ const UserReference = (props: UserReferenceProps) => {
         // referenced users won't be available, so get user details from dx api
         const { getOperatorDetails } = PCore.getUserApi();
         getOperatorDetails(userId).then((res: any) => {
-          if (res.data && res.data.pyOperatorInfo && res.data.pyOperatorInfo.pyUserName) {
+          if (res.data?.pyOperatorInfo?.pyUserName) {
             setUserName(res.data.pyOperatorInfo.pyUserName);
           }
         });
@@ -77,18 +75,17 @@ const UserReference = (props: UserReferenceProps) => {
       };
 
       PCore.getRestClient()
-        // @ts-ignore - Argument of type '{ queryPayload: { dataViewName: string; }; }' is not assignable to parameter of type 'RestApiOptionsObject'
-        // @ts-ignore - Expected 3 arguments, but got 2
+        // @ts-expect-error - Argument of type '{ queryPayload: { dataViewName: string; }; }' is not assignable to parameter of type 'RestApiOptionsObject'
+        // @ts-expect-error - Expected 3 arguments, but got 2
         .invokeRestApi('getListData', { queryPayload })
         .then((res: any) => {
-          const ddDataSource = res.data.data.map(listItem => ({
+          const ddDataSource = res.data.data.map((listItem) => ({
             key: listItem.pyUserIdentifier,
             value: listItem.pyUserName
           }));
           setDropDownDataSource(ddDataSource);
         })
-        .catch(err => {
-          // eslint-disable-next-line no-console
+        .catch((err) => {
           console.error(err);
         });
     }
@@ -104,8 +101,8 @@ const UserReference = (props: UserReferenceProps) => {
             TODO: This has to be replaced with Operator Component
           */}
           <div>
-            <Typography variant='caption'>{label}</Typography>
-            <Typography variant='body1'>{userName}</Typography>
+            <span className='text-xs text-muted-foreground'>{label}</span>
+            <p className='text-base'>{userName}</p>
           </div>
         </>
       );

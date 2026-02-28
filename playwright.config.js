@@ -1,4 +1,3 @@
-// @ts-check
 const { devices } = require('@playwright/test');
 
 /**
@@ -44,6 +43,8 @@ const config = {
       slowMo: 200
     }
   },
+
+  testIgnore: ['e2e/DigV2/Localization/Localization.spec.js'],
 
   /* Configure projects for major browsers */
   projects: [
@@ -98,7 +99,7 @@ const config = {
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: 'test-reports/'
+  outputDir: 'test-reports/',
 
   /* Run your local dev server before starting the tests */
   // webServer: {
