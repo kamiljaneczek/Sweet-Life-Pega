@@ -1,5 +1,7 @@
 # Sweet Life Pega - sample app based on React Constellation SDK
 
+This version is only compatible with Pega Infinity 23
+
 Check out demo: [https://youtu.be/LrdKmpy3QCU](https://youtu.be/LrdKmpy3QCU)
 
 More about project: [kjaneczek.pl](https://www.kjaneczek.pl/portfolio/sweet-life)
