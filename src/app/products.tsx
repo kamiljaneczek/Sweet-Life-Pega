@@ -1,65 +1,18 @@
-/* eslint-disable no-console */
-
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { productListQueryOptions } from '../api/hooks/usePCoreQuery';
 import { Button } from '../design-system/ui/button';
-/* import { SelectTrigger } from '@radix-ui/react-select'; */
-/* import { Label } from '../design-system/ui/label';
-import { Select, SelectContent, SelectItem, SelectValue } from '../design-system/ui/select'; */
 import useConstellation from '../hooks/useConstellation';
 import { cn } from '../lib/utils';
-import { IProduct } from '../types/types';
 import { ProductsPageSkeleton } from './components/skeletons';
 
 const Products = () => {
   const isPegaReady = useConstellation();
-  const [products, setProducts] = useState<IProduct[]>([]);
-
-  console.log('bIsPegaReady', isPegaReady);
-
-  useEffect(() => {
-    if (isPegaReady) {
-      const dataViewName = 'D_ProductList';
-      const parameters = {};
-      const paging = {
-        pageNumber: 1,
-        pageSize: 30
-      };
-      const query = {
-        distinctResultsOnly: true,
-        select: [
-          {
-            field: 'Name'
-          },
-          {
-            field: 'Category'
-          },
-          {
-            field: 'SKU'
-          },
-          {
-            field: 'Cost'
-          },
-          {
-            field: 'CategoryName'
-          }
-        ]
-      };
-
-      (PCore.getDataPageUtils().getDataAsync(dataViewName, 'root', parameters, paging, query) as Promise<any>)
-        .then((response) => {
-          console.log('DataPageUtils.getDataAsync response', response);
-          setProducts(response.data);
-        })
-        .catch((error) => {
-          throw new Error('Error', error);
-        });
-    }
-  }, [isPegaReady]);
+  const { data: products = [], isPending } = useQuery(productListQueryOptions());
 
   return (
     <>
-      {!isPegaReady && <ProductsPageSkeleton />}
-      <div className={cn('flex-grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady })}>
+      {(!isPegaReady || isPending) && <ProductsPageSkeleton />}
+      <div className={cn('grow py-12 px-6 dark:bg-gray-900', { hidden: !isPegaReady || isPending })}>
         <div className='container mx-auto'>
           <div className='flex flex-col lg:flex-row items-center gap-y-2 gap-x-2 justify-between mb-8'>
             <h1 className='text-2xl lg:text-3xl font-bold text-[#333] dark:text-white'>Explore our Sweet Treats</h1>

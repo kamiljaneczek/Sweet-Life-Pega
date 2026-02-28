@@ -272,7 +272,7 @@ export default function FileUtility(props: FileUtilityProps) {
       }
       file.mimeType = file.type;
       file.icon = Utils.getIconFromFileType(file.type);
-      file.ID = `${new Date().getTime()}I${index}`;
+      file.ID = `${Date.now()}I${index}`;
       index += 1;
     }
     return arFiles;
@@ -427,7 +427,7 @@ export default function FileUtility(props: FileUtilityProps) {
     // list for display
     let oLink: any = {};
     oLink.icon = 'chain';
-    oLink.ID = `${new Date().getTime()}`;
+    oLink.ID = `${Date.now()}`;
     oLink = getListUtilityItemProps({
       att: oLink,
       downloadFile: null,

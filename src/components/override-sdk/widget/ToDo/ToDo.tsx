@@ -1,7 +1,7 @@
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { ChevronRight, X } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '../../../../design-system/ui/button';
 import { Card, CardContent, CardHeader } from '../../../../design-system/ui/card';
@@ -162,7 +162,7 @@ export default function ToDo(props: ToDoProps) {
       });
   }
 
-  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
+  const renderTaskId = (type, _getPConnect, showTodoList, assignment) => {
     const displayID = getID(assignment);
 
     if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {
@@ -211,7 +211,7 @@ export default function ToDo(props: ToDoProps) {
       <ul className='divide-y'>
         {assignments.map((assignment) => (
           <li className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
-            <div className='mr-4 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
+            <div className='mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
               {currentUserInitials}
             </div>
             <div className='block'>
@@ -248,7 +248,7 @@ export default function ToDo(props: ToDoProps) {
           {showTodoList && (
             <CardHeader>
               <div className='flex items-center gap-4'>
-                <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
+                <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground'>
                   {currentUserInitials}
                 </div>
                 <div className='flex items-center gap-2'>

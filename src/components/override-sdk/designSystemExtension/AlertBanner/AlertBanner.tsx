@@ -34,10 +34,10 @@ export default function AlertBanner(props: AlertBannerProps) {
     <div id={id}>
       {messages.map((message) => (
         <div key={message} className={`flex items-center gap-2 rounded border px-4 py-3 mb-2 ${variantStyle}`}>
-          <Icon className='h-5 w-5 flex-shrink-0' />
+          <Icon className='h-5 w-5 shrink-0' />
           <span className='flex-1'>{message}</span>
           {onDismiss && (
-            <button type='button' onClick={onDismiss} className='flex-shrink-0 p-1 rounded hover:bg-black/10 dark:hover:bg-white/10'>
+            <button type='button' onClick={onDismiss} className='shrink-0 p-1 rounded hover:bg-black/10 dark:hover:bg-white/10'>
               <X className='h-4 w-4' />
             </button>
           )}

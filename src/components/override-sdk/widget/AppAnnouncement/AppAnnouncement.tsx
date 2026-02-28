@@ -12,7 +12,7 @@ interface AppAnnouncementProps extends PConnProps {
 export default function AppAnnouncement(props: AppAnnouncementProps) {
   const { header = '', description = '', datasource = [], whatsnewlink = '' } = props;
   let details = [];
-  if (datasource && datasource.source) {
+  if (datasource?.source) {
     details = datasource.source.map((item) => {
       return item.name;
     });

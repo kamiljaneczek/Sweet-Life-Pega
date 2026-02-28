@@ -95,20 +95,19 @@ export default function SummaryItem(props: SummaryItemProps) {
                 id='file-menu'
                 className='absolute right-0 top-full z-50 mt-1 min-w-[150px] rounded border border-gray-200 bg-white py-1 shadow-lg'
               >
-                {item.actions &&
-                  item.actions.map((option) => (
-                    <button
-                      type='button'
-                      key={option.id || option.text}
-                      className='block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-100'
-                      onClick={() => {
-                        option.onClick();
-                        handleClose();
-                      }}
-                    >
-                      {option.text}
-                    </button>
-                  ))}
+                {item.actions?.map((option) => (
+                  <button
+                    type='button'
+                    key={option.id || option.text}
+                    className='block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-100'
+                    onClick={() => {
+                      option.onClick();
+                      handleClose();
+                    }}
+                  >
+                    {option.text}
+                  </button>
+                ))}
               </div>
             )}
           </div>

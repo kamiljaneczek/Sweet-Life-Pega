@@ -28,6 +28,7 @@ export default function SimpleTable(props: SimpleTableProps) {
   const ListView = getComponentFromMap('ListView');
   const FieldGroupTemplate = getComponentFromMap('FieldGroupTemplate');
   const SimpleTableManual = getComponentFromMap('SimpleTableManual');
+  const refToPConnect = useRef<any>(null);
 
   const {
     getPConnect,
@@ -106,11 +107,13 @@ export default function SimpleTable(props: SimpleTableProps) {
       ...requiredContextForQueryInDisplayMode
     };
 
-    const refToPConnect = useRef(PCore.createPConnect({ meta: metaForPConnect, options }).getPConnect).current; // getPConnect should be created only once.
+    if (!refToPConnect.current) {
+      refToPConnect.current = PCore.createPConnect({ meta: metaForPConnect, options }).getPConnect; // getPConnect should be created only once.
+    }
     /* BUG-637178 : need to send context */
     const listViewProps = {
       ...metaForListView.config,
-      getPConnect: refToPConnect,
+      getPConnect: refToPConnect.current,
       displayMode,
       fieldName: authorContext,
       bInForm: true

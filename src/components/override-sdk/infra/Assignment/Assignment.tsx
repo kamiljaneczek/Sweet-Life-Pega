@@ -1,7 +1,7 @@
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { X } from 'lucide-react';
-import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 interface AssignmentProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -104,7 +104,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
       if (oWorkData?.caseInfo && oWorkData.caseInfo.assignments !== null) {
         const oCaseInfo = oData.caseInfo;
 
-        if (oCaseInfo && oCaseInfo.actionButtons) {
+        if (oCaseInfo?.actionButtons) {
           setActionButtons(oCaseInfo.actionButtons);
         }
 

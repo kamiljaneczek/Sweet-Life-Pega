@@ -133,13 +133,13 @@ export default function NavBar(props: NavBarProps) {
       {open ? (
         <ul className='m-0 p-0 list-none bg-primary text-primary-foreground'>
           <li className='flex items-center px-4 py-2 cursor-pointer' onClick={handleDrawerOpen}>
-            <span className='flex-shrink-0 mr-2'>
+            <span className='shrink-0 mr-2'>
               <img src={portalLogoImage} className='w-[3.6rem]' alt='logo' />
             </span>
-            <span className='flex-grow min-w-0'>
+            <span className='grow min-w-0'>
               <h6 className='text-base font-medium whitespace-normal m-0'>{portalApp}</h6>
             </span>
-            <span className='flex-shrink-0 ml-auto'>
+            <span className='shrink-0 ml-auto'>
               <button type='button' className='p-1 rounded-full hover:bg-primary-foreground/20 text-primary-foreground' onClick={handleDrawerOpen}>
                 <ChevronLeft size={24} />
               </button>
@@ -153,8 +153,8 @@ export default function NavBar(props: NavBarProps) {
       )}
       <ul className='m-0 p-0 list-none'>
         <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={handleCaseItemClick}>
-          <span className='flex-shrink-0 min-w-[40px]'>{bShowCaseTypes && open ? <X size={28} /> : <Plus size={28} />}</span>
-          <span className='flex-grow'>Create</span>
+          <span className='shrink-0 min-w-[40px]'>{bShowCaseTypes && open ? <X size={28} /> : <Plus size={28} />}</span>
+          <span className='grow'>Create</span>
           {bShowCaseTypes ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </li>
       </ul>
@@ -167,10 +167,10 @@ export default function NavBar(props: NavBarProps) {
                 onClick={() => navPanelCreateCaseType(caseType.pyClassName, caseType.pyFlowType)}
                 key={caseType.pyLabel}
               >
-                <span className='flex-shrink-0 min-w-[40px]'>
+                <span className='shrink-0 min-w-[40px]'>
                   <Briefcase size={28} />
                 </span>
-                <span className='flex-grow'>{localeUtils.getLocaleValue(caseType.pyLabel, '', localeReference)}</span>
+                <span className='grow'>{localeUtils.getLocaleValue(caseType.pyLabel, '', localeReference)}</span>
               </li>
             ))}
           </ul>
@@ -179,8 +179,8 @@ export default function NavBar(props: NavBarProps) {
       <ul className='m-0 p-0 list-none'>
         {navPages.map((page) => (
           <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={() => navPanelButtonClick(page)} key={page.pyLabel}>
-            <span className='flex-shrink-0 min-w-[40px]'>{iconMap[page.pxPageViewIcon]}</span>
-            <span className='flex-grow'>{localeUtils.getLocaleValue(page.pyLabel, '', localeReference)}</span>
+            <span className='shrink-0 min-w-[40px]'>{iconMap[page.pxPageViewIcon]}</span>
+            <span className='grow'>{localeUtils.getLocaleValue(page.pyLabel, '', localeReference)}</span>
           </li>
         ))}
       </ul>
@@ -191,12 +191,12 @@ export default function NavBar(props: NavBarProps) {
           className='relative flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100'
           onClick={navPanelOperatorButtonClick}
         >
-          <span className='flex-shrink-0 min-w-[40px]'>
+          <span className='shrink-0 min-w-[40px]'>
             <User size={28} />
           </span>
-          <span className='flex-grow'>{portalOperator}</span>
+          <span className='grow'>{portalOperator}</span>
           {open && (
-            <span className='flex-shrink-0 ml-auto'>
+            <span className='shrink-0 ml-auto'>
               <button type='button' className='p-1 rounded-full hover:bg-gray-200' onClick={navPanelOperatorButtonClick}>
                 <ChevronRight size={20} />
               </button>
@@ -215,7 +215,7 @@ export default function NavBar(props: NavBarProps) {
         >
           <ul className='m-0 p-0 list-none'>
             <li className='flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100' onClick={logout}>
-              <span className='flex-shrink-0 min-w-[40px]'>
+              <span className='shrink-0 min-w-[40px]'>
                 <ArrowLeft size={28} />
               </span>
               <span>{localizedVal('Log off', localeCategory)}</span>

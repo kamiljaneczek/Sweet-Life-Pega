@@ -2508,7 +2508,7 @@
           "$ref": "#/definitions/Header"
         },
         "newRow": {
-          "$ref": "/definition/NewRow"
+          "$ref": "#/definitions/NewRow"
         },
         "rows": {
           "type": "array",

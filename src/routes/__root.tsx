@@ -1,4 +1,5 @@
-import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
+import { QueryClient } from '@tanstack/react-query';
+import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router';
 import Footer from '../app/components/footer';
 import Header from '../app/components/header';
 
@@ -13,7 +14,7 @@ function RootComponent() {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: ({ location }) => {
     if (location.pathname.endsWith('.html')) {
       throw redirect({

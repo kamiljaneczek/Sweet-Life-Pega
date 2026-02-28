@@ -76,7 +76,7 @@ export default function WssNavBar(props: WssNavBarProps) {
   }, [mobileMenuOpen, userMenuOpen]);
 
   const navLinksContent = (
-    <div id='nav-links' className='hidden md:flex flex-grow' style={{ justifyContent: alignment }}>
+    <div id='nav-links' className='hidden md:flex grow' style={{ justifyContent: alignment }}>
       {navLinks.map((link) => (
         <button type='button' className='link-style' key={link.text} onClick={link.onClick}>
           {link.text}
@@ -140,7 +140,7 @@ export default function WssNavBar(props: WssNavBarProps) {
             {position === 'inline' && <>{navLinksContent}</>}
 
             {/* User avatar and menu */}
-            <div className='flex-shrink-0 relative'>
+            <div className='shrink-0 relative'>
               <button
                 ref={userButtonRef}
                 type='button'

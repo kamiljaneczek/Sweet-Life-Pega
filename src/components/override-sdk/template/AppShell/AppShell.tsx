@@ -160,9 +160,9 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
           appInfo={{
             imageSrc: iconURL,
             appName: localizedVal(appNameToDisplay, '', `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()),
-            onClick: links[0] && /* links[0].onClick ? */ links[0].onClick /* : undefined */
+            onClick: links[0]?.onClick /* : undefined */
           }}
-          navLinks={links.filter((link, index) => {
+          navLinks={links.filter((_link, index) => {
             return index !== 0;
           })}
           operator={getOperator()}

@@ -136,7 +136,7 @@ export default function DashboardFilter(props: PropsWithChildren<DashboardFilter
       {type === 'AutoComplete' && (
         <span
           onChange={(event) => {
-            if (event && event.target && !(event.target as HTMLInputElement).value) {
+            if (event?.target && !(event.target as HTMLInputElement).value) {
               fireFilterChange('ALL');
             }
           }}

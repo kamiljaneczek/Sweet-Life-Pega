@@ -322,7 +322,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
 
   function buildElementsForTable() {
     const eleData: any = [];
-    referenceList.forEach((element, index) => {
+    referenceList.forEach((_element, index) => {
       const data: any = [];
       rawFields.forEach((item) => {
         // removing label field from config to hide title in the table cell
@@ -349,7 +349,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     setElementsData(eleData);
   }
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
+  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof any) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);

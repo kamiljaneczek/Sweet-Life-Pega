@@ -159,7 +159,6 @@ export default function MainScreen() {
       case 'Oceonix 25 Ultra':
         selectedPhoneGUID = '535f01f3-a702-4655-bcd0-f1d9c1599a9c';
         break;
-      case 'Oceonix 25':
       default:
         // Set 'Oceonix 25' as the default/fallback
         selectedPhoneGUID = '0f670ae2-3e61-47d4-b426-edd62558cfb8';
@@ -174,7 +173,7 @@ export default function MainScreen() {
       startingFields: {}
     };
     if (mashupCaseType === 'DIXL-MediaCo-Work-PurchasePhone') {
-      options.startingFields['PhoneModelss'] = {
+      options.startingFields.PhoneModelss = {
         pyGUID: selectedPhoneGUID
       };
     } else {

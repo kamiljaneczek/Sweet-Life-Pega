@@ -145,7 +145,7 @@ export default function ListView(props: ListViewProps) {
     };
   }, [menuAnchor]);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
+  const handleRequestSort = (_event: React.MouseEvent<unknown>, property: keyof any) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -421,13 +421,7 @@ export default function ListView(props: ListViewProps) {
   const addItemKeyInSelect = (fieldDefs, itemKey, select, compositeKeys) => {
     const elementFound = getField(fieldDefs, itemKey);
 
-    if (
-      itemKey &&
-      !elementFound &&
-      Array.isArray(select) &&
-      !(compositeKeys !== null && compositeKeys?.length) &&
-      !select.find((sel) => sel.field === itemKey)
-    ) {
+    if (itemKey && !elementFound && Array.isArray(select) && !compositeKeys?.length && !select.find((sel) => sel.field === itemKey)) {
       return [
         ...select,
         {
@@ -942,171 +936,171 @@ export default function ListView(props: ListViewProps) {
               />
             </div>
           )}
-          <>
-            {!bInForm ? (
-              <div id='list-view' className='min-w-[750px] max-h-[550px] overflow-auto'>
-                <table className='w-full border-collapse'>
-                  <thead className='sticky top-0 bg-muted'>
-                    <tr>
-                      {arColumns.map((column) => {
-                        return (
-                          <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
-                            <span
-                              className='inline-flex cursor-pointer items-center gap-1 select-none'
-                              onClick={createSortHandler(column.id)}
-                              role='button'
-                              tabIndex={0}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
-                              }}
-                            >
-                              {column.label}
-                              {orderBy === column.id ? (
-                                order === 'desc' ? (
-                                  <ChevronDown className='h-4 w-4' />
-                                ) : (
-                                  <ChevronUp className='h-4 w-4' />
-                                )
+          {!bInForm ? (
+            <div id='list-view' className='min-w-[750px] max-h-[550px] overflow-auto'>
+              <table className='w-full border-collapse'>
+                <thead className='sticky top-0 bg-muted'>
+                  <tr>
+                    {arColumns.map((column) => {
+                      return (
+                        <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
+                          <span
+                            className='inline-flex cursor-pointer items-center gap-1 select-none'
+                            onClick={createSortHandler(column.id)}
+                            role='button'
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
+                            }}
+                          >
+                            {column.label}
+                            {orderBy === column.id ? (
+                              order === 'desc' ? (
+                                <ChevronDown className='h-4 w-4' />
                               ) : (
-                                <span className='inline-block h-4 w-4' />
-                              )}
-                              {_showFilteredIcon(column.id) && <Filter className='h-4 w-4 text-primary' />}
-                              <span className='sr-only'>
-                                {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
-                              </span>
+                                <ChevronUp className='h-4 w-4' />
+                              )
+                            ) : (
+                              <span className='inline-block h-4 w-4' />
+                            )}
+                            {_showFilteredIcon(column.id) && <Filter className='h-4 w-4 text-primary' />}
+                            <span className='sr-only'>
+                              {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
                             </span>
-                            <button
-                              type='button'
-                              className='ml-1 inline-flex items-center align-bottom text-muted-foreground hover:text-foreground'
-                              onClick={(event) => {
-                                _menuClick(event, column.id, column.type, column.label);
-                              }}
-                            >
-                              <MoreVertical className='h-4 w-4' />
-                            </button>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {stableSort(arRows, getComparator(order, orderBy))
+                          </span>
+                          <button
+                            type='button'
+                            className='ml-1 inline-flex items-center align-bottom text-muted-foreground hover:text-foreground'
+                            onClick={(event) => {
+                              _menuClick(event, column.id, column.type, column.label);
+                            }}
+                          >
+                            <MoreVertical className='h-4 w-4' />
+                          </button>
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {stableSort(arRows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      return (
+                        <tr key={row.pxRefObjectInsName || row.pyID} className='border-b hover:bg-muted/50'>
+                          {arColumns.map((column) => {
+                            const value = row[column.id];
+                            return (
+                              <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
+                                {_showButton(column.id, row) || column.displayAsLink ? (
+                                  <button
+                                    type='button'
+                                    className='text-primary underline-offset-4 hover:underline'
+                                    onClick={() => {
+                                      _listViewClick(row, column);
+                                    }}
+                                  >
+                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                  </button>
+                                ) : column.format && typeof value === 'number' ? (
+                                  column.format(value)
+                                ) : (
+                                  value
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div id='list-view'>
+              <table className='w-full min-w-[750px] border-collapse'>
+                <thead className='bg-muted'>
+                  <tr>
+                    {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && (
+                      <th className='w-12 border-b px-4 py-3' />
+                    )}
+                    {arColumns.map((column) => {
+                      return (
+                        <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
+                          <span
+                            className='inline-flex cursor-pointer items-center gap-1 select-none'
+                            onClick={createSortHandler(column.id)}
+                            role='button'
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
+                            }}
+                          >
+                            {column.label}
+                            {orderBy === column.id ? (
+                              order === 'desc' ? (
+                                <ChevronDown className='h-4 w-4' />
+                              ) : (
+                                <ChevronUp className='h-4 w-4' />
+                              )
+                            ) : (
+                              <span className='inline-block h-4 w-4' />
+                            )}
+                            <span className='sr-only'>
+                              {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
+                            </span>
+                          </span>
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {arRows &&
+                    arRows.length > 0 &&
+                    stableSort(arRows, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row) => {
                         return (
-                          <tr key={row.pxRefObjectInsName || row.pyID} className='border-b hover:bg-muted/50'>
+                          <tr key={row[rowID]} className='border-b hover:bg-muted/50'>
+                            {selectionMode === SELECTION_MODE.SINGLE && (
+                              <td className='px-4 py-2'>
+                                <input
+                                  type='radio'
+                                  onChange={handleChange}
+                                  value={row[rowID]}
+                                  name='radio-buttons'
+                                  aria-label='A'
+                                  checked={selectedValue === row[rowID]}
+                                  className='h-4 w-4 border-gray-300 text-primary focus:ring-primary'
+                                />
+                              </td>
+                            )}
+                            {selectionMode === SELECTION_MODE.MULTI && (
+                              <td className='px-4 py-2'>
+                                <Checkbox
+                                  onCheckedChange={(checked: boolean | 'indeterminate') => onCheckboxClick(String(row[rowID]), checked === true)}
+                                  checked={selectedValues.some((sv) => sv[rowID] === row[rowID])}
+                                  value={row[rowID]}
+                                />
+                              </td>
+                            )}
                             {arColumns.map((column) => {
                               const value = row[column.id];
                               return (
                                 <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
-                                  {_showButton(column.id, row) || column.displayAsLink ? (
-                                    <button
-                                      type='button'
-                                      className='text-primary underline-offset-4 hover:underline'
-                                      onClick={() => {
-                                        _listViewClick(row, column);
-                                      }}
-                                    >
-                                      {column.format && typeof value === 'number' ? column.format(value) : value}
-                                    </button>
-                                  ) : (
-                                    <>{column.format && typeof value === 'number' ? column.format(value) : value}</>
-                                  )}
+                                  {processColumnValue(column, value)}
                                 </td>
                               );
                             })}
                           </tr>
                         );
                       })}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div id='list-view'>
-                <table className='w-full min-w-[750px] border-collapse'>
-                  <thead className='bg-muted'>
-                    <tr>
-                      {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && (
-                        <th className='w-12 border-b px-4 py-3' />
-                      )}
-                      {arColumns.map((column) => {
-                        return (
-                          <th key={column.id} className='whitespace-nowrap border-b px-4 py-3 text-left text-sm font-medium text-muted-foreground'>
-                            <span
-                              className='inline-flex cursor-pointer items-center gap-1 select-none'
-                              onClick={createSortHandler(column.id)}
-                              role='button'
-                              tabIndex={0}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') createSortHandler(column.id)(e as any);
-                              }}
-                            >
-                              {column.label}
-                              {orderBy === column.id ? (
-                                order === 'desc' ? (
-                                  <ChevronDown className='h-4 w-4' />
-                                ) : (
-                                  <ChevronUp className='h-4 w-4' />
-                                )
-                              ) : (
-                                <span className='inline-block h-4 w-4' />
-                              )}
-                              <span className='sr-only'>
-                                {orderBy === column.id ? (order === 'desc' ? 'sorted descending' : 'sorted ascending') : ''}
-                              </span>
-                            </span>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {arRows &&
-                      arRows.length > 0 &&
-                      stableSort(arRows, getComparator(order, orderBy))
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row) => {
-                          return (
-                            <tr key={row[rowID]} className='border-b hover:bg-muted/50'>
-                              {selectionMode === SELECTION_MODE.SINGLE && (
-                                <td className='px-4 py-2'>
-                                  <input
-                                    type='radio'
-                                    onChange={handleChange}
-                                    value={row[rowID]}
-                                    name='radio-buttons'
-                                    aria-label='A'
-                                    checked={selectedValue === row[rowID]}
-                                    className='h-4 w-4 border-gray-300 text-primary focus:ring-primary'
-                                  />
-                                </td>
-                              )}
-                              {selectionMode === SELECTION_MODE.MULTI && (
-                                <td className='px-4 py-2'>
-                                  <Checkbox
-                                    onCheckedChange={(checked: boolean | 'indeterminate') => onCheckboxClick(String(row[rowID]), checked === true)}
-                                    checked={selectedValues.some((sv) => sv[rowID] === row[rowID])}
-                                    value={row[rowID]}
-                                  />
-                                </td>
-                              )}
-                              {arColumns.map((column) => {
-                                const value = row[column.id];
-                                return (
-                                  <td key={column.id} className='whitespace-nowrap px-4 py-2 text-sm'>
-                                    {processColumnValue(column, value)}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                        })}
-                  </tbody>
-                </table>
-                {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
-              </div>
-            )}
-          </>
+                </tbody>
+              </table>
+              {arRows && arRows.length === 0 && <div className='no-records'>No records found.</div>}
+            </div>
+          )}
           {arRows && arRows.length > 0 && (
             <div id='pagination' className='flex items-center justify-end gap-4 border-t px-4 py-2 text-sm text-muted-foreground'>
               <div className='flex items-center gap-2'>
