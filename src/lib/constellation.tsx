@@ -98,9 +98,10 @@ export function startMashup() {
     compareSdkPCoreVersions();
 
     // Initialize the SdkComponentMap (local and pega-provided)
+    console.log('localSdkComponentMap keys:', Object.keys(localSdkComponentMap), localSdkComponentMap);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getSdkComponentMap(localSdkComponentMap).then((_theComponentMap: any) => {
-      console.log(`SdkComponentMap initialized`);
+      console.log(`SdkComponentMap initialized`, _theComponentMap);
 
       // Don't call initialRender until SdkComponentMap is fully initialized
       initialRender(renderObj);

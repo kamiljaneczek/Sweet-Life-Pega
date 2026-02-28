@@ -75,6 +75,12 @@ if (fs.existsSync(constDir)) {
 
   // constellation-core.*.* -> public/constellation/prerequisite/
   copyGlob('node_modules/@pega/constellationjs/dist/constellation-core.*.*', path.join(pub, 'constellation', 'prerequisite'));
+
+  // js/* (libphonenumber, etc.) -> public/constellation/prerequisite/js/
+  const jsDir = path.join(constDir, 'js');
+  if (fs.existsSync(jsDir)) {
+    copyDir(jsDir, path.join(pub, 'constellation', 'prerequisite', 'js'));
+  }
 }
 
 console.log('Pega assets copied to public/');
