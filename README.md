@@ -1,6 +1,9 @@
 This is a community project, no SRs will be acceptebdby Pega GCS.
 If foudn issues create help fxiing it.
 
+This version is only compatible with Pega Infinity 23
+
+Check out demo: [https://youtu.be/LrdKmpy3QCU](https://youtu.be/LrdKmpy3QCU)
 
 
 # React SDK - Release Announcement - v25.1.10
