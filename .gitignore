@@ -25,7 +25,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
+.claude
 # Constellation build files
 /constellation/bootstrap*
 /constellation/lib_asset.json
