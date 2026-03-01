@@ -3,9 +3,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
 import { queryClient } from './api/query-client';
+import { ensureConstellationInit } from './hooks/useConstellation';
 import { router } from './router';
 import './app.css';
 import './common.css';
+
+// Start Pega SDK auth + bootstrap eagerly on initial page load.
+// This ensures loginIfNecessary runs during the browser's initial load
+// rather than being deferred to SPA navigation (which can fail).
+ensureConstellationInit();
 
 const outletElement = document.getElementById('outlet');
 

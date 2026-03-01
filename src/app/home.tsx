@@ -3,13 +3,13 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '../design-system/ui/button';
-import useConstellation from '../hooks/useConstellation';
+import usePegaMashup from '../hooks/usePegaMashup';
 import { cn } from '../lib/utils';
 import { HomeFeaturedProductsSkeleton } from './components/skeletons';
 
 export default function Home() {
   const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
-  const isPegaReady = useConstellation();
+  const { isReady: isPegaReady, isTimedOut } = usePegaMashup();
 
   useEffect(() => {
     if (isPegaReady) {
@@ -119,7 +119,7 @@ export default function Home() {
       </section>
       <section className='bg-white dark:bg-gray-900'>
         <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12'>
-          {!isPegaReady && <HomeFeaturedProductsSkeleton />}
+          {!isPegaReady && !isTimedOut && <HomeFeaturedProductsSkeleton />}
           <div id='pega-root' className={cn('', { hidden: !isPegaReady || showPega !== 'Pega' })} />
         </div>
       </section>

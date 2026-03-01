@@ -9,7 +9,11 @@ import localSdkComponentMap from '../../sdk-local-component-map';
 
 declare const myLoadMashup: any;
 
+let mashupState: 'idle' | 'starting' | 'ready' = 'idle';
 let defined_root: Root | null = null;
+let cachedRenderObj: any = null;
+let startPromise: Promise<void> | null = null;
+let pendingObserver: MutationObserver | null = null;
 
 function RootComponent(props) {
   const PegaConnectObj = createPConnectComponent();
@@ -30,20 +34,14 @@ function RootComponent(props) {
 }
 
 /**
- * Callback from onPCoreReady that's called once the top-level render object
- * is ready to be rendered
- * @param inRenderObj the initial, top-level PConnect object to render
+ * Render (or re-render) the Pega mashup content into #pega-root.
+ * Handles the case where the target element isn't in the DOM yet via MutationObserver.
  */
-function initialRender(inRenderObj) {
-  // loadMashup does its own thing so we don't need to do much/anything here
-
-  // // modified from react_root.js render
-  const { props, domContainerID = null, componentName, portalTarget, styleSheetTarget } = inRenderObj;
+function renderMashupContent(renderObj: any) {
+  const { props, domContainerID = null, componentName, portalTarget, styleSheetTarget } = renderObj;
 
   const thePConn = props.getPConnect() as C11nEnv;
-  // setPConn(thePConn);
-
-  console.log(`EmbeddedTopLevel: initialRender got a PConnect with ${thePConn.getComponentName()}`);
+  console.log(`EmbeddedTopLevel: renderMashupContent got a PConnect with ${thePConn.getComponentName()}`);
 
   let target: any = null;
 
@@ -54,10 +52,9 @@ function initialRender(inRenderObj) {
   }
 
   console.log(
-    `InitialRender with domContainerID: ${domContainerID}, target: ${target} componentName: ${componentName}, portalTarget: ${portalTarget}, styleSheetTarget: ${styleSheetTarget}`
+    `renderMashupContent with domContainerID: ${domContainerID}, target: ${target} componentName: ${componentName}, portalTarget: ${portalTarget}, styleSheetTarget: ${styleSheetTarget}`
   );
 
-  // Note: RootComponent is just a function (declared below)
   const Component: any = RootComponent;
 
   if (componentName) {
@@ -66,7 +63,6 @@ function initialRender(inRenderObj) {
 
   const theComponent = <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />;
 
-  // Initial render of component passed in (which should be a RootContainer)
   const renderToTarget = (el: HTMLElement) => {
     defined_root = createRoot(el);
     defined_root.render(theComponent);
@@ -76,40 +72,96 @@ function initialRender(inRenderObj) {
     renderToTarget(target);
   } else if (domContainerID) {
     // Element not in DOM yet (React may not have rendered it). Wait for it.
+    // Disconnect any previous observer to prevent stale renders on re-entry.
+    if (pendingObserver) {
+      pendingObserver.disconnect();
+      pendingObserver = null;
+    }
     const observer = new MutationObserver(() => {
       const el = document.getElementById(domContainerID);
       if (el) {
         observer.disconnect();
+        pendingObserver = null;
         renderToTarget(el);
       }
     });
+    pendingObserver = observer;
     observer.observe(document.body, { childList: true, subtree: true });
   }
-  //  setIsPegaReady(true);
-  // Initial render to show that we have a PConnect and can render in the target location
-  // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
 }
 
-export function startMashup() {
-  // NOTE: When loadMashup is complete, this will be called.
-  PCore.onPCoreReady((renderObj) => {
-    console.log(`PCore ready!`);
-    // Check that we're seeing the PCore version we expect
-    compareSdkPCoreVersions();
+/**
+ * Unmount the Pega React root. Safe to call multiple times.
+ * Call this when the page component containing #pega-root unmounts.
+ */
+export function destroyMashupRoot() {
+  if (pendingObserver) {
+    pendingObserver.disconnect();
+    pendingObserver = null;
+  }
+  if (defined_root) {
+    defined_root.unmount();
+    defined_root = null;
+  }
+}
 
-    // Initialize the SdkComponentMap (local and pega-provided)
-    console.log('localSdkComponentMap keys:', Object.keys(localSdkComponentMap), localSdkComponentMap);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getSdkComponentMap(localSdkComponentMap).then((_theComponentMap: any) => {
-      console.log(`SdkComponentMap initialized`, _theComponentMap);
+/**
+ * Idempotent mashup lifecycle:
+ * - idle → starting: registers onPCoreReady callback, calls myLoadMashup (first time only)
+ * - starting: returns the pending promise (deduplicates concurrent calls)
+ * - ready (re-entry): unmounts old root, re-renders cached content into current #pega-root
+ */
+export function startMashup(options?: { renderUI?: boolean }): Promise<void> {
+  const { renderUI = true } = options ?? {};
 
-      // Don't call initialRender until SdkComponentMap is fully initialized
-      initialRender(renderObj);
+  // Already in progress — return existing promise
+  if (mashupState === 'starting') {
+    return startPromise!;
+  }
+
+  // Re-entry — optionally re-render cached content
+  if (mashupState === 'ready') {
+    if (renderUI) {
+      // Capture old root and null out synchronously so no other code references it.
+      // Defer unmount via queueMicrotask to avoid React "synchronously unmount" warning
+      // while ensuring it runs before any setTimeout (prevents double-destroy).
+      const oldRoot = defined_root;
+      defined_root = null;
+      if (pendingObserver) {
+        pendingObserver.disconnect();
+        pendingObserver = null;
+      }
+      if (oldRoot) {
+        queueMicrotask(() => oldRoot.unmount());
+      }
+      if (cachedRenderObj) {
+        renderMashupContent(cachedRenderObj);
+      }
+    }
+    return Promise.resolve();
+  }
+
+  // First time — bootstrap the mashup
+  mashupState = 'starting';
+  startPromise = new Promise<void>((resolve) => {
+    PCore.onPCoreReady((renderObj) => {
+      console.log('PCore ready!');
+      compareSdkPCoreVersions();
+
+      getSdkComponentMap(localSdkComponentMap).then((_theComponentMap: any) => {
+        console.log('SdkComponentMap initialized', _theComponentMap);
+        cachedRenderObj = renderObj;
+        if (renderUI) {
+          renderMashupContent(renderObj);
+        }
+        mashupState = 'ready';
+        resolve();
+      });
     });
+
+    console.log('startMashup: calling myLoadMashup', window);
+    myLoadMashup('pega-root', false);
   });
 
-  // load the Mashup and handle the onPCoreEntry response that establishes the
-  //  top level Pega root element (likely a RootContainer)
-  console.log('startMashup: calling myLoadMashup', window);
-  myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
+  return startPromise;
 }

@@ -39,6 +39,41 @@ export function ProductsPageSkeleton() {
   );
 }
 
+export function ProductsListPageSkeleton() {
+  return (
+    <div className='grow py-12 px-6 dark:bg-gray-900'>
+      <div className='container mx-auto'>
+        <Skeleton className='h-9 w-72 mb-8' />
+        <Skeleton className='h-10 w-64 mb-4' />
+        <div className='rounded-md border'>
+          <div className='border-b'>
+            <div className='flex'>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className='h-12 flex-1 m-2' />
+              ))}
+            </div>
+          </div>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className='flex border-b last:border-0'>
+              {Array.from({ length: 4 }).map((_, j) => (
+                <Skeleton key={j} className='h-8 flex-1 m-3' />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className='flex items-center justify-between mt-4'>
+          <Skeleton className='h-5 w-32' />
+          <div className='flex gap-2'>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className='h-9 w-9' />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SupportIncidentSkeleton() {
   return (
     <div className='w-full max-w-3xl space-y-6'>

@@ -2,9 +2,9 @@
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import Autoplay from 'embla-carousel-autoplay';
 import { useCallback, useEffect, useState } from 'react';
+import { type Product } from '../../../../api/generated/pega';
 import { Button } from '../../../../design-system/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../../../../design-system/ui/carousel';
-import { IProduct } from '../../../../types/types';
 import StyledSweetLifeDeligthLibraryFeaturedProductsWrapper from './styles';
 
 interface SweetLifeDeligthLibraryFeaturedProductsProps extends PConnProps {
@@ -22,7 +22,7 @@ interface SweetLifeDeligthLibraryFeaturedProductsProps extends PConnProps {
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 export default function SweetLifeDeligthLibraryFeaturedProducts(props: SweetLifeDeligthLibraryFeaturedProductsProps) {
   const { header = '', description, dataPage = '', getPConnect } = props;
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const loadProducts = useCallback(() => {
     if (dataPage) {

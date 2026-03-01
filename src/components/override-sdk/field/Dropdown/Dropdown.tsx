@@ -207,13 +207,10 @@ export default function Dropdown(props: DropdownProps) {
 
   // Material UI shows a warning if the component is rendered before options are set.
   //  So, hold off on rendering anything until options are available...
+  const selectValue = value === '' && !readOnly ? placeholder : value;
+
   return options.length === 0 ? null : (
-    <Select
-      onValueChange={!readOnly ? handleChange : undefined}
-      required={required}
-      disabled={disabled}
-      defaultValue={value === '' && !readOnly ? placeholder : value}
-    >
+    <Select onValueChange={!readOnly ? handleChange : undefined} required={required} disabled={disabled} value={selectValue}>
       <SelectTrigger
         label={label}
         required={required}

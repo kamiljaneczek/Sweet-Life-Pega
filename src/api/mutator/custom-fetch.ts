@@ -1,37 +1,35 @@
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
-export const customFetch = async <T>(url: string, options?: RequestInit): Promise<T> => {
+interface CustomFetchOptions {
+  method?: string;
+  body?: object;
+  headers?: Record<string, string>;
+  apiPrefix?: string;
+}
+
+export const customFetch = async <T>(url: string, options?: CustomFetchOptions): Promise<T> => {
   const sdkConfig = await getSdkConfig();
-  const baseUrl = (sdkConfig as any).serverConfig?.infinityRestServerUrl ?? '';
+  const serverUrl = (sdkConfig as any).serverConfig?.infinityRestServerUrl ?? '';
+  const appAlias = (sdkConfig as any).serverConfig?.appAlias ?? '';
+  const baseUrl = appAlias ? `${serverUrl}/app/${appAlias}` : serverUrl;
 
-  const authHeader = typeof PCore !== 'undefined' ? (PCore.getAuthUtils() as any).getAuthHeader() : '';
+  const apiPrefix = options?.apiPrefix ?? '/api/v1';
+  const endpointUrl = `${baseUrl}${apiPrefix}${url}`;
 
-  const fullUrl = `${baseUrl}/api/v1${url}`;
+  const { invokeCustomRestApi } = PCore.getRestClient();
 
-  const requestHeaders: HeadersInit = {
-    ...((options?.headers as Record<string, string>) ?? {}),
-    Authorization: authHeader
-  };
+  const response = (await invokeCustomRestApi(
+    endpointUrl,
+    {
+      method: options?.method ?? 'GET',
+      body: options?.body ?? {},
+      headers: { 'Content-Type': 'application/json', ...(options?.headers ?? {}) },
+      withoutDefaultHeaders: false
+    },
+    'root'
+  )) as any;
 
-  if (options?.body) {
-    (requestHeaders as Record<string, string>)['Content-Type'] = 'application/json';
-  }
-
-  const response = await fetch(fullUrl, {
-    ...options,
-    headers: requestHeaders
-  });
-
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => null);
-    throw new Error(errorBody?.errorDetails?.[0]?.message ?? `Request failed with status ${response.status}`);
-  }
-
-  if (response.status === 204) {
-    return undefined as T;
-  }
-
-  return response.json() as Promise<T>;
+  return (response?.data ?? response) as T;
 };
 
 export default customFetch;

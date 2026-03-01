@@ -1,66 +1,82 @@
 import { getSdkConfig, loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB } from '@pega/auth/lib/sdk-auth-manager';
 import { useEffect, useState } from 'react';
-import { startMashup } from '../lib/constellation';
+
+// Module-level singleton: ensures auth + SDK bootstrap runs exactly once
+// and persists across SPA navigations (component mount/unmount cycles)
+let initStarted = false;
+let pegaReady = false;
+const readyListeners = new Set<() => void>();
+
+function ensureConstellationInit() {
+  if (initStarted) return;
+  initStarted = true;
+
+  getSdkConfig().then((sdkConfig: any) => {
+    const sdkConfigAuth = sdkConfig.authConfig;
+
+    console.log('sdkConfig - customAuthType: ', sdkConfigAuth.customAuthType);
+
+    if ((sdkConfigAuth.mashupGrantType === 'none' || !sdkConfigAuth.mashupClientId) && sdkConfigAuth.customAuthType === 'Basic') {
+      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}`);
+      sdkSetAuthHeader(`Basic ${sB64}`);
+    }
+
+    if ((sdkConfigAuth.mashupGrantType === 'none' || !sdkConfigAuth.mashupClientId) && sdkConfigAuth.customAuthType === 'BasicTO') {
+      const now = new Date();
+      const expTime = new Date(now.getTime() + 5 * 60 * 1000);
+      let sISOTime = `${expTime.toISOString().split('.')[0]}Z`;
+      const regex = /[-:]/g;
+      sISOTime = sISOTime.replace(regex, '');
+      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
+      sdkSetAuthHeader(`Basic ${sB64}`);
+    }
+
+    if (sdkConfigAuth.mashupGrantType === 'customBearer' && sdkConfigAuth.customAuthType === 'CustomIdentifier') {
+      sdkSetCustomTokenParamsCB(() => {
+        return { userIdentifier: sdkConfigAuth.mashupUserIdentifier };
+      });
+    }
+  });
+
+  sdkSetCustomTokenParamsCB(() => {
+    return { userIdentifier: 'bCustomAuth' };
+  });
+
+  // Auth-only: sets pegaReady when SDK bootstrap completes (no mashup rendering here)
+  document.addEventListener('SdkConstellationReady', () => {
+    pegaReady = true;
+    readyListeners.forEach((cb) => cb());
+    readyListeners.clear();
+  });
+
+  loginIfNecessary({ appName: 'embedded', mainRedirect: false });
+}
+
+export { ensureConstellationInit };
 
 function useConstellation() {
-  const [isPegaReady, setIsPegaReady] = useState(false);
+  const [isPegaReady, setIsPegaReady] = useState(pegaReady);
+
   useEffect(() => {
-    // SPA navigation case: PCore already initialized from a previous page
-    if (typeof PCore !== 'undefined' && PCore) {
+    // Already initialized from a previous mount or SdkConstellationReady already fired
+    if (pegaReady || (typeof PCore !== 'undefined' && PCore)) {
+      pegaReady = true;
       setIsPegaReady(true);
       return;
     }
 
-    // First load: configure auth and wait for SdkConstellationReady
-    getSdkConfig().then((sdkConfig: any) => {
-      const sdkConfigAuth = sdkConfig.authConfig;
+    // Start the singleton init (no-op if already started)
+    ensureConstellationInit();
 
-      console.log('sdkConfig - customAuthType: ', sdkConfigAuth.customAuthType);
+    // Subscribe to the ready notification
+    const onReady = () => setIsPegaReady(true);
+    readyListeners.add(onReady);
 
-      if ((sdkConfigAuth.mashupGrantType === 'none' || !sdkConfigAuth.mashupClientId) && sdkConfigAuth.customAuthType === 'Basic') {
-        // Service package to use custom auth with Basic
-        const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}`);
-        sdkSetAuthHeader(`Basic ${sB64}`);
-      }
-
-      if ((sdkConfigAuth.mashupGrantType === 'none' || !sdkConfigAuth.mashupClientId) && sdkConfigAuth.customAuthType === 'BasicTO') {
-        const now = new Date();
-        const expTime = new Date(now.getTime() + 5 * 60 * 1000);
-        let sISOTime = `${expTime.toISOString().split('.')[0]}Z`;
-        const regex = /[-:]/g;
-        sISOTime = sISOTime.replace(regex, '');
-        // Service package to use custom auth with Basic
-        const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
-        sdkSetAuthHeader(`Basic ${sB64}`);
-      }
-
-      if (sdkConfigAuth.mashupGrantType === 'customBearer' && sdkConfigAuth.customAuthType === 'CustomIdentifier') {
-        // Use custom bearer with specific custom parameter to set the desired operator via
-        //  a userIdentifier property.  (Caution: highly insecure...being used for simple demonstration)
-        sdkSetCustomTokenParamsCB(() => {
-          return { userIdentifier: sdkConfigAuth.mashupUserIdentifier };
-        });
-      }
-    });
-
-    sdkSetCustomTokenParamsCB(() => {
-      return { userIdentifier: 'bCustomAuth' };
-    });
-
-    const handleConstellationReady = () => {
-      startMashup();
-      setIsPegaReady(true);
-    };
-
-    document.addEventListener('SdkConstellationReady', handleConstellationReady);
-    loginIfNecessary({ appName: 'embedded', mainRedirect: false });
-
-    return function cleanupSubscriptions() {
-      document.removeEventListener('SdkConstellationReady', handleConstellationReady);
-      PCore?.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
-      PCore?.getPubSubUtils().unsubscribe('assignmentFinished', 'assignmentFinished');
+    return () => {
+      readyListeners.delete(onReady);
     };
   }, []);
+
   return isPegaReady;
 }
 

@@ -10,15 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as ProductsListRouteImport } from './routes/products-list'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as DesingsystemRouteImport } from './routes/desingsystem'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SupportIndexRouteImport } from './routes/support/index'
+import { Route as SupportNewRouteImport } from './routes/support/new'
+import { Route as SupportNewIndexRouteImport } from './routes/support/new/index'
+import { Route as SupportNewCaseIdRouteImport } from './routes/support/new.$caseId'
 
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsListRoute = ProductsListRouteImport.update({
+  id: '/products-list',
+  path: '/products-list',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -46,6 +56,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportIndexRoute = SupportIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportNewRoute = SupportNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportNewIndexRoute = SupportNewIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SupportNewRoute,
+} as any)
+const SupportNewCaseIdRoute = SupportNewCaseIdRouteImport.update({
+  id: '/$caseId',
+  path: '/$caseId',
+  getParentRoute: () => SupportNewRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,7 +83,12 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/desingsystem': typeof DesingsystemRoute
   '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  '/products-list': typeof ProductsListRoute
+  '/support': typeof SupportRouteWithChildren
+  '/support/new': typeof SupportNewRouteWithChildren
+  '/support/': typeof SupportIndexRoute
+  '/support/new/$caseId': typeof SupportNewCaseIdRoute
+  '/support/new/': typeof SupportNewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +96,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/desingsystem': typeof DesingsystemRoute
   '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  '/products-list': typeof ProductsListRoute
+  '/support': typeof SupportIndexRoute
+  '/support/new/$caseId': typeof SupportNewCaseIdRoute
+  '/support/new': typeof SupportNewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,7 +108,12 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/desingsystem': typeof DesingsystemRoute
   '/products': typeof ProductsRoute
-  '/support': typeof SupportRoute
+  '/products-list': typeof ProductsListRoute
+  '/support': typeof SupportRouteWithChildren
+  '/support/new': typeof SupportNewRouteWithChildren
+  '/support/': typeof SupportIndexRoute
+  '/support/new/$caseId': typeof SupportNewCaseIdRoute
+  '/support/new/': typeof SupportNewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -80,9 +123,23 @@ export interface FileRouteTypes {
     | '/contact'
     | '/desingsystem'
     | '/products'
+    | '/products-list'
     | '/support'
+    | '/support/new'
+    | '/support/'
+    | '/support/new/$caseId'
+    | '/support/new/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/company' | '/contact' | '/desingsystem' | '/products' | '/support'
+  to:
+    | '/'
+    | '/company'
+    | '/contact'
+    | '/desingsystem'
+    | '/products'
+    | '/products-list'
+    | '/support'
+    | '/support/new/$caseId'
+    | '/support/new'
   id:
     | '__root__'
     | '/'
@@ -90,7 +147,12 @@ export interface FileRouteTypes {
     | '/contact'
     | '/desingsystem'
     | '/products'
+    | '/products-list'
     | '/support'
+    | '/support/new'
+    | '/support/'
+    | '/support/new/$caseId'
+    | '/support/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -99,7 +161,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DesingsystemRoute: typeof DesingsystemRoute
   ProductsRoute: typeof ProductsRoute
-  SupportRoute: typeof SupportRoute
+  ProductsListRoute: typeof ProductsListRoute
+  SupportRoute: typeof SupportRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -109,6 +172,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products-list': {
+      id: '/products-list'
+      path: '/products-list'
+      fullPath: '/products-list'
+      preLoaderRoute: typeof ProductsListRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -146,8 +216,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support/': {
+      id: '/support/'
+      path: '/'
+      fullPath: '/support/'
+      preLoaderRoute: typeof SupportIndexRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/new': {
+      id: '/support/new'
+      path: '/new'
+      fullPath: '/support/new'
+      preLoaderRoute: typeof SupportNewRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/new/': {
+      id: '/support/new/'
+      path: '/'
+      fullPath: '/support/new/'
+      preLoaderRoute: typeof SupportNewIndexRouteImport
+      parentRoute: typeof SupportNewRoute
+    }
+    '/support/new/$caseId': {
+      id: '/support/new/$caseId'
+      path: '/$caseId'
+      fullPath: '/support/new/$caseId'
+      preLoaderRoute: typeof SupportNewCaseIdRouteImport
+      parentRoute: typeof SupportNewRoute
+    }
   }
 }
+
+interface SupportNewRouteChildren {
+  SupportNewCaseIdRoute: typeof SupportNewCaseIdRoute
+  SupportNewIndexRoute: typeof SupportNewIndexRoute
+}
+
+const SupportNewRouteChildren: SupportNewRouteChildren = {
+  SupportNewCaseIdRoute: SupportNewCaseIdRoute,
+  SupportNewIndexRoute: SupportNewIndexRoute,
+}
+
+const SupportNewRouteWithChildren = SupportNewRoute._addFileChildren(
+  SupportNewRouteChildren,
+)
+
+interface SupportRouteChildren {
+  SupportNewRoute: typeof SupportNewRouteWithChildren
+  SupportIndexRoute: typeof SupportIndexRoute
+}
+
+const SupportRouteChildren: SupportRouteChildren = {
+  SupportNewRoute: SupportNewRouteWithChildren,
+  SupportIndexRoute: SupportIndexRoute,
+}
+
+const SupportRouteWithChildren =
+  SupportRoute._addFileChildren(SupportRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -155,7 +280,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DesingsystemRoute: DesingsystemRoute,
   ProductsRoute: ProductsRoute,
-  SupportRoute: SupportRoute,
+  ProductsListRoute: ProductsListRoute,
+  SupportRoute: SupportRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

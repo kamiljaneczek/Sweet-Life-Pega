@@ -16,6 +16,8 @@
     "lint": "biome check src/",
     "fix": "biome check --write src/",
     "api:generate": "orval",
+    "codegen:pega": "cd pega-dx-codegen && npm run codegen",
+    "codegen:pega:data": "cd pega-dx-codegen && npm run codegen:data",
     "_comment_DXCB_commands": "The following are public commands to run the integrated DX Component Builder",
     "authenticate": "dx-component-builder-sdk authenticate",
     "buildAllComponents": "dx-component-builder-sdk buildAllComponents",
@@ -59,6 +61,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-router": "^1.95.5",
+    "@tanstack/react-table": "^8.21.3",
     "@tinymce/tinymce-react": "^5.1.1",
     "@types/react-dom": "^18.3.7",
     "@types/styled-components": "^5.1.34",
@@ -89,7 +92,8 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "throttle-debounce": "^5.0.2",
-    "usehooks-ts": "^3.1.0"
+    "usehooks-ts": "^3.1.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",

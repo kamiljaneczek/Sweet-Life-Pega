@@ -3,7 +3,7 @@ import { useCreateCaseViaPCore } from '../api/hooks/usePCoreQuery';
 import { Button } from '../design-system/ui/button';
 import { Input } from '../design-system/ui/input';
 import { Textarea } from '../design-system/ui/textarea';
-import useConstellation from '../hooks/useConstellation';
+import usePegaMashup from '../hooks/usePegaMashup';
 
 import Loading from './components/loading';
 
@@ -11,7 +11,7 @@ const Contact = () => {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const isPegaReady = useConstellation();
+  const isPegaReady = usePegaMashup({ renderUI: false });
   const { mutate, isPending, isSuccess, data } = useCreateCaseViaPCore();
 
   const caseID = data?.data?.caseInfo?.content?.pyID ?? '';
@@ -109,7 +109,7 @@ const Contact = () => {
           </div>
         </section>
         <div className='flex flex-row align-middle items-center justify-center'>
-          <div id='pega-root' />
+          <div id='pega-root' className='hidden' />
         </div>
       </div>
     </>

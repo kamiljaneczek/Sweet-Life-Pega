@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 
 import { Button } from '../design-system/ui/button';
 
-import useConstellation from '../hooks/useConstellation';
+import usePegaMashup from '../hooks/usePegaMashup';
 
 export default function DesingSystem() {
   // const [isPegaReady, setIsPegaReady] = useState(false);
-  const isPegaReady = useConstellation();
+  const isPegaReady = usePegaMashup({ renderUI: false });
 
   console.log('bIsPegaReady', isPegaReady);
 
@@ -46,7 +46,7 @@ export default function DesingSystem() {
                 Run action
               </Button>
             </div>
-            <div id='pega-root' className='flex justify-center space-x-4' />
+            <div id='pega-root' className='hidden' />
           </div>
         </section>
       </main>

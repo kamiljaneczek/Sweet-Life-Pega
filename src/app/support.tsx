@@ -1,53 +1,9 @@
-/* eslint-disable no-console */
-
-import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
-import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 
 import { Button } from '../design-system/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../design-system/ui/hover-card';
-import useConstellation from '../hooks/useConstellation';
-import { cn } from '../lib/utils';
-import { SupportIncidentSkeleton } from './components/skeletons';
 
 export default function Support() {
-  const [showPega, setShowPega] = useState('Info'); // Info, Pega, Confirmation
-  const [caseId, setCaseId] = useState('');
-  const isPegaReady = useConstellation();
-
-  const handleCaseComplete = (eventPayload) => {
-    setShowPega('Confirmation');
-    setCaseId(eventPayload.caseID.split(' ')[1]);
-  };
-
-  const handleCaseCancel = () => {
-    console.log('Case Cancelled');
-    setShowPega('Info');
-  };
-
-  function handleCreateCase() {
-    setShowPega('Pega');
-    getSdkConfig().then((sdkConfig) => {
-      let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
-      if (!mashupCaseType) {
-        const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[1].pyWorkTypeImplementationClassName;
-      }
-
-      const options: any = {
-        pageName: 'pyEmbedAssignment',
-        startingFields: {}
-      };
-      (PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options) as any).then(() => {
-        console.log('createCase rendering is complete');
-      });
-
-      const constants = PCore.getConstants();
-
-      PCore.getPubSubUtils().subscribe(constants.PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING, handleCaseComplete, 'CaseComplete');
-      PCore.getPubSubUtils().subscribe(constants.PUB_SUB_EVENTS.EVENT_CANCEL, handleCaseCancel, 'CaseCancel');
-    });
-  }
-
   return (
     <div className='grow'>
       <section className='dark:bg-gray-900'>
@@ -128,41 +84,19 @@ export default function Support() {
               Tell us about your concerns. We need to ask you a few questions to get started. It shall take only couple of minutes. We will get back
               to you as soon as possible.
             </p>
-            <div
-              id='incident-info'
-              className={cn('flex flex-col flex-wrap mb-8 md:mb-16 space-y-4 md:flex-row md:justify-start justify-center md:space-y-0 md:space-x-4', {
-                hidden: showPega === 'Confirmation' || showPega === 'Pega'
-              })}
-            >
+            <div className='flex flex-col flex-wrap mb-8 md:mb-16 space-y-4 md:flex-row md:justify-start justify-center md:space-y-0 md:space-x-4'>
               <HoverCard openDelay={200}>
                 <HoverCardTrigger>
-                  <Button onClick={handleCreateCase} className='grow px-8 py-6' variant='default' size='lg'>
-                    <span className='text-lg font-bold' /> Create incident
-                  </Button>
+                  <Link to='/support/new'>
+                    <Button className='grow px-8 py-6' variant='default' size='lg'>
+                      Create incident
+                    </Button>
+                  </Link>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <p className='font-bold'>If nothing helps, please create an incident and we will get back to you as soon as possible.</p>
                 </HoverCardContent>
               </HoverCard>
-            </div>
-            <div className='flex flex-row align-middle items-center justify-center'>
-              {!isPegaReady && <SupportIncidentSkeleton />}
-              <div
-                id='pega-root'
-                className={cn('grow w-full max-w-3xl', { hidden: !isPegaReady || showPega === 'Confirmation' || showPega === 'Info' })}
-              />
-            </div>
-            <div
-              id='incident-confirmation'
-              className={cn('flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4', {
-                hidden: showPega === 'Info' || showPega === 'Pega'
-              })}
-            >
-              <div className='mb-8 mx-6 md:mx-12 font-normal text-gray-700 text-lg dark:text-gray-400'>
-                Thank you for your submission. We will get back to you as soon as possible. Your case number is{' '}
-                <span className='font-extrabold'>{caseId}</span>
-                {'. '}Please use it in any of followup conversation.
-              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+.claude
 
 # Editor directories and files
 .vscode/*
@@ -52,3 +53,10 @@ tests/playwright-report
 
 # Generated public directory (Vite static assets)
 /public
+
+# Pega DX codegen generated files
+src/api/generated/pega/
+
+# Pega DX codegen tool dependencies
+pega-dx-codegen/node_modules
+pega-dx-codegen/dist
