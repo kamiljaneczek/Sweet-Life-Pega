@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SupportCustomRouteImport } from './routes/support-custom'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as ProductsListRouteImport } from './routes/products-list'
 import { Route as ProductsRouteImport } from './routes/products'
@@ -21,6 +22,11 @@ import { Route as SupportNewRouteImport } from './routes/support/new'
 import { Route as SupportNewIndexRouteImport } from './routes/support/new/index'
 import { Route as SupportNewCaseIdRouteImport } from './routes/support/new.$caseId'
 
+const SupportCustomRoute = SupportCustomRouteImport.update({
+  id: '/support-custom',
+  path: '/support-custom',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRoute
   '/products-list': typeof ProductsListRoute
   '/support': typeof SupportRouteWithChildren
+  '/support-custom': typeof SupportCustomRoute
   '/support/new': typeof SupportNewRouteWithChildren
   '/support/': typeof SupportIndexRoute
   '/support/new/$caseId': typeof SupportNewCaseIdRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/desingsystem': typeof DesingsystemRoute
   '/products': typeof ProductsRoute
   '/products-list': typeof ProductsListRoute
+  '/support-custom': typeof SupportCustomRoute
   '/support': typeof SupportIndexRoute
   '/support/new/$caseId': typeof SupportNewCaseIdRoute
   '/support/new': typeof SupportNewIndexRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/products': typeof ProductsRoute
   '/products-list': typeof ProductsListRoute
   '/support': typeof SupportRouteWithChildren
+  '/support-custom': typeof SupportCustomRoute
   '/support/new': typeof SupportNewRouteWithChildren
   '/support/': typeof SupportIndexRoute
   '/support/new/$caseId': typeof SupportNewCaseIdRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/products-list'
     | '/support'
+    | '/support-custom'
     | '/support/new'
     | '/support/'
     | '/support/new/$caseId'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/desingsystem'
     | '/products'
     | '/products-list'
+    | '/support-custom'
     | '/support'
     | '/support/new/$caseId'
     | '/support/new'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/products-list'
     | '/support'
+    | '/support-custom'
     | '/support/new'
     | '/support/'
     | '/support/new/$caseId'
@@ -163,10 +175,18 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRoute
   ProductsListRoute: typeof ProductsListRoute
   SupportRoute: typeof SupportRouteWithChildren
+  SupportCustomRoute: typeof SupportCustomRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/support-custom': {
+      id: '/support-custom'
+      path: '/support-custom'
+      fullPath: '/support-custom'
+      preLoaderRoute: typeof SupportCustomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/support': {
       id: '/support'
       path: '/support'
@@ -282,6 +302,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRoute,
   ProductsListRoute: ProductsListRoute,
   SupportRoute: SupportRouteWithChildren,
+  SupportCustomRoute: SupportCustomRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

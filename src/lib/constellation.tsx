@@ -91,6 +91,15 @@ function renderMashupContent(renderObj: any) {
 }
 
 /**
+ * Returns the root PConnect from PCore's bootstrap (cached during onPCoreReady).
+ * Available after startMashup() completes. Returns null before that.
+ */
+export function getCachedRootPConnect(): any | null {
+  if (!cachedRenderObj?.props?.getPConnect) return null;
+  return cachedRenderObj.props.getPConnect();
+}
+
+/**
  * Unmount the Pega React root. Safe to call multiple times.
  * Call this when the page component containing #pega-root unmounts.
  */

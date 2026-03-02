@@ -1,97 +1,116 @@
-This is a community project, no SRs will be acceptebdby Pega GCS.
-If foudn issues create help fxiing it.
+# Sweet Life Pega
 
-This version is only compatible with Pega Infinity 23
+A sample e-commerce storefront ("Sweet Life" candy/confectionery brand) built with the **Pega Constellation React SDK** (v25.1.10). Connects to a Pega Infinity 25+ backend for case management, mashup UI rendering, and business logic. The frontend replaces Pega's default Constellation UI with custom components using **Tailwind CSS v4** and **ShadCN/Radix UI**.
 
-Switch to pega25/react-router or main for Pega 25 compatible version
+> This is a community project — no SRs will be accepted by Pega GCS. If you find issues, please help fix them.
 
-Check out demo: [https://youtu.be/LrdKmpy3QCU](https://youtu.be/LrdKmpy3QCU)
+Check out the demo: [https://youtu.be/LrdKmpy3QCU](https://youtu.be/LrdKmpy3QCU)
 
+## Tech Stack
 
-# React SDK - Release Announcement - v25.1.10
+- **React 18** with TypeScript
+- **Vite** for dev server and builds
+- **TanStack Router** (file-based routing)
+- **TanStack React Query** for server state management
+- **Tailwind CSS v4** with ShadCN/Radix UI primitives
+- **Biome** for linting and formatting
+- **Pega Constellation React SDK** v25.1.10
+- **Orval** for API client generation from OpenAPI specs
 
-**SDK-R v25.1.10** is **only compatible with Pega Infinity '25** and is related to the [**release/25.1.10**](https://github.com/pegasystems/react-sdk/tree/release/25.1.10) branch of the React SDK repository.
-<br>
+## Prerequisites
 
-**Note**: The main branch is the active development branch for future versions of React SDK.
+- **Pega Infinity 25+** server running a Constellation-enabled application
+- **Node.js** 24.x+ and **npm** 11.x+
+- OAuth 2.0 client registration configured on the Pega server
 
-This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 25.1.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
-<br />
+For Pega server setup, refer to [Downloading the Constellation SDK files](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-constellation-sdks.html).
 
-<hr>
+## Getting Started
 
-**_IMPORTANT:_** Please follow the guidelines documented [here](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html) if you are upgrading from a previous version of React SDK.
+1. Clone the repository
+2. Copy `.env.example` to `.env` and configure your Pega server URL and OAuth credentials
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the dev server:
+   ```bash
+   npm run start-dev
+   ```
+   The app runs at [http://localhost:3502](http://localhost:3502).
 
----
+## Scripts
 
-# Overview
+| Command | Description |
+|---|---|
+| `npm run start-dev` | Dev server on localhost:3502 (Vite) |
+| `npm run start-dev-https` | Dev server with HTTPS |
+| `npm run build:dev` | Development build to ./dist |
+| `npm run build:prod` | Production build with compression |
+| `npm run start-prod` | Serve production build |
+| `npm run lint` | Biome lint + format check |
+| `npm run fix` | Biome auto-fix |
+| `npm run api:generate` | Generate API client (Orval) |
+| `npm run codegen:pega` | Generate Zod schemas from Pega DX API |
+| `npm test` | Playwright e2e tests |
+| `npm run test:headed` | Playwright with visible browser |
+| `npm run test:functional` | Jest functional tests |
+| `npm run storybookSDK` | SDK component stories (port 6040) |
+| `npm run storybookConstellation` | Constellation component stories (port 6050) |
 
-The **React SDK** combined with Pega's client orchestration APIs provides a guided iterative development workflow experience that accelerates integrating Pega’s Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
+## Project Structure
 
-A DX component contains logic and presentation tags to merge the alternate design system with Pega’s client orchestration APIs.
+```
+src/
+├── api/                    # Orval-generated API client + React Query hooks
+├── app/                    # Page-level components
+├── components/
+│   ├── override-sdk/       # Custom replacements for Pega Constellation components
+│   │   ├── field/          # Form fields (TextInput, Dropdown, Date, etc.)
+│   │   ├── template/       # Layout templates (OneColumn, TwoColumn, CaseView, etc.)
+│   │   ├── widget/         # Widgets (ToDo, FileUtility, CaseHistory, etc.)
+│   │   ├── infra/          # Infrastructure (Assignment, FlowContainer, etc.)
+│   │   └── designSystemExtension/
+│   ├── custom-sdk/         # DXCB-created components
+│   └── custom-constellation/ # DX components (published to Pega server)
+├── design-system/ui/       # ShadCN/Radix UI primitives
+├── hooks/                  # useConstellation, useCustomPegaCase
+├── lib/
+│   ├── custom-pega/        # Custom PConnect renderer (bypasses SDK rendering)
+│   ├── constellation.tsx   # Mashup bootstrap
+│   └── utils.ts            # cn() helper (clsx + tailwind-merge)
+├── routes/                 # TanStack Router file-based routes
+├── router.tsx              # Router configuration
+└── index.tsx               # App entry point
+```
 
-The alternative design system used in the React SDK is [Material UI](https://v6.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
+## DX Component Builder (DXCB)
 
-<br>
+Build and publish custom Constellation DX components to the Pega server:
 
-# Prerequisites
+```bash
+npm run authenticate         # Auth to Pega server
+npm run create               # Create a new component
+npm run buildComponent       # Build a single component
+npm run publish              # Publish to Pega server
+```
 
-## Pega Infinity Server and Constellation-enabled Application
+## Deployment
 
-This version of the React SDK assumes that you have access to a Pega Infinity server (**25+**) running an application that is configured to run using the Constellation UI service.
+Deployed on **Vercel** with SPA rewrite configuration (`vercel.json`).
 
-The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available [here](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
+## Documentation
 
-The **React SDK** has been tested with:
-
-- node 24.4.1
-- npm 11.4.2
-
-Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
-
-**Before** installing and running the SDK code, refer to [Downloading the Constellation SDK files](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-constellation-sdks.html) for steps to prepare your Pega Infinity server and node environment so you can proceed with the steps in the next section.
-
-<br>
-
----
-
-# Installing and Running the Application
-
-The following procedures provide an overview of installing Constellation SDKs and running the application. For more information, see [Installing and configuring Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html).
-
-# Developing with the SDKs
-
-You can find more details on how to integrate the latest React SDK into your development workflow and also instructions on the new using the new DX Component Builder for SDK features.
-
-For more information, see [Development](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/development.html).
-
-# Troubleshooting
-
-If you are facing any issues, please see [Troubleshooting Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html).
-
----
+- [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
+- [React SDK Updates](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html)
+- [Installing Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html)
+- [Troubleshooting](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)
+- [MediaCo Sample Application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html)
 
 ## License
 
-This project is licensed under the terms of the **Apache 2** license.
-
-> You can see the full license [here](LICENSE) or directly on [apache.org](https://www.apache.org/licenses/LICENSE-2.0).
-
-<br>
-
----
+This project is licensed under the terms of the **Apache 2.0** license. See [LICENSE](LICENSE) for details.
 
 ## Contributing
 
-We welcome contributions to the React SDK project.
-
-Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are interested in contributing to the project.
-<br>
-
----
-## Additional Resources
-
-- [**Material UI**](https://v6.mui.com/)
-- [**Constellation SDKs Documentation**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
-- [**Troubleshooting Constellation SDKs**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)
-- [**MediaCo sample application**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html)
+We welcome contributions. See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for guidelines.
