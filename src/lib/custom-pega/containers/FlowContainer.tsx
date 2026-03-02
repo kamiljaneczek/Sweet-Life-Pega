@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-
-import type { CustomPConnectProps, PConnectProxy } from '../types';
 import PConnectRenderer from '../PConnectRenderer';
+import type { CustomPConnectProps, PConnectProxy } from '../types';
+import Assignment from './Assignment';
 import { getPConnectOfActiveContainerItem } from './container-helpers';
 
 declare const PCore: any;
@@ -103,16 +103,19 @@ export default function FlowContainer({ pConnect }: CustomPConnectProps) {
 
         const order = data.accessedOrder ?? [];
         const activeKey = order[order.length - 1] ?? '';
-        const activeView = activeKey ? data.items?.[activeKey]?.view : null;
+        const activeItem = activeKey ? data.items?.[activeKey] : null;
+        const activeView = activeItem?.view;
         const hasView = !!(activeView && Object.keys(activeView).length);
-        const fingerprint = `${activeKey}|${hasView}`;
+        const viewName = activeView?.config?.name ?? '';
+        const viewContext = activeView?.config?.context ?? '';
+        const fingerprint = `${order.length}:${activeKey}|${hasView}|${viewName}|${viewContext}`;
 
         console.log('[CustomPega] FlowContainer sub:', containerPath, {
           accessedOrder: data.accessedOrder,
           itemKeys: Object.keys(data.items ?? {}),
           fingerprint,
           lastFingerprint,
-          changed: fingerprint !== lastFingerprint,
+          changed: fingerprint !== lastFingerprint
         });
 
         if (fingerprint !== lastFingerprint) {
@@ -125,8 +128,69 @@ export default function FlowContainer({ pConnect }: CustomPConnectProps) {
     };
 
     handleStoreChange();
-    return store.subscribe(handleStoreChange);
+    const unsubStore = store.subscribe(handleStoreChange);
+
+    // Backup: force re-read when Pega finishes processing an assignment.
+    // This catches edge cases where the store fingerprint doesn't change
+    // (e.g. same view name across steps but different config).
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinished',
+      () => {
+        console.log('[CustomPega] FlowContainer: END_OF_ASSIGNMENT_PROCESSING fired, forcing re-read');
+        try {
+          const data = PCore.getContainerUtils().getContainerData(containerPath);
+          if (data) {
+            lastFingerprint = ''; // reset so next store change is always picked up
+            setRoutingInfo({ ...data });
+          }
+        } catch {
+          /* container may not exist yet */
+        }
+      },
+      'END_OF_ASSIGNMENT_PROCESSING'
+    );
+
+    return () => {
+      unsubStore();
+      PCore.getPubSubUtils().unsubscribe('assignmentFinished', 'END_OF_ASSIGNMENT_PROCESSING');
+    };
   }, [containerPath]);
+
+  // ---------------------------------------------------------------------------
+  // Handle container becoming empty during step transitions — re-add the
+  // container item. Mirrors SDK FlowContainer useEffect([isInitialized, hasItems]).
+  // ---------------------------------------------------------------------------
+  const hasItems = !!routingInfo?.accessedOrder?.length;
+
+  useEffect(() => {
+    if (!initRef.current || hasItems) return;
+
+    console.log('[CustomPega] FlowContainer: container empty, re-adding item');
+    (async () => {
+      try {
+        const caseViewMode = pc.getValue('context_data.caseViewMode');
+        if (caseViewMode === 'review') return;
+
+        const target = contextName.substring(0, contextName.lastIndexOf('_'));
+        const activeItemID = PCore.getContainerUtils().getActiveContainerItemName(target);
+        const containerItemData = PCore.getContainerUtils().getContainerItemData(target, activeItemID);
+        const key = containerItemData?.key;
+        const flowName = containerItemData?.flowName;
+
+        await pc.getContainerManager().addContainerItem({
+          semanticURL: '',
+          key,
+          flowName,
+          caseViewMode: 'perform',
+          resourceType: 'ASSIGNMENT',
+          data: pc.getDataObject(contextName)
+        });
+        console.log('[CustomPega] FlowContainer: re-added container item');
+      } catch (err) {
+        console.error('[CustomPega] FlowContainer: re-add container item failed:', err);
+      }
+    })();
+  }, [hasItems, contextName, pc]);
 
   // ---------------------------------------------------------------------------
   // Resolve the active container item into a child PConnect.
@@ -138,9 +202,22 @@ export default function FlowContainer({ pConnect }: CustomPConnectProps) {
     return getPConnectOfActiveContainerItem(routingInfo, {
       parentGetPConnect: () => pc,
       containerName,
-      label: 'FlowContainer',
+      label: 'FlowContainer'
     });
   }, [routingInfo, containerName, pc]);
+
+  // ---------------------------------------------------------------------------
+  // Bind child PConnect to Redux state — mirrors SDK FlowContainer initComponent()
+  // line 92: `ourPConn.isBoundToState()`.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    if (!childPConnect) return;
+    try {
+      (childPConnect as any).isBoundToState();
+    } catch {
+      /* ignore — not all PConnect instances support this */
+    }
+  }, [childPConnect]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -160,7 +237,15 @@ export default function FlowContainer({ pConnect }: CustomPConnectProps) {
           Container initialization failed: {initError}
         </div>
       )}
-      {childPConnect ? <PConnectRenderer pConnect={childPConnect} /> : null}
+      {childPConnect ? (
+        <Assignment
+          pConnect={childPConnect}
+          parentPConnect={pc}
+          containerItemContext={routingInfo?.accessedOrder?.[routingInfo.accessedOrder.length - 1]}
+        >
+          <PConnectRenderer pConnect={childPConnect} />
+        </Assignment>
+      ) : null}
     </div>
   );
 }

@@ -13,7 +13,8 @@ export interface PConnectProxy {
   getContextName(): string;
   getDataObject(path: string): any;
   getPageReference(): string;
-  getValue(path: string): any;
+  getValue(path: string, defaultValue?: any): any;
+  getTarget?(): string;
   setValue(propName: string, value: any): void;
   getInheritedProps(): Record<string, any>;
   getComponentConfig(): Record<string, any>;
@@ -29,7 +30,7 @@ export interface PConnectActionsApi {
   cancelAssignment(itemKey: string, skipDirtyCheck?: boolean): Promise<any>;
   saveAssignment(itemKey: string): Promise<any>;
   navigateToStep(direction: string, itemKey: string): Promise<any>;
-  refreshCaseView(caseKey: string, refreshFor: string, pageRef: string, options: any): void;
+  refreshCaseView(caseKey: string, refreshFor: string, pageRef: string, options?: any): Promise<any>;
   cancelCreateStageAssignment(itemKey: string): Promise<any>;
 }
 
