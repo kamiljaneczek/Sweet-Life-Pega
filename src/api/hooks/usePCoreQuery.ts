@@ -66,6 +66,7 @@ export function useCreateProduct() {
         }
       }),
     onSuccess: () => {
+      PCore.getDataPageUtils().clearDataPage?.('D_ProductList');
       queryClient.invalidateQueries({ queryKey: ['pcore', 'dataPage', 'D_ProductList'] });
     }
   });
@@ -85,6 +86,7 @@ export function useUpdateProduct() {
         }
       }),
     onSuccess: () => {
+      PCore.getDataPageUtils().clearDataPage?.('D_ProductList');
       queryClient.invalidateQueries({ queryKey: ['pcore', 'dataPage', 'D_ProductList'] });
     }
   });
@@ -102,6 +104,7 @@ export function useDeleteProduct() {
       });
     },
     onSuccess: () => {
+      PCore.getDataPageUtils().clearDataPage?.('D_ProductList');
       queryClient.invalidateQueries({ queryKey: ['pcore', 'dataPage', 'D_ProductList'] });
     }
   });
