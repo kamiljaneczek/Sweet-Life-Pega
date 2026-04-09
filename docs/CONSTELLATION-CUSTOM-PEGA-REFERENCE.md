@@ -207,11 +207,55 @@ When a `reference` is created for a context where metadata isn't registered,
 
 ## File Map
 
+### Hooks
+
 | File | Purpose |
 |------|---------|
+| `src/hooks/useConstellation.ts` | SDK auth: OAuth via `@pega/auth`, `SdkConstellationReady` listener; exports `useConstellation()` + `ensureConstellationInit()` |
 | `src/hooks/useCustomPegaCase.ts` | Case lifecycle: create case, extract root PConnect, pub/sub |
+| `src/hooks/usePegaMashup.ts` | Combines auth + mashup lifecycle; calls `startMashup()` post-DOM-render; supports `renderUI: false`; returns `{ isReady, isTimedOut }` |
+| `src/hooks/usePegaMashupLite.ts` | Lightweight variant using `startMashupLite()` (no SDK component imports); for custom-pega pages |
+
+### Custom PConnect Renderer
+
+| File | Purpose |
+|------|---------|
 | `src/lib/custom-pega/PConnectRenderer.tsx` | Component router: maps componentName → React component |
+| `src/lib/custom-pega/FallbackComponent.tsx` | Renders unmapped types; yellow dashed debug border in dev, always renders children |
+| `src/lib/custom-pega/component-map.ts` | Component type → React component mapping |
+| `src/lib/custom-pega/types.ts` | PConnectProxy type definition |
+
+### Containers
+
+| File | Purpose |
+|------|---------|
 | `src/lib/custom-pega/containers/Reference.tsx` | Resolves `reference` → View via `getReferencedView` + `createComponent` |
 | `src/lib/custom-pega/containers/FlowContainer.tsx` | Workarea container: init, addContainerItem, store subscription |
+| `src/lib/custom-pega/containers/ViewContainer.tsx` | Renders view containers (non-workarea) |
+| `src/lib/custom-pega/containers/Assignment.tsx` | Assignment-level wrapper |
+| `src/lib/custom-pega/containers/DeferLoad.tsx` | Lazy-loads a view via `actionsApi.refreshCaseView()`; manages `DeferLoadManager` lifecycle; shows spinner while loading |
 | `src/lib/custom-pega/containers/container-helpers.ts` | Shared helpers: @P resolution, active item PConnect creation |
-| `src/lib/custom-pega/types.ts` | PConnectProxy type definition |
+
+### Fields
+
+| File | Purpose |
+|------|---------|
+| `src/lib/custom-pega/fields/TextInput.tsx` | Text input field |
+| `src/lib/custom-pega/fields/Dropdown.tsx` | Select/dropdown field |
+| `src/lib/custom-pega/fields/Checkbox.tsx` | Checkbox field |
+| `src/lib/custom-pega/fields/TextArea.tsx` | Multi-line text field |
+| `src/lib/custom-pega/fields/Currency.tsx` | Currency input field |
+| `src/lib/custom-pega/fields/DateInput.tsx` | Date picker field |
+| `src/lib/custom-pega/fields/Email.tsx` | Email input field |
+| `src/lib/custom-pega/fields/Phone.tsx` | Phone input field |
+
+### Templates
+
+| File | Purpose |
+|------|---------|
+| `src/lib/custom-pega/templates/DefaultForm.tsx` | Default form layout |
+| `src/lib/custom-pega/templates/OneColumn.tsx` | Single-column layout |
+| `src/lib/custom-pega/templates/Region.tsx` | Region container |
+| `src/lib/custom-pega/templates/View.tsx` | View template wrapper |
+| `src/lib/custom-pega/templates/Group.tsx` | Group layout template |
+| `src/lib/custom-pega/templates/SimpleTableSelect.tsx` | Table-based selection template |

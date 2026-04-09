@@ -87,11 +87,14 @@ The app integrates with Pega via two approaches:
 
 **2. Custom PConnect rendering** (`src/lib/custom-pega/`):
 1. **`src/hooks/useCustomPegaCase.ts`** — Hook that creates a Pega case via `PCore.getMashupApi().createCase()`, extracts the root PConnect from container utilities, and manages case lifecycle (idle → creating → active → completed). Does NOT call `startMashup()`.
-2. **`src/lib/custom-pega/PConnectRenderer.tsx`** — Recursive renderer that resolves PConnect components from the custom component map.
-3. **`src/lib/custom-pega/component-map.ts`** — Maps Pega component types to custom React components (fields, templates, containers).
-4. **`src/lib/custom-pega/containers/`** — Assignment, FlowContainer, ViewContainer, Reference containers.
-5. **`src/lib/custom-pega/fields/`** — TextInput, Dropdown, Checkbox, TextArea.
-6. **`src/lib/custom-pega/templates/`** — DefaultForm, OneColumn, Region, View.
+2. **`src/hooks/usePegaMashup.ts`** — Combines `useConstellation` auth readiness with mashup rendering lifecycle; calls `startMashup()` only after `#pega-root` is in the DOM. Supports `renderUI: false` for PCore-only mode. Returns `{ isReady, isTimedOut }`.
+3. **`src/hooks/usePegaMashupLite.ts`** — Lightweight alternative that calls `startMashupLite()` (no `@pega/react-sdk-components` imports). Use with custom-pega components that render via PConnect directly.
+4. **`src/lib/custom-pega/PConnectRenderer.tsx`** — Recursive renderer that resolves PConnect components from the custom component map.
+5. **`src/lib/custom-pega/FallbackComponent.tsx`** — Renders unmapped component types; shows a yellow dashed debug border in dev with the component type name, renders children regardless.
+6. **`src/lib/custom-pega/component-map.ts`** — Maps Pega component types to custom React components (fields, templates, containers).
+7. **`src/lib/custom-pega/containers/`** — Assignment, DeferLoad, FlowContainer, Reference, ViewContainer.
+8. **`src/lib/custom-pega/fields/`** — Checkbox, Currency, DateInput, Dropdown, Email, Phone, TextArea, TextInput.
+9. **`src/lib/custom-pega/templates/`** — DefaultForm, Group, OneColumn, Region, SimpleTableSelect, View.
 
 `PCore` is a global object (declared locally where needed) provided by Pega's `@pega/constellationjs` bootstrap shell. It manages state, pub/sub events, and component lifecycle.
 
