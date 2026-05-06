@@ -67,6 +67,7 @@ export default function Dropdown({ pConnect }: CustomPConnectProps) {
   const errorMessage = (stateProps?.validateMessage as string) ?? helperText;
 
   const context = pConnect.getContextName();
+  const actionsApi = pConnect.getActionsApi();
 
   // Datasource-related config props
   let listType: string = (configProps.listType as string) ?? '';
@@ -104,6 +105,7 @@ export default function Dropdown({ pConnect }: CustomPConnectProps) {
 
   // ---------------------------------------------------------------------------
   // Load options based on datasource type
+  // (mirrors override-sdk Dropdown + Utils.getOptionList logic)
   // ---------------------------------------------------------------------------
   useEffect(() => {
     if (optionsLoadedRef.current) return;
@@ -124,7 +126,7 @@ export default function Dropdown({ pConnect }: CustomPConnectProps) {
               optionsData.push({ key, value: val });
             }
           });
-          console.log('[CustomPega] Dropdown: data page loaded', optionsData.length, 'options');
+          console.log('[CustomPega] Dropdown: data page loaded', optionsData.length, 'options', optionsData.slice(0, 3));
           setOptions(optionsData);
         })
         .catch((err: any) => {
@@ -133,46 +135,72 @@ export default function Dropdown({ pConnect }: CustomPConnectProps) {
       return;
     }
 
-    // Inline / associated datasource — datasource is an object with `source` array
-    const inlineSource: OptionEntry[] = datasource?.source ?? [];
-    if (inlineSource.length > 0) {
-      optionsLoadedRef.current = true;
-      console.log('[CustomPega] Dropdown: inline datasource', inlineSource.length, 'options');
-      setOptions(inlineSource);
-      return;
+    // For non-string datasources, use the same priority as SDK's Utils.getOptionList:
+    // 1. configProps.listOutput (processed option list with proper key-value pairs)
+    // 2. datasource.source
+    // 3. datasource as array
+    let listSourceItems: any[] | null = null;
+
+    // Check listOutput first (SDK utility priority)
+    const listOutput = configProps.listOutput as any;
+    if (Array.isArray(listOutput) && listOutput.length > 0) {
+      listSourceItems = listOutput;
+      console.log('[CustomPega] Dropdown: using listOutput', listOutput.length, 'items');
     }
 
-    // If datasource is an array directly (some Pega configs pass it this way)
-    if (Array.isArray(datasource) && datasource.length > 0) {
+    // Fall back to datasource.source
+    if (!listSourceItems) {
+      const sourceItems = datasource?.source;
+      if (Array.isArray(sourceItems) && sourceItems.length > 0) {
+        listSourceItems = sourceItems;
+        console.log('[CustomPega] Dropdown: using datasource.source', sourceItems.length, 'items');
+      }
+    }
+
+    // Fall back to datasource as array directly
+    if (!listSourceItems && Array.isArray(datasource) && datasource.length > 0) {
+      listSourceItems = datasource;
+      console.log('[CustomPega] Dropdown: using datasource array', datasource.length, 'items');
+    }
+
+    if (listSourceItems && listSourceItems.length > 0) {
       optionsLoadedRef.current = true;
-      // Try to use Utils.getOptionList-like extraction
       const optionsData: OptionEntry[] = [];
       const displayColumn = columns.length > 0 ? getDisplayFieldsMetaData(columns) : null;
-      for (const item of datasource) {
-        if (item.key !== undefined && item.value !== undefined) {
-          optionsData.push({ key: String(item.key), value: String(item.value) });
+
+      for (const item of listSourceItems) {
+        // Normalize: Pega may provide `text` instead of `value` for display
+        const displayText: string = (item.text ?? item.value ?? '')?.toString();
+        const keyVal: string | undefined = item.key?.toString();
+
+        if (keyVal !== undefined && displayText) {
+          optionsData.push({ key: keyVal, value: displayText });
         } else if (displayColumn) {
           const val = item[displayColumn.primary]?.toString();
           const key = displayColumn.key === 'auto' ? (item.pyGUID ?? val) : item[displayColumn.key]?.toString();
           if (key && val) optionsData.push({ key, value: val });
         }
       }
+
       if (optionsData.length > 0) {
-        console.log('[CustomPega] Dropdown: array datasource', optionsData.length, 'options');
+        console.log('[CustomPega] Dropdown: options loaded', optionsData.length, 'options', optionsData.slice(0, 3));
         setOptions(optionsData);
       }
     }
-  }, [datasource, listType, parameters, context, columns]);
+  }, [datasource, listType, parameters, context, columns, configProps.listOutput]);
 
   const handleValueChange = useCallback(
     (newValue: any) => {
       setLocalValue(newValue);
       if (propName) {
-        pConnect.setValue(propName, newValue);
+        // Use actionsApi (same as override-sdk's handleEvent 'changeNblur' pattern)
+        // to properly trigger Pega engine field change processing
+        actionsApi.updateFieldValue(propName, newValue);
+        actionsApi.triggerFieldChange(propName, newValue);
         pConnect.clearErrorMessages({ property: propName });
       }
     },
-    [pConnect, propName]
+    [actionsApi, pConnect, propName]
   );
 
   // Don't render until options are loaded (prevents empty Select)

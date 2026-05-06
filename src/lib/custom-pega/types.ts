@@ -32,6 +32,8 @@ export interface PConnectActionsApi {
   navigateToStep(direction: string, itemKey: string): Promise<any>;
   refreshCaseView(caseKey: string, refreshFor: string, pageRef: string, options?: any): Promise<any>;
   cancelCreateStageAssignment(itemKey: string): Promise<any>;
+  updateFieldValue(propName: string, value: any): void;
+  triggerFieldChange(propName: string, value: any): void;
 }
 
 export interface CustomPConnectProps {
