@@ -2,6 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router';
 import Footer from '../app/components/footer';
 import Header from '../app/components/header';
+import ChatLauncher from '../components/genai/ChatLauncher';
 
 function RootComponent() {
   return (
@@ -9,6 +10,7 @@ function RootComponent() {
       <Header />
       <Outlet />
       <Footer />
+      <ChatLauncher />
     </div>
   );
 }
