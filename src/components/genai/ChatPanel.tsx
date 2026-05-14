@@ -31,6 +31,19 @@ const AssistantMessage = () => (
   </MessagePrimitive.Root>
 );
 
+const TypingIndicator = () => (
+  <div className='flex justify-start px-3 py-1.5' aria-label='Assistant is typing'>
+    <div className='flex items-center gap-2 rounded-2xl rounded-bl-sm bg-muted px-3 py-2.5 text-sm text-muted-foreground'>
+      <span>Processing your input</span>
+      <span className='flex items-center gap-1' aria-hidden='true'>
+        <span className='h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.3s]' />
+        <span className='h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.15s]' />
+        <span className='h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60' />
+      </span>
+    </div>
+  </div>
+);
+
 export default function ChatPanel({ agentID, contextID, context, enabled }: ChatPanelProps) {
   const { runtime, resetConversation, error, hasMessages } = usePegaAgentRuntime({
     agentID,
@@ -41,7 +54,7 @@ export default function ChatPanel({ agentID, contextID, context, enabled }: Chat
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <div className='flex h-[520px] w-[380px] flex-col overflow-hidden rounded-md bg-popover text-popover-foreground'>
+      <div className='flex h-[640px] max-h-[calc(100vh-7rem)] w-[480px] max-w-[calc(100vw-5rem)] flex-col overflow-hidden rounded-md bg-popover text-popover-foreground'>
         <div className='flex items-center justify-between border-b px-3 py-2'>
           <div>
             <p className='text-sm font-semibold leading-tight'>Sweet Life Assistant</p>
@@ -75,6 +88,10 @@ export default function ChatPanel({ agentID, contextID, context, enabled }: Chat
                 AssistantMessage
               }}
             />
+
+            <ThreadPrimitive.If running>
+              <TypingIndicator />
+            </ThreadPrimitive.If>
           </ThreadPrimitive.Viewport>
 
           {error && <div className='border-t bg-destructive/10 px-3 py-1.5 text-xs text-destructive'>{error}</div>}

@@ -30,12 +30,6 @@ function ThemeSwitch() {
         id='theme-switch'
       >
         <span className='sr-only'>Toggle theme</span>
-        <span
-          aria-hidden='true'
-          className='pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out '
-        >
-          <SunIcon className='h-4 w-4 text-current' />
-        </span>
       </Switch>
       <SunIcon className='h-5 w-5 text-gray-500 dark:text-gray-400' />
     </div>

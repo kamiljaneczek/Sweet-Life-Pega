@@ -23,7 +23,7 @@ export default function ChatLauncher() {
   const contextID = supportMatch?.params?.caseId ?? DEFAULT_CONTEXT_ID;
 
   return (
-    <div className='fixed bottom-6 right-6 z-50'>
+    <div className='fixed bottom-10 right-10 z-50'>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           aria-label={open ? 'Close chat' : 'Open chat'}
